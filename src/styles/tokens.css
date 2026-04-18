@@ -1,0 +1,70 @@
+:root {
+  /* brand */
+  --color-primary: #00a300;
+  --color-primary-hover: #08ba08;
+  --color-primary-dark: #007910;
+  --color-primary-light: #4fcf3f;
+  --color-primary-pale: #cfffd2;
+
+  /* background */
+  --color-background: #1b1a1f;
+  --color-surface: #242429;
+  --color-overlay-stroke: #676975;
+
+  /* black scale */
+  --color-black: #000000;
+  --color-black-100: #131215;
+  --color-black-200: #201f23;
+  --color-black-300: #262629;
+  --color-black-400: #333236;
+  --color-black-500: #4b4b4b;
+
+  /* gray scale */
+  --color-gray-100: #3c3c41;
+  --color-gray-200: #49474f;
+  --color-gray-300: #524f5b;
+  --color-gray-400: #5b5963;
+  --color-gray-500: #787486;
+  --color-gray-600: #a39fb2;
+  --color-gray-700: #d6d5d9;
+  --color-gray-800: #ececee;
+  --color-gray-900: #f8f7fa;
+
+  /* white */
+  --color-white: #ffffff;
+
+  /* red */
+  --color-danger: #ca372b;
+
+  /* blue */
+  --color-blue-500: #1458bc;
+  --color-blue-300: #76a5ea;
+
+  /* profile colors */
+  --color-profile-green: #206e4e;
+  --color-profile-violet: #593ea5;
+  --color-profile-cyan: #1f6a83;
+  --color-profile-rose: #ae2e24;
+  --color-profile-cobalt: #1458bc;
+  --color-profile-yellow: #bd8c00;
+  --color-profile-orange: #9f4b00;
+
+  /* typography */
+  --font-size-12: 12px;
+  --font-size-14: 14px;
+  --font-size-16: 16px;
+  --font-size-18: 18px;
+  --font-size-20: 20px;
+  --font-size-24: 24px;
+  --font-size-32: 32px;
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* shadow */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
