@@ -1,21 +1,21 @@
 import type { Metadata } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 import '@/styles/tokens.css';
 
 export const metadata: Metadata = {
-  title: 'Taskify',
-  description: 'Taskify project',
+  title: 'Do!ngFarm',
+  description: 'Do!ngFarm project',
 };
 
 interface RootLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko">
-      <body>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
