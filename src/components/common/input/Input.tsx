@@ -7,7 +7,7 @@ type IconType = ComponentType<{ size?: number; color?: string }>;
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: IconType;
   rightIcon?: IconType;
-  onRightClick?: () => void;
+  onRightIconClick?: () => void;
   label?: string;
   status?: 'default' | 'error' | 'disabled';
   isDisabled?: boolean;
@@ -18,7 +18,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     leftIcon: LeftIcon,
     rightIcon: RightIcon,
-    onRightClick,
+    onRightIconClick,
     label,
     status = 'default',
     isDisabled = false,
@@ -36,7 +36,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
           {label}
         </label>
       )}
-      <div className={styles.inputContainer} data-status={isDisabled ? 'disabled' : status}>
+      <div
+        className={cn(styles.inputContainer, isDisabled ? styles.disabled : styles[status])}
+        data-status={isDisabled ? 'disabled' : status}
+      >
         {LeftIcon && (
           <div className={styles.iconWrapper}>
             <LeftIcon size={20} />
@@ -44,7 +47,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
         <input id={id} className={styles.inputStyle} {...props} ref={ref} disabled={isDisabled} />
         {RightIcon && (
-          <div className={styles.iconWrapper} onClick={onRightClick}>
+          <div
+            className={styles.iconWrapper}
+            data-clickable={!!onRightIconClick}
+            onClick={onRightIconClick}
+          >
             <RightIcon size={24} />
           </div>
         )}
