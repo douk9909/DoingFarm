@@ -34,13 +34,7 @@
 
 .modalText {
   margin: 0;
-  color: var(--color-black-400);
+  color: var(--color-gray-700);
   font-size: var(--font-size-14);
   line-height: 1.6;
-}
-
-.modalActions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
 }

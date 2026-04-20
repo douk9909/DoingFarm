@@ -1,7 +1,9 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  padding: 24px;
+  background-color: rgba(0, 0, 0, 0.58);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,12 +11,56 @@
 
 .content {
   width: 100%;
-  max-width: 480px;
-  background-color: var(--color-white);
-  border-radius: 16px;
+  max-width: 408px;
+  border: 1px solid rgba(112, 112, 134, 0.72);
+  background-color: #27272d;
+  border-radius: 18px;
   padding: 24px;
+  color: var(--color-white);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .title {
-  margin: 0 0 16px;
+  margin: 0;
+  font-size: var(--font-size-24);
+  font-weight: 700;
+}
+
+.closeButton {
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  color: var(--color-gray-600);
+  font-size: 24px;
+}
+
+.body {
+  margin-top: 18px;
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.footer > * {
+  flex: 1;
+}
+
+@media (max-width: 640px) {
+  .overlay {
+    padding: 16px;
+  }
+
+  .content {
+    padding: 20px;
+  }
 }

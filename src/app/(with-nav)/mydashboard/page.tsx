@@ -24,16 +24,21 @@ export default function MyDashboardPage() {
       </div>
 
       {isModalOpen ? (
-        <Modal title="모달 디자인 확인">
+        <Modal
+          open={isModalOpen}
+          title="모달"
+          footer={
+            <>
+              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
+                취소
+              </Button>
+              <Button onClick={() => setIsModalOpen(false)}>생성</Button>
+            </>
+          }
+          onClose={() => setIsModalOpen(false)}
+        >
           <p className={styles.modalText}>
           </p>
-
-          <div className={styles.modalActions}>
-            <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-              닫기
-            </Button>
-            <Button onClick={() => setIsModalOpen(false)}>확인</Button>
-          </div>
         </Modal>
       ) : null}
     </section>
