@@ -1,4 +1,11 @@
-.container {
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.inputContainer {
   width: 100%;
   height: 54px;
   padding: 6px 20px;
@@ -7,18 +14,27 @@
   align-items: center;
   gap: 8px;
 
-  background-color: var(--color-black-200);
   border-radius: 14px;
   border: 1px solid var(--color-gray-300);
+  background-color: var(--color-black-200);
+}
+
+.inputContainer:focus-within {
+  border-color: var(--color-blue-300);
 }
 
 .inputStyle {
   flex: 1;
   height: 100%;
 
-  background-color: transparent;
   border: none;
   outline: none;
+  color: var(--color-gray-800);
+  background-color: transparent;
+
+  ::placeholder {
+    color: var(--color-gray-600);
+  }
 }
 
 .iconWrapper {
@@ -27,4 +43,8 @@
   justify-content: center;
 
   cursor: pointer;
+}
+
+.errorMsg {
+  color: var(--color-danger);
 }
