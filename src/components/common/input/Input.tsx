@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils/cn';
 type IconType = ComponentType<{ size?: number }>;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  element: 'input' | 'textarea';
   leftIcon?: IconType;
   rightIcon?: IconType;
   onRightIconClick?: () => void;
@@ -12,10 +13,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   status?: 'default' | 'error' | 'disabled';
   isDisabled?: boolean;
   errorMsg?: string;
+  rows?: number;
 }
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(function Input(
   {
+    element,
     leftIcon: LeftIcon,
     rightIcon: RightIcon,
     onRightIconClick,
@@ -23,6 +26,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     status = 'default',
     isDisabled = false,
     errorMsg,
+    rows = 4,
     ...props
   }: InputProps,
   ref,
@@ -45,7 +49,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             <LeftIcon size={20} />
           </div>
         )}
-        <input id={id} className={styles.inputStyle} {...props} ref={ref} disabled={isDisabled} />
+        {element === 'input' ? (
+          <input id={id} className={styles.inputStyle} {...props} ref={ref} disabled={isDisabled} />
+        ) : (
+          <textarea
+            id={id}
+            className={cn(styles.textareaStyle, styles.inputStyle)}
+            rows={rows}
+            {...props}
+            ref={ref}
+            disabled={isDisabled}
+          />
+        )}
+
         {RightIcon && (
           <div
             className={styles.iconWrapper}
