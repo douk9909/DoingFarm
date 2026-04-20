@@ -1,11 +1,12 @@
 import styles from './Input.module.css';
 import { cn } from '@/lib/utils/cn';
 
-export default function Input({
-
-}) {
+function Input() {
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.iconWrapper}></div>
+      <input className={styles.inputStyle} />
+      <div className={styles.iconWrapper}></div>
     </div>
   );
 }
