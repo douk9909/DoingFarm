@@ -2,7 +2,7 @@ import { ComponentType, InputHTMLAttributes, forwardRef, useId } from 'react';
 import styles from './Input.module.css';
 import { cn } from '@/lib/utils/cn';
 
-type IconType = ComponentType<{ size?: number; color?: string }>;
+type IconType = ComponentType<{ size?: number }>;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   leftIcon?: IconType;
