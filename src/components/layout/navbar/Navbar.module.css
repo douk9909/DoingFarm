@@ -1,0 +1,122 @@
+.container {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px 10px 10px;
+  background-color: var(--color-background);
+  border-bottom: 2px solid var(--color-black-300);
+}
+
+.leftContainer {
+  flex: 1;
+}
+
+.characterImg {
+  display: none;
+}
+
+.sideMenuButton {
+  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.userList {
+  display: flex;
+  align-items: center;
+  gap: -13px;
+}
+
+.profile {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid var(--color-background);
+}
+
+.line {
+  width: 2px;
+  height: 14px;
+  background-color: var(--color-black-300);
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+
+  & span {
+    display: none;
+  }
+}
+
+.textButton {
+  gap: 9px;
+  color: var(--color-gray-700);
+}
+
+.button:hover {
+  background-color: var(--color-black-300);
+}
+
+.button:active {
+  background-color: var(--color-black-400);
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .container {
+    height: 72px;
+    padding: 16px 30px;
+  }
+
+  .characterImg {
+    display: block;
+  }
+
+  .sideMenuButton {
+    display: none;
+  }
+
+  .onlyMobileIcon {
+    display: none;
+  }
+
+  .profile {
+    width: 34px;
+    height: 34px;
+  }
+
+  .textButton span {
+    display: inline;
+  }
+
+  .inviteButton {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--color-primary-700);
+  }
+  .inviteButton:active {
+    background-color: var(--color-primary-800);
+  }
+}
