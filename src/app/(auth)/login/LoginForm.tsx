@@ -34,12 +34,7 @@ export default function LoginForm() {
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
-          <Image
-            src={logo}
-            alt="Do!ngFarm 로고"
-            width={331}
-            height={154}
-          />
+        <Image src={logo} alt="Do!ngFarm 로고" width={331} height={154} />
       </Link>
 
       <div className={styles.inputGroup}>
@@ -73,12 +68,12 @@ export default function LoginForm() {
             className={styles.eyeButton}
             onClick={() => setShowPassword((prev) => !prev)}
           >
-              <Image
-                src={showPassword ? visibilityOn : visibilityOff}
-                alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-                width={24}
-                height={24}
-              />
+            <Image
+              src={showPassword ? visibilityOn : visibilityOff}
+              alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+              width={24}
+              height={24}
+            />
           </button>
         </div>
         {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}
