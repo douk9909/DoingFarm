@@ -24,15 +24,15 @@ export default function MyDashboardPage() {
       </div>
 
       {isModalOpen ? (
-        <Modal title="모달 디자인 확인">
+        <Modal title="새 대시보드 생성">
           <p className={styles.modalText}>
           </p>
 
           <div className={styles.modalActions}>
             <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-              닫기
+              취소
             </Button>
-            <Button onClick={() => setIsModalOpen(false)}>확인</Button>
+            <Button onClick={() => setIsModalOpen(false)}>생성</Button>
           </div>
         </Modal>
       ) : null}
