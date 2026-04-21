@@ -8,13 +8,16 @@
 
 .mainContent {
   display: flex;
-  flex-direction: column;
   width: 100%;
-  padding: 0 24px;
+  height: 100vh;
 }
 
 .formSection {
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 24px;
 }
 
 .illustrationSection {
@@ -30,29 +33,23 @@
 
 /* tablet */
 @media (min-width: 768px) {
-  .mainContent {
+  .formSection {
     padding: 0 40px;
-    max-width: 600px;
   }
 }
 
 /* desktop */
 @media (min-width: 1024px) {
-  .mainContent {
-    flex-direction: row;
-    max-width: 1240px;
-    gap: 80px;
+  .formSection {
+    width: 50%;
     padding: 0 60px;
   }
 
   .illustrationSection {
+    width: 50%;
     display: flex;
-    flex: 1;
     justify-content: center;
-  }
-
-  .formSection {
-    flex: 1;
-    max-width: 520px;
+    align-items: center;
+    padding: 0 150px;
   }
 }
