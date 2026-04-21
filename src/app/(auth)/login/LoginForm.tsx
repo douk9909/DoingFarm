@@ -9,10 +9,16 @@ export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
 
   const validateEmail = (value: string) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     setEmailError(isValid || value === '' ? '' : '이메일 형식으로 작성해 주세요');
+  };
+
+  const validatePassword = (value: string) => {
+    setPasswordError(value.length >= 8 || value === '' ? '' : '8자 이상 작성해 주세요.');
   };
 
   return (
@@ -48,7 +54,10 @@ export default function LoginForm() {
             id="password"
             type={showPassword ? 'text' : 'password'}
             placeholder="8자 이상 입력해주세요"
-            className={styles.inputField}
+            className={`${styles.inputField} ${passwordError ? styles.inputError : ''}`}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onBlur={() => validatePassword(password)}
           />
           <button
             type="button"
@@ -58,6 +67,7 @@ export default function LoginForm() {
             {showPassword ? '감은 눈' : '뜬 눈'}
           </button>
         </div>
+        {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}
       </div>
 
       <button type="submit" className={styles.submitButton}>
