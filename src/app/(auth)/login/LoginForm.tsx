@@ -3,6 +3,10 @@ import Link from 'next/link';
 import styles from './LoginForm.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import logo from '@/assets/Do!ngFarm_logo.svg';
+import visibilityOn from '@/assets/icon/visibility_on.svg';
+import visibilityOff from '@/assets/icon/visibility_off.svg';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,7 +34,12 @@ export default function LoginForm() {
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
-        <h2>Do!ngFarm</h2>
+          <Image
+            src={logo}
+            alt="Do!ngFarm 로고"
+            width={331}
+            height={154}
+          />
       </Link>
 
       <div className={styles.inputGroup}>
@@ -64,7 +73,12 @@ export default function LoginForm() {
             className={styles.eyeButton}
             onClick={() => setShowPassword((prev) => !prev)}
           >
-            {showPassword ? '감은 눈' : '뜬 눈'}
+              <Image
+                src={showPassword ? visibilityOn : visibilityOff}
+                alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+                width={24}
+                height={24}
+              />
           </button>
         </div>
         {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}

@@ -47,11 +47,11 @@
 }
 
 .inputError {
-  border-color: #ca372b;
+  border-color: var(--color-danger);
 }
 
 .errorMessage {
-  color: #ca372b;
+  color: var(--color-danger);
   font-size: 14px;
   margin: 0;
 }
@@ -82,11 +82,11 @@
   gap: 8px;
   padding: 6 30px;
   border-radius: 100px;
-  background-color: #10671f;
+  background-color: var(--color-primary-800);
   border: none;
   margin-bottom: 20px;
 
-  color: #00330d;
+  color: var(--color-primary-950);
   font-weight: bold;
   cursor: pointer;
 }

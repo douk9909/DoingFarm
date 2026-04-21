@@ -3,7 +3,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #684830;
+  background-image: url('/assets/backgroundImg/login_bg.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.container > * {
+  position: relative;
+  z-index: 1;
 }
 
 .mainContent {
@@ -27,7 +41,6 @@
 .placeholderBox {
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: #d1d5db;
   border-radius: 30px;
 }
 
@@ -50,6 +63,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 150px;
   }
 }
