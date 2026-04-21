@@ -20,7 +20,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--color-primary-light);
+  outline: 2px solid var(--color-primary-300);
   outline-offset: 2px;
 }
 
@@ -31,17 +31,25 @@
 .sm {
   min-height: 36px;
   padding: 0 16px;
-  font-size: var(--font-size-12);
+  font: var(--text-xs-semibold);
 }
 
 .md {
   min-height: 42px;
   padding: 0 20px;
-  font-size: var(--font-size-14);
+  font: var(--text-md-medium);
+  font-weight: var(--font-weight-bold);
+}
+
+.lg {
+  min-height: 48px;
+  padding: 0 24px;
+  font: var(--text-lg-16-medium);
+  font-weight: var(--font-weight-bold);
 }
 
 .primary {
-  background-color: var(--color-primary);
+  background-color: var(--color-primary-500);
   color: var(--color-white);
 }
 
@@ -61,7 +69,7 @@
   }
 
   .primary:not(:disabled):hover {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-primary-600);
   }
 
   .secondary:not(:disabled):hover {

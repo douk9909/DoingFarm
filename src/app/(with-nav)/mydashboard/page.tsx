@@ -1,7 +1,7 @@
 import Image from 'next/image';
-import myDashboardBgImage from '@public/images/mydashboard-bg.svg';
-import dashboardBoxImage from '@public/images/dashboradbox.png';
-import dashboardCarrotImage from '@public/images/dashborad-carrot.png';
+import myDashboardBgImage from '@/assets/backgroundImg/dashboard_bg.svg';
+import dashboardBoxImage from '@/assets/character/empty_box.svg';
+import dashboardCarrotImage from '@/assets/character/empty_carrot.svg';
 import Button from '@/components/common/button/Button';
 import styles from './page.module.css';
 

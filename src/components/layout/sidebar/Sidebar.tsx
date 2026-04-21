@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import logoImage from '@public/images/logo.svg';
+import logoImage from '@/assets/Do!ngFarm_logo.svg';
 import styles from './Sidebar.module.css';
 import { PATH } from '@/lib/constants/path';
 import { cn } from '@/lib/utils/cn';

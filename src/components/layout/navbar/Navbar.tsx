@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import carrotImage from '@public/images/image-carrot.svg';
+import carrotImage from '@/assets/character/carrot1.svg';
 import { PATH } from '@/lib/constants/path';
 import styles from './Navbar.module.css';
 

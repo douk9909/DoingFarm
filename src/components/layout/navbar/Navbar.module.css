@@ -57,8 +57,14 @@
 .shareButton {
   min-width: 74px;
   padding: 0 16px;
-  background: #00a200;
+  background: var(--color-primary-500);
   color: #ffffff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .shareButton:hover {
+    background: var(--color-primary-600);
+  }
 }
 
 .actionIcon {
