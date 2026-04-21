@@ -7,7 +7,7 @@
 
 .labelStyle {
   color: var(--color-gray-700);
-  font-size: var(--font-size-16);
+  font: var(--text-lg-16-semibold);
   margin-bottom: 2px;
 }
 
@@ -29,11 +29,11 @@
   border-color: var(--color-blue-300);
 }
 
-.inputContainer[data-status='error'] {
+.error {
   border-color: var(--color-danger);
 }
 
-.inputContainer[data-status='disabled'] {
+.disabled {
   background-color: var(--color-gray-100);
 }
 
@@ -44,7 +44,7 @@
 
   border: none;
   outline: none;
-  font-size: var(--font-size-16);
+  font: var(--text-lg-16-medium);
   color: var(--color-gray-800);
   background-color: transparent;
 
@@ -54,28 +54,22 @@
   }
 
   ::placeholder {
-    font-size: var(--font-size-16);
+    font: var(--text-lg-16-medium);
     color: var(--color-gray-600);
   }
 }
 
 .iconWrapper {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-gray-500);
 }
 
-.iconWrapper > * {
-  width: 100%;
-  height: 100%;
-}
-
-.iconWrapper[data-clickable='true'] {
+.clickableIcon {
   cursor: pointer;
+  background-color: transparent;
+  border: none;
+
   &:active {
     opacity: 0.6;
   }
@@ -83,15 +77,20 @@
 
 .errorMsg {
   margin-left: 4px;
-  font-size: var(--font-size-14);
+  font: var(--text-md-medium);
   color: var(--color-danger);
 }
 
 .textareaStyle {
+  min-height: 120px;
   padding: 14px 0px;
   resize: none;
 
   &:hover {
     border-color: var(--color-blue-300);
+  }
+
+  @media (min-width: 768px) {
+    min-height: 160px;
   }
 }

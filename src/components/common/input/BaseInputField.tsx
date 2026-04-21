@@ -3,9 +3,9 @@ import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.css';
 
 export interface BaseInputFieldProps {
-  label?: string;
   id?: string;
-  status?: 'default' | 'error' | 'disabled';
+  label?: string;
+  status?: 'default' | 'error';
   isDisabled?: boolean;
   errorMsg?: string;
   leftIcon?: ReactNode;
@@ -14,9 +14,9 @@ export interface BaseInputFieldProps {
   children: ReactNode;
 }
 
-export function BaseInputField({
-  label,
+export default function BaseInputField({
   id,
+  label,
   status = 'default',
   isDisabled = false,
   errorMsg,
@@ -32,21 +32,17 @@ export function BaseInputField({
           {label}
         </label>
       )}
-      <div
-        className={cn(styles.inputContainer, isDisabled ? styles.disabled : styles[status])}
-        data-status={isDisabled ? 'disabled' : status}
-      >
+      <div className={cn(styles.inputContainer, styles[status], isDisabled && styles.disabled)}>
         {leftIcon && <div className={styles.iconWrapper}>{leftIcon}</div>}
         {children}
         {rightIcon && (
           <button
             type="button"
-            className={styles.iconWrapper}
-            data-clickable={!!onRightIconClick}
+            className={cn(styles.iconWrapper, styles.clickableIcon)}
             onClick={onRightIconClick}
           >
             {rightIcon}
-          </button> 
+          </button>
         )}
       </div>
       {status === 'error' && errorMsg && <p className={styles.errorMsg}>{errorMsg}</p>}

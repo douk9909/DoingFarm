@@ -1,6 +1,6 @@
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
-import { BaseInputField, BaseInputFieldProps } from '@/components/common/input/BaseInputField';
-
+import BaseInputField, { BaseInputFieldProps } from './BaseInputField';
+import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.css';
 
 interface InputProps
@@ -8,6 +8,7 @@ interface InputProps
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
+    type = 'text',
     label,
     status = 'default',
     isDisabled = false,
@@ -15,6 +16,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     leftIcon,
     rightIcon,
     onRightIconClick,
+    className,
     ...props
   }: InputProps,
   ref,
@@ -31,7 +33,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       rightIcon={rightIcon}
       onRightIconClick={onRightIconClick}
     >
-      <input id={id} className={styles.inputStyle} ref={ref} disabled={isDisabled} {...props} />
+      <input
+        {...props}
+        type={type}
+        id={id}
+        className={cn(styles.inputStyle, className)}
+        ref={ref}
+        disabled={isDisabled}
+      />
     </BaseInputField>
   );
 });
