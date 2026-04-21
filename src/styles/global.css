@@ -1,0 +1,15 @@
+@import './reset.css';
+@import './tokens.css';
+@import './typography.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-white);
+}
