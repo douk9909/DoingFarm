@@ -1,46 +1,75 @@
-'use client';
-
-import { useState } from 'react';
+import Image from 'next/image';
+import myDashboardBgImage from '@public/images/mydashboard-bg.svg';
+import dashboardBoxImage from '@public/images/dashboradbox.png';
+import dashboardCarrotImage from '@public/images/dashborad-carrot.png';
 import Button from '@/components/common/button/Button';
-import Modal from '@/components/common/modal/Modal';
 import styles from './page.module.css';
 
 export default function MyDashboardPage() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   return (
     <section className={styles.page}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>디자인 확인용</h1>
-        <p className={styles.description}>
-        </p>
-
-        <div className={styles.buttonRow}>
-          <Button>버튼 확인</Button>
-          <Button variant="secondary" onClick={() => setIsModalOpen(true)}>
-            모달 확인
-          </Button>
-        </div>
+      <div className={styles.backgroundLayer}>
+        <Image
+          src={myDashboardBgImage}
+          alt=""
+          fill
+          sizes="100vw"
+          className={styles.backgroundImage}
+          priority
+        />
       </div>
 
-      {isModalOpen ? (
-        <Modal
-          open={isModalOpen}
-          title="모달"
-          footer={
-            <>
-              <Button variant="secondary" onClick={() => setIsModalOpen(false)}>
-                취소
-              </Button>
-              <Button onClick={() => setIsModalOpen(false)}>생성</Button>
-            </>
-          }
-          onClose={() => setIsModalOpen(false)}
-        >
-          <p className={styles.modalText}>
-          </p>
-        </Modal>
-      ) : null}
+      <div className={styles.canvas}>
+        <div className={styles.inner}>
+          <header className={styles.hero}>
+            <div className={styles.heroText}>
+              <p className={styles.breadcrumb}>홈</p>
+              <h1 className={styles.title}>내 대시보드</h1>
+            </div>
+          </header>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>내 대시보드</h2>
+
+            <div className={styles.panel}>
+              <div className={styles.emptyState}>
+                <Image
+                  src={dashboardBoxImage}
+                  alt="대시보드 박스"
+                  width={110}
+                  height={74}
+                  className={styles.stateImage}
+                  priority
+                />
+
+                <p className={styles.message}>대시보드가 없습니다.</p>
+
+                <Button size="sm" className={styles.createButton}>
+                  생성하기 +
+                </Button>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>초대 받은 대시보드</h2>
+
+            <div className={styles.panel}>
+              <div className={styles.emptyState}>
+                <Image
+                  src={dashboardCarrotImage}
+                  alt="초대 받은 대시보드 캐럿"
+                  width={110}
+                  height={74}
+                  className={styles.stateImage}
+                />
+
+                <p className={styles.message}>아직 초대받은 대시보드가 없습니다.</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
     </section>
   );
 }
