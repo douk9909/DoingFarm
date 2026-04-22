@@ -1,0 +1,125 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+}
+
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.inputGroup:last-of-type {
+  margin-bottom: 40px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  color: var(--color-gray-700);
+  font: var(--text-lg-16-semibold);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.inputField {
+  height: 54px;
+  width: 100%;
+  gap: 8px;
+  padding: 0 20px;
+  border-radius: 14px;
+  background-color: var(--color-black-200);
+  border: 1px solid var(--color-gray-300);
+  color: var(--color-gray-900);
+  font: var(--text-lg-16-medium);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.inputField::placeholder {
+  color: var(--color-gray-600);
+}
+
+.inputField:focus {
+  border-color: var(--color-gray-900);
+}
+
+.inputError {
+  border-color: var(--color-danger);
+}
+
+.errorMessage {
+  color: var(--color-danger);
+  font: var(--text-md-medium);
+  margin: 0;
+}
+
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .inputField {
+  padding-right: 24px;
+}
+
+.eyeButton {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-500);
+  display: flex;
+  align-items: center;
+}
+
+.submitButton {
+  height: 60px;
+  gap: 8px;
+  padding: 6 30px;
+  border-radius: 100px;
+  background-color: var(--color-primary-500);
+  border: none;
+  margin-bottom: 20px;
+
+  color: var(--color-white);
+  font: var(--text-2lg-semibold);
+  cursor: pointer;
+}
+
+.submitButton:disabled {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-950);
+
+  cursor: not-allowed;
+}
+
+.agreeWrapper {
+  margin-bottom: 16px;
+}
+
+.agreeButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-700);
+  font: var(--text-lg-16-medium);
+  padding: 0;
+}
+
+.loginLink {
+  text-align: center;
+  font: var(--text-lg-16-medium);
+  color: var(--color-gray-600);
+}
+
+.loginLink a {
+  color: var(--color-gray-700);
+}
