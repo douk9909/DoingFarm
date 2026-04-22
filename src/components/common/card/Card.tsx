@@ -1,4 +1,5 @@
 import Avatar from '@/components/common/avatar/Avatar';
+import { formatDate } from '@/lib/utils/formatDate';
 
 import styles from './Card.module.css';
 
@@ -30,7 +31,7 @@ export default function Card({ src, title, tags, date, authorName }: CardProps) 
           ))}
         </div>
 
-        <p className={styles.cardDate}>{date}</p>
+        <p className={styles.cardDate}>{formatDate(date)}</p>
         <div className={styles.cardAuthor}>
           {/* Todo: Avater 컴포넌트 머지 시 name={authorName} 및 size={20} */}
           <Avatar />
