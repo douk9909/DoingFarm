@@ -5,14 +5,18 @@ import { getHashColor } from '@/lib/utils/color';
 import styles from './Card.module.css';
 
 interface CardProps {
-  src?: string | null;
+  id: number;
   title: string;
   tags?: string[];
-  date: string;
-  authorName: string;
+  dueDate: string;
+  assignee: {
+    nickname: string;
+    profileImage: string | null;
+  };
+  src?: string | null;
 }
 
-export default function Card({ src, title, tags, date, authorName }: CardProps) {
+export default function Card({ src, title, tags, dueDate, assignee }: CardProps) {
   return (
     <div className={styles.cardContainer}>
       {src && (
@@ -25,9 +29,9 @@ export default function Card({ src, title, tags, date, authorName }: CardProps) 
         <h3 className={styles.cardTitle}>{title}</h3>
 
         <div className={styles.cardTags}>
-          {tags?.map((tag) => (
+          {tags?.map((tag, index) => (
             <span
-              key={tag}
+              key={`${tag}-${index}`}
               className={styles.cardTag}
               style={{ '--bg-color': getHashColor(tag) } as React.CSSProperties}
             >
@@ -36,11 +40,11 @@ export default function Card({ src, title, tags, date, authorName }: CardProps) 
           ))}
         </div>
 
-        <p className={styles.cardDate}>{formatDate(date)}</p>
+        <p className={styles.cardDate}>{formatDate(dueDate)}</p>
         <div className={styles.cardAuthor}>
-          {/* Todo: Avater 컴포넌트 머지 시 name={authorName} 및 size={20} */}
+          {/* Todo: Avater 컴포넌트 머지 시 src={assignee.profileImage} name={assignee.nickname} 및 size={20} */}
           <Avatar />
-          <span className={styles.cardAuthorName}>{authorName}</span>
+          <span className={styles.cardAuthorName}>{assignee.nickname}</span>
         </div>
       </div>
     </div>
