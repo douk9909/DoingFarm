@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import './globals.css';
-import '@/styles/tokens.css';
+import '@/styles/global.css';
 
 export const metadata: Metadata = {
   title: 'Do!ngFarm',
