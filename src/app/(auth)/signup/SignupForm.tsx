@@ -9,6 +9,7 @@ import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
 import checkActive from '@/assets/icon/check_active.svg';
+import toast from 'react-hot-toast';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -58,7 +59,8 @@ export default function SignupForm() {
       className={styles.form}
       onSubmit={(e) => {
         e.preventDefault();
-        router.push('/mydashboard');
+        router.push('/login');
+        toast.success('가입이 완료되었습니다.');
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
