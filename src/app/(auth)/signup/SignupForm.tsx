@@ -4,7 +4,7 @@ import styles from './SignupForm.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import logo from '@/assets/Do!ngFarm_logo.svg';
+import logo from '@/assets/logo/login_logo.svg';
 import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
