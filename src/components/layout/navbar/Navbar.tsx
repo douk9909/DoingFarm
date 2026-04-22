@@ -42,6 +42,7 @@ export default function Navbar() {
       </div>
 
       <div className={styles.rightContainer}>
+        {/* Todo: 나의 대시보드 페이지일 땐  보이지 않도록 처리 */}
         <div className={styles.userList}>
           {displayUsers.map((user) => (
             <Avatar
