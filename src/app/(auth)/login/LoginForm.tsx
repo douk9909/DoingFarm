@@ -4,7 +4,7 @@ import styles from './LoginForm.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import logo from '@/assets/Do!ngFarm_logo.svg';
+import logo from '@/assets/logo/login_logo.svg';
 import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
 
@@ -15,6 +15,7 @@ export default function LoginForm() {
   const [emailError, setEmailError] = useState('');
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const isValid = email !== '' && password !== '' && !emailError && !passwordError;
 
   const validateEmail = (value: string) => {
     const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -42,7 +43,7 @@ export default function LoginForm() {
         <input
           id="email"
           type="email"
-          placeholder="이메일을 입력하세요"
+          placeholder="이메일을 입력해 주세요"
           className={`${styles.inputField} ${emailError ? styles.inputError : ''}`}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -57,7 +58,7 @@ export default function LoginForm() {
           <input
             id="password"
             type={showPassword ? 'text' : 'password'}
-            placeholder="8자 이상 입력해주세요"
+            placeholder="8자 이상 입력해 주세요"
             className={`${styles.inputField} ${passwordError ? styles.inputError : ''}`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
@@ -79,7 +80,7 @@ export default function LoginForm() {
         {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}
       </div>
 
-      <button type="submit" className={styles.submitButton}>
+      <button type="submit" className={styles.submitButton} disabled={!isValid}>
         로그인
       </button>
 

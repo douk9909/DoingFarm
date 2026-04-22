@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   color: var(--color-gray-700);
-  font-size: 16px;
+  font: var(--text-lg-16-semibold);
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -33,7 +33,7 @@
   background-color: var(--color-black-200);
   border: 1px solid var(--color-gray-300);
   color: var(--color-gray-900);
-  font-size: 16px;
+  font: var(--text-lg-16-medium);
   outline: none;
   box-sizing: border-box;
 }
@@ -52,7 +52,7 @@
 
 .errorMessage {
   color: var(--color-danger);
-  font-size: 14px;
+  font: var(--text-md-medium);
   margin: 0;
 }
 
@@ -82,13 +82,20 @@
   gap: 8px;
   padding: 6 30px;
   border-radius: 100px;
-  background-color: var(--color-primary-800);
+  background-color: var(--color-primary-500);
   border: none;
   margin-bottom: 20px;
 
-  color: var(--color-primary-950);
-  font-weight: bold;
+  color: var(--color-white);
+  font: var(--text-2lg-semibold);
   cursor: pointer;
+}
+
+.submitButton:disabled {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-950);
+
+  cursor: not-allowed;
 }
 
 .signupLink {
