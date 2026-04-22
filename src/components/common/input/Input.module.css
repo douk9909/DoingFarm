@@ -47,16 +47,16 @@
   font: var(--text-lg-16-medium);
   color: var(--color-gray-800);
   background-color: transparent;
+}
 
-  &:disabled {
-    background-color: transparent;
-    cursor: not-allowed;
-  }
+.inputStyle:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+}
 
-  ::placeholder {
-    font: var(--text-lg-16-medium);
-    color: var(--color-gray-600);
-  }
+.inputStyle::placeholder {
+  font: var(--text-lg-16-medium);
+  color: var(--color-gray-600);
 }
 
 .iconWrapper {
@@ -69,10 +69,10 @@
   cursor: pointer;
   background-color: transparent;
   border: none;
+}
 
-  &:active {
-    opacity: 0.6;
-  }
+.clickableIcon:active {
+  opacity: 0.6;
 }
 
 .errorMsg {
@@ -85,12 +85,10 @@
   min-height: 120px;
   padding: 14px 0px;
   resize: none;
+}
 
-  &:hover {
-    border-color: var(--color-blue-300);
-  }
-
-  @media (min-width: 768px) {
+@media (min-width: 768px) {
+  .textareaStyle {
     min-height: 160px;
   }
 }
