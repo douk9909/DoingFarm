@@ -1,12 +1,15 @@
 import Link from 'next/link';
 import { PATH } from '@/lib/constants/path';
 import styles from './page.module.css';
+import Comment from '@/components/common/comment/Comment';
 
 export default function LandingPage() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <p className={styles.eyebrow}>Project Setup</p>
+
+        <Comment />
 
         <section className={styles.intro}>
           <h1>Do!ngFarm</h1>

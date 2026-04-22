@@ -26,6 +26,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+  gap: 18px;
   border: 1px solid var(--color-gray-600);
   border-radius: var(--radius-md);
   padding: 20px;
@@ -37,6 +38,8 @@
 
 .textareaStyle {
   width: 100%;
+  min-height: 26px;
+  max-height: 78px;
   border: none;
   background-color: transparent;
 
@@ -44,6 +47,13 @@
   resize: none;
   outline: none;
   color: var(--color-white);
+  transition: color 0.1s ease;
+  overflow-y: auto;
+  transition: height 0.1s ease;
+}
+
+.textareaStyle.filledBlur:not(:focus) {
+  color: #999999;
 }
 
 .textareaStyle::placeholder {
