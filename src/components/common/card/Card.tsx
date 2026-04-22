@@ -42,7 +42,7 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
 
         <p className={styles.cardDate}>{formatDate(dueDate)}</p>
         <div className={styles.cardAuthor}>
-          {/* Todo: Avater 컴포넌트 머지 시 src={assignee.profileImage} name={assignee.nickname} 및 size={20} */}
+          {/* Todo: Avatar 컴포넌트 머지 시 src={assignee.profileImage} name={assignee.nickname} 및 className={styles.cardAuthorAvatar} */}
           <Avatar />
           <span className={styles.cardAuthorName}>{assignee.nickname}</span>
         </div>
