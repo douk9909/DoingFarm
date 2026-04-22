@@ -16,6 +16,9 @@
 
 .button:disabled {
   cursor: not-allowed;
+}
+
+.disabledOpacity {
   opacity: 0.48;
 }
 
@@ -39,6 +42,12 @@
   padding: 0 20px;
   font: var(--text-md-medium);
   font-weight: var(--font-weight-bold);
+}
+
+.lg {
+  min-height: 60px;
+  padding: 6 30px;
+  font: var(--text-2lg-semibold);
 }
 
 .primary {

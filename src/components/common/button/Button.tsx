@@ -3,12 +3,13 @@ import styles from './Button.module.css';
 import { cn } from '@/lib/utils/cn';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost';
-type ButtonSize = 'sm' | 'md';
+type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
   size?: ButtonSize;
   fullWidth?: boolean;
+  useDisabledOpacity?: boolean;
 }
 
 export default function Button({
@@ -16,19 +17,22 @@ export default function Button({
   variant = 'primary',
   size = 'md',
   fullWidth = false,
+  useDisabledOpacity = true,
   className,
   children,
+  disabled,
   ...props
 }: ButtonProps) {
   return (
     <button
       type={type}
-      // variant, size 조합만 바꿔서 공통으로 사용
+      disabled={disabled}
       className={cn(
         styles.button,
         styles[variant],
         styles[size],
         fullWidth && styles.fullWidth,
+        disabled && useDisabledOpacity && styles.disabledOpacity,
         className,
       )}
       {...props}

@@ -18,13 +18,13 @@
 .title {
   margin: 0;
   color: var(--color-white);
-  font-size: var(--font-size-24);
+  font: var(--text-2xl-medium);
 }
 
 .description {
   margin: 0;
   color: var(--color-gray-700);
-  font-size: var(--font-size-14);
+  font: var(--text-md-medium);
 }
 
 .buttonRow {
@@ -35,7 +35,7 @@
 .modalText {
   margin: 0;
   color: var(--color-black-400);
-  font-size: var(--font-size-14);
+  font: var(--text-md-medium);
   line-height: 1.6;
 }
 
