@@ -1,8 +1,11 @@
 'use client';
+
 import { useState, useRef } from 'react';
-import Avatar from '@/components/common/avatar/Avatar';
-import styles from './Comment.module.css';
 import { cn } from '@/lib/utils/cn';
+
+import Avatar from '@/components/common/avatar/Avatar';
+
+import styles from './Comment.module.css';
 
 export default function Comment() {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
