@@ -37,7 +37,13 @@
 }
 
 .profile {
-  margin-right: -13px;
+  margin-left: -13px;
+}
+
+.extraCount {
+  color: var(--color-gray-600);
+  padding-left: 8px;
+  font: var(--text-sm-medium);
 }
 
 .line {
@@ -67,6 +73,7 @@
 
 .textButton {
   gap: 9px;
+  font: var(--text-lg-16-medium);
   color: var(--color-gray-700);
 }
 
@@ -89,17 +96,9 @@
     display: block;
   }
 
-  .sideMenuButton {
-    display: none;
-  }
-
+  .sideMenuButton,
   .onlyMobileIcon {
     display: none;
-  }
-
-  .profile {
-    width: 34px;
-    height: 34px;
   }
 
   .textButton span {
@@ -116,5 +115,10 @@
   }
   .inviteButton:active {
     background-color: var(--color-primary-800);
+  }
+
+  /* Todo: icon svg 컴포넌트화 하면 제거 */
+  .iconStyle {
+    filter: brightness(0) invert(1);
   }
 }
