@@ -28,7 +28,13 @@ export default function Navbar() {
   return (
     <header className={styles.container}>
       <div className={styles.leftContainer}>
-        <Image src={characterImg} alt="캐릭터이미지" height={72} className={styles.characterImg} />
+        <Image
+          src={characterImg}
+          alt="캐릭터이미지"
+          width={60}
+          height={72}
+          className={styles.characterImg}
+        />
         <button className={cn(styles.button, styles.sideMenuButton)}>
           {/* Todo: 사이드메뉴 열기 */}
           <Image src={sideMenuIcon} alt="사이드메뉴아이콘" className={styles.onlyMobileIcon} />
