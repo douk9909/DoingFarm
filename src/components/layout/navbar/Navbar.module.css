@@ -34,14 +34,10 @@
 .userList {
   display: flex;
   align-items: center;
-  gap: -13px;
 }
 
 .profile {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid var(--color-background);
+  margin-right: -13px;
 }
 
 .line {
@@ -57,6 +53,8 @@
 }
 
 .button {
+  background-color: transparent;
+  border: none;
   display: flex;
   align-items: center;
   border-radius: var(--radius-sm);

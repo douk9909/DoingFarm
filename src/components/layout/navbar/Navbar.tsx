@@ -1,8 +1,5 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-
 import Image from 'next/image';
+import Avatar from '@/components/common/avatar/Avatar';
 import characterImg from '@/assets/character/carrot1.svg';
 import sideMenuIcon from '@/assets/icon/ic_sidemenu.svg';
 import settingIcon from '@/assets/icon/ic_setting.svg';
@@ -10,31 +7,7 @@ import userPlusIcon from '@/assets/icon/ic_user-plus.svg';
 import styles from './Navbar.module.css';
 import { cn } from '@/lib/utils/cn';
 
-const COLORS = [
-  'var(--color-profile-green)',
-  'var(--color-profile-violet)',
-  'var(--color-profile-cyan)',
-  'var(--color-profile-rose)',
-  'var(--color-profile-cobalt)',
-  'var(--color-profile-yellow)',
-  'var(--color-profile-orange)',
-] as const;
-
-type Color = (typeof COLORS)[number];
-
-function getRandomColor(): Color {
-  const randomIndex = Math.floor(Math.random() * COLORS.length);
-  return COLORS[randomIndex];
-}
-
 export default function Navbar() {
-  const [profileColor, setProfileColor] = useState<Color>('var(--color-profile-green)');
-
-  useEffect(() => {
-    const color = getRandomColor();
-    setProfileColor(color);
-  }, []);
-
   return (
     <header className={styles.container}>
       <div className={styles.leftContainer}>
@@ -45,9 +18,10 @@ export default function Navbar() {
       </div>
       <div className={styles.rightContainer}>
         <div className={styles.userList}>
-          <div className={styles.profile} style={{ backgroundColor: profileColor }}>
-            <span className={styles.userName}>사용자이름</span>
-          </div>
+          <Avatar src={null} name="홍길동" className={styles.profile} />
+          <Avatar src={null} name="김순덕" className={styles.profile} />
+          <Avatar src={null} name="박미자" className={styles.profile} />
+          <Avatar src={null} name="김순이" className={styles.profile} />
         </div>
         <div className={styles.line}></div>
         <div className={styles.buttonContainer}>
