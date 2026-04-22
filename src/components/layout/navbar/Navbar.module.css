@@ -1,10 +1,24 @@
+:root {
+  --sidebar-width-pc: 340px;
+  --sidebar-width-tablet: 220px;
+  --sidebar-width-mobile: 0px;
+}
+
 .container {
-  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-width-mobile);
+  z-index: 10;
+  transition: left 0.3s ease;
+
+  padding: 10px 20px 10px 10px;
+
   height: 60px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px 10px 10px;
+
   background-color: var(--color-background);
   border-bottom: 2px solid var(--color-black-300);
 }
@@ -87,6 +101,7 @@
 
 @media (min-width: 768px) {
   .container {
+    left: var(--sidebar-width-tablet);
     height: 72px;
     padding: 16px 30px;
   }
@@ -119,5 +134,11 @@
   /* Todo: icon svg 컴포넌트화 하면 제거 */
   .iconStyle {
     filter: brightness(0) invert(1);
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    left: var(--sidebar-width-pc);
   }
 }
