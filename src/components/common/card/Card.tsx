@@ -1,5 +1,6 @@
 import Avatar from '@/components/common/avatar/Avatar';
 import { formatDate } from '@/lib/utils/formatDate';
+import { getHashColor } from '@/lib/utils/color';
 
 import styles from './Card.module.css';
 
@@ -25,7 +26,11 @@ export default function Card({ src, title, tags, date, authorName }: CardProps) 
 
         <div className={styles.cardTags}>
           {tags?.map((tag) => (
-            <span key={tag} className={styles.cardTag}>
+            <span
+              key={tag}
+              className={styles.cardTag}
+              style={{ backgroundColor: getHashColor(tag) }}
+            >
               {tag}
             </span>
           ))}
