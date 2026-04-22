@@ -66,6 +66,11 @@
   font: var(--text-sm-semibold);
   padding: 4px 6px;
   border-radius: 6px;
+
+  /* color-mix: tag 배경색에 따른 글자색 자동 조정 */
+  background-color: var(--bg-color);
+  color: var(--color-gray-900); /* 기본값: 흰색 */
+  color: color-mix(in srgb, var(--bg-color), white 80%);
 }
 
 .cardDate {

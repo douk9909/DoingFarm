@@ -29,7 +29,7 @@ export default function Card({ src, title, tags, date, authorName }: CardProps) 
             <span
               key={tag}
               className={styles.cardTag}
-              style={{ backgroundColor: getHashColor(tag) }}
+              style={{ '--bg-color': getHashColor(tag) } as React.CSSProperties}
             >
               {tag}
             </span>
