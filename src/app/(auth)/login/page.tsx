@@ -14,7 +14,7 @@ export default function LoginPage() {
         </section>
 
         <section className={styles.illustrationSection}>
-          <Image src={loginIllust} alt="로그인 일러스트" width={823} height={823} />
+          <Image src={loginIllust} alt="로그인 일러스트" width={823} height={823} priority />
         </section>
       </main>
     </div>

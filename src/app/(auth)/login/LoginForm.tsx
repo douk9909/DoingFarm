@@ -35,7 +35,7 @@ export default function LoginForm() {
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
-        <Image src={logo} alt="Do!ngFarm 로고" width={331} height={154} />
+        <Image src={logo} alt="Do!ngFarm 로고" width={331} height={154} priority />
       </Link>
 
       <div className={styles.inputGroup}>
