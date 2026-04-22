@@ -4,7 +4,9 @@ import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.css';
 
 interface InputProps
-  extends Omit<BaseInputFieldProps, 'children'>, InputHTMLAttributes<HTMLInputElement> {}
+  extends
+    Omit<BaseInputFieldProps, 'children'>,
+    Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {}
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
@@ -21,7 +23,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   }: InputProps,
   ref,
 ) {
-  const id = useId();
+  const generatedId = useId();
+  const id = props.id ?? generatedId;
+
   return (
     <BaseInputField
       label={label}

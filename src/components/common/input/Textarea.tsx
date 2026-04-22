@@ -4,7 +4,9 @@ import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.css';
 
 interface TextareaProps
-  extends Omit<BaseInputFieldProps, 'children'>, TextareaHTMLAttributes<HTMLTextAreaElement> {
+  extends
+    Omit<BaseInputFieldProps, 'children'>,
+    Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'id'> {
   rows?: number;
 }
 
@@ -20,7 +22,9 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
   }: TextareaProps,
   ref,
 ) {
-  const id = useId();
+  const generatedId = useId();
+  const id = props.id ?? generatedId;
+
   return (
     <BaseInputField
       label={label}
