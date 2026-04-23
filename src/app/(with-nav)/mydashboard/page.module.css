@@ -1,0 +1,46 @@
+.page {
+  min-height: 100vh;
+  padding: 32px;
+  background-color: var(--color-background);
+}
+
+.card {
+  display: flex;
+  max-width: 720px;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+.title {
+  margin: 0;
+  color: var(--color-white);
+  font: var(--text-2xl-medium);
+}
+
+.description {
+  margin: 0;
+  color: var(--color-gray-700);
+  font: var(--text-md-medium);
+}
+
+.buttonRow {
+  display: flex;
+  gap: 12px;
+}
+
+.modalText {
+  margin: 0;
+  color: var(--color-black-400);
+  font: var(--text-md-medium);
+  line-height: 1.6;
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
