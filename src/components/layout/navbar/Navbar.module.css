@@ -1,0 +1,144 @@
+:root {
+  --sidebar-width-pc: 340px;
+  --sidebar-width-tablet: 220px;
+  --sidebar-width-mobile: 0px;
+}
+
+.container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: var(--sidebar-width-mobile);
+  z-index: 10;
+  transition: left 0.3s ease;
+
+  padding: 10px 20px 10px 10px;
+
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background-color: var(--color-background);
+  border-bottom: 2px solid var(--color-black-300);
+}
+
+.leftContainer {
+  flex: 1;
+}
+
+.characterImg {
+  display: none;
+}
+
+.sideMenuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rightContainer {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.userList {
+  display: flex;
+  align-items: center;
+}
+
+.profile {
+  margin-left: -13px;
+}
+
+.extraCount {
+  color: var(--color-gray-600);
+  padding-left: 8px;
+  font: var(--text-sm-medium);
+}
+
+.line {
+  width: 2px;
+  height: 14px;
+  background-color: var(--color-black-300);
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+
+  & span {
+    display: none;
+  }
+}
+
+.textButton {
+  gap: 9px;
+  font: var(--text-lg-16-medium);
+  color: var(--color-gray-700);
+}
+
+.button:hover {
+  background-color: var(--color-black-300);
+}
+
+.button:active {
+  background-color: var(--color-black-400);
+  transform: scale(0.95);
+}
+
+@media (min-width: 768px) {
+  .container {
+    left: var(--sidebar-width-tablet);
+    height: 72px;
+    padding: 16px 30px;
+  }
+
+  .characterImg {
+    display: block;
+  }
+
+  .sideMenuButton,
+  .onlyMobileIcon {
+    display: none;
+  }
+
+  .textButton span {
+    display: inline;
+  }
+
+  .inviteButton {
+    background-color: var(--color-primary-500);
+    color: var(--color-white);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--color-primary-700);
+  }
+  .inviteButton:active {
+    background-color: var(--color-primary-800);
+  }
+
+  /* Todo: icon svg 컴포넌트화 하면 제거 */
+  .iconStyle {
+    filter: brightness(0) invert(1);
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    left: var(--sidebar-width-pc);
+  }
+}
