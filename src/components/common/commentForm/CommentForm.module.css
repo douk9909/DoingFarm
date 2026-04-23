@@ -47,9 +47,10 @@
   resize: none;
   outline: none;
   color: var(--color-white);
-  transition: color 0.1s ease;
+  transition:
+    color 0.1s ease,
+    height 0.1s ease;
   overflow-y: auto;
-  transition: height 0.1s ease;
 }
 
 .textareaStyle.filledBlur:not(:focus) {
