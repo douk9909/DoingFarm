@@ -1,16 +1,39 @@
 .avatar {
-  width: 38px;
-  height: 38px;
+  width: 24px;
+  height: 24px;
   border-radius: 9999px;
+  border: 2px solid var(--color-background);
   background-color: var(--color-gray-300);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  padding: 9px 5px;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.initial {
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .initial {
+    font: var(--text-sm-semibold);
+  }
 }
