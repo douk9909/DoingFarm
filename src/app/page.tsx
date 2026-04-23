@@ -22,6 +22,7 @@ const navItems = [
 ] as const;
 
 const footerLinks = ['Privacy Policy', 'FAQ'] as const;
+const dashboardHeroImageOpacity = 0.68;
 
 const featureContents = [
   {
@@ -86,6 +87,7 @@ export default function LandingPage() {
             priority
             sizes="100vw"
             className={styles.heroBackgroundImage}
+            style={{ opacity: dashboardHeroImageOpacity }}
           />
         </div>
 

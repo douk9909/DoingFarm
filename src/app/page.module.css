@@ -2,7 +2,6 @@
   --landing-container-width: min(1220px, calc(100% - 80px));
   --landing-surface-soft: rgba(23, 24, 29, 0.92);
   --landing-text-muted: rgba(255, 255, 255, 0.62);
-  --landing-text-strong: rgba(255, 255, 255, 0.82);
   --landing-border-soft: rgba(255, 255, 255, 0.06);
   min-height: 100vh;
   overflow-x: clip;
@@ -68,6 +67,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
+  margin-left: -54px;
   transition:
     transform 0.18s ease,
     filter 0.18s ease;
@@ -112,7 +112,8 @@
 }
 
 .heroCopy {
-  padding-top: 170px;
+  padding-top: 300px;
+  margin-left: -48px;
 }
 
 .heroTitle {
@@ -142,14 +143,6 @@
     0 5px 0 rgba(34, 87, 24, 0.34),
     0 10px 20px rgba(0, 0, 0, 0.18),
     0 2px 3px rgba(0, 0, 0, 0.16);
-}
-
-.heroDescription {
-  margin: 28px 0 0;
-  color: var(--color-white);
-  font: var(--text-2lg-medium);
-  line-height: 1.7;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.14);
 }
 
 .heroActions {
@@ -189,9 +182,9 @@
 
 .showcaseMain {
   position: absolute;
-  top: 10px;
+  top: 82px;
   right: calc((100vw - 153%) / -2);
-  width: 1120px;
+  width: 1050px;
   max-width: none;
 }
 
@@ -252,10 +245,6 @@
 }
 
 .featureCopy,
-.featureCopyWide {
-  max-width: 560px;
-}
-
 .featureCopyWide {
   max-width: 560px;
 }
@@ -509,6 +498,11 @@
   .heroCopy {
     max-width: 520px;
     padding-top: 64px;
+    margin-left: 0;
+  }
+
+  .logoLink {
+    margin-left: 0;
   }
 
   .heroTitle {
@@ -521,10 +515,6 @@
 
   .heroTitleAccent {
     font-size: 74px;
-  }
-
-  .heroDescription {
-    font: var(--text-lg-16-medium);
   }
 
   .heroShowcase {
@@ -616,12 +606,6 @@
 
   .heroTitleAccent {
     font-size: 58px;
-  }
-
-  .heroDescription {
-    margin-top: 20px;
-    font: var(--text-sm-medium);
-    line-height: 1.65;
   }
 
   .heroActions {
@@ -736,11 +720,6 @@
 
   .heroTitleAccent {
     font-size: 44px;
-  }
-
-  .heroDescription {
-    font: var(--text-sm-medium);
-    line-height: 1.6;
   }
 
   .heroActions {

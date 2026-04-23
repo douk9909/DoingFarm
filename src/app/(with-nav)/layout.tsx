@@ -50,7 +50,7 @@ export default function WithNavLayout({ children }: WithNavLayoutProps) {
       className={styles.shell}
       style={{ gridTemplateColumns: `${sidebarWidth}px 8px minmax(0, 1fr)` }}
     >
-      <Sidebar isCompact={sidebarWidth <= SIDEBAR_COLLAPSE_WIDTH} />
+      <Sidebar/>
       <div
         className={styles.resizeHandle}
         role="presentation"
