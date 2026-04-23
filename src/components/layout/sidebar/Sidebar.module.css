@@ -34,3 +34,9 @@
     height: 23px;
   }
 }
+
+@media (max-width: 768px) {
+  .sideBar {
+    display: none;
+  }
+}
