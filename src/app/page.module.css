@@ -1,5 +1,6 @@
 .page {
-  --landing-container-width: min(1220px, calc(100% - 80px));
+  --landing-container-width: min(1120px, calc(100% - 80px));
+  --landing-wide-container-width: min(1720px, calc(100% - 160px));
   --landing-surface-soft: rgba(23, 24, 29, 0.92);
   --landing-text-muted: rgba(255, 255, 255, 0.62);
   --landing-border-soft: rgba(255, 255, 255, 0.06);

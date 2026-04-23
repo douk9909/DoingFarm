@@ -35,19 +35,19 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
 
       <div className={styles.footerLinks}>
         {footerLinks.map((label) => (
-          <a key={label} href="#" className={styles.footerTextLink}>
+          <span key={label} className={styles.footerTextLink}>
             {label}
-          </a>
+          </span>
         ))}
       </div>
 
       <div className={styles.footerSocials}>
-        <a href="#" className={styles.socialLink} aria-label="Instagram">
+        <span className={styles.socialLink} aria-label="Instagram" role="img">
           <Image src={instagramIcon} alt="" width={18} height={18} />
-        </a>
-        <a href="#" className={styles.socialLink} aria-label="Facebook">
+        </span>
+        <span className={styles.socialLink} aria-label="Facebook" role="img">
           <Image src={facebookIcon} alt="" width={18} height={18} />
-        </a>
+        </span>
       </div>
     </footer>
   );

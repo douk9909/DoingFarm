@@ -3,7 +3,6 @@ import Link from 'next/link';
 import dashboardHeroImage from '@/assets/backgroundImg/dashboard_bg.svg';
 import standingCarrotImage from '@/assets/character/standing_carrot.svg';
 import dashboardPreviewImage from '@/assets/mainImg/dashboard.svg';
-import Button from '@/components/common/button/Button';
 import { PATH } from '@/lib/constants/path';
 import { LandingHeader } from './LandingHeader';
 import type { LandingNavItem } from './landingContent';
@@ -50,15 +49,11 @@ export function LandingIntroSection({
           </h1>
 
           <div className={styles.heroActions}>
-            <Link href={PATH.SIGNUP}>
-              <Button variant="secondary" size="lg" className={styles.heroButtonSecondary}>
-                {signupLabel}
-              </Button>
+            <Link href={PATH.SIGNUP} className={styles.heroButtonSecondary}>
+              {signupLabel}
             </Link>
-            <Link href={PATH.LOGIN}>
-              <Button variant="primary" size="lg" className={styles.heroButtonPrimary}>
-                {loginLabel}
-              </Button>
+            <Link href={PATH.LOGIN} className={styles.heroButtonPrimary}>
+              {loginLabel}
             </Link>
           </div>
         </section>
