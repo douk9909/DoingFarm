@@ -6,3 +6,122 @@
 .homeImg {
   color: white;
 }
+.sideBar {
+  width: 340px;
+  height: 100vh;
+  padding-top: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 24px;
+}
+
+.sideMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+}
+
+.add {
+  padding: 12px 14px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.add > span {
+  font-family: Pretendard;
+  font: var(--text-lg-16-bold);
+  color: #a39fb2;
+}
+
+.add > button {
+  background-color: var(--color-background);
+  border: none;
+  padding: 8px;
+}
+
+.plus {
+  width: 12.5px;
+  height: 12.5px;
+}
+
+.home a {
+  padding: 22px 14px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.home span {
+  font: var(--text-2lg-medium);
+}
+
+.homeImg {
+  width: 18px;
+  height: 18px;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 58px;
+  padding: 16px 14px 16px 10px;
+}
+
+.menu div {
+  display: flex;
+  gap: 8px;
+}
+
+.hashTag {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: -4px;
+}
+
+.pin {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: -3px;
+}
+
+.crown {
+  position: relative;
+  top: -4px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 12px 30px;
+  border-top: 2px solid #2c2b30;
+}
+
+.nameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  background-color: #206e4e;
+  font: var(--text-xs-semibold);
+}
