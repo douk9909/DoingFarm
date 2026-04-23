@@ -67,3 +67,8 @@
   justify-content: flex-end;
   gap: 14px;
 }
+
+.buttonStyle {
+  font: var(--text-lg-16-semibold);
+  padding: 6px 20px;
+}

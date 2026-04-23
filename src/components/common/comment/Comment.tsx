@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { cn } from '@/lib/utils/cn';
 
 import Avatar from '@/components/common/avatar/Avatar';
+import Button from '@/components/common/button/Button';
 
 import styles from './Comment.module.css';
 
@@ -51,7 +52,7 @@ export default function Comment() {
     <div className={styles.container}>
       {!isExpanded ? (
         <div className={styles.placeholderContainer}>
-          <Avatar />
+          {/* <Avatar /> */}
           <div className={styles.placeholder} onClick={() => setIsExpanded(true)}>
             댓글을 남겨보세요
           </div>
@@ -75,12 +76,24 @@ export default function Comment() {
           />
           {/* Todo: 버튼 컴포넌트 등록하기 */}
           <div className={styles.buttonWrapper}>
-            <button type="button" onClick={handleCancel}>
+            <Button
+              type="button"
+              onClick={handleCancel}
+              variant="secondary"
+              size="sm"
+              className={styles.buttonStyle}
+            >
               취소
-            </button>
-            <button type="submit" disabled={content.trim() === ''}>
+            </Button>
+            <Button
+              type="submit"
+              disabled={content.trim() === ''}
+              variant="primary"
+              size="sm"
+              className={styles.buttonStyle}
+            >
               등록
-            </button>
+            </Button>
           </div>
         </form>
       )}
