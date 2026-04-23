@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils/cn';
 
 import Avatar from '@/components/common/avatar/Avatar';
@@ -8,21 +8,45 @@ import Button from '@/components/common/button/Button';
 
 import styles from './Comment.module.css';
 
-export default function Comment() {
-  const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [content, setContent] = useState<string>('');
+interface CommentFormProps {
+  mode?: 'create' | 'edit';
+  initialContent?: string;
+  onSubmit: (content: string) => void;
+  onCancel?: () => void;
+  placeholder?: string;
+  // 사용자 정보
+  currentUser: {
+    nickname: string;
+    src: string | null;
+  };
+}
 
+export default function CommentForm({
+  mode = 'create',
+  initialContent = '',
+  onSubmit,
+  onCancel,
+  placeholder = '댓글을 남겨보세요',
+  currentUser,
+}: CommentFormProps) {
+  const [isExpanded, setIsExpanded] = useState<boolean>(mode === 'edit');
+  const [content, setContent] = useState<string>(initialContent);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const { value } = e.target;
-    setContent(value);
-
-    // 높이 조절 로직
+  const adjustHeight = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
+  };
+
+  useEffect(() => {
+    if (isExpanded) adjustHeight();
+  }, [isExpanded]);
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
+    adjustHeight();
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,27 +56,42 @@ export default function Comment() {
     if (content.trim() === '') return alert('댓글 내용을 입력해주세요.');
 
     /* Todo: 댓글 등록 로직 추가 */
-    console.log('댓글 등록:', content);
+    onSubmit(content);
+
     /* Todo: toast로 안내 */
     alert('댓글이 등록되었습니다.');
-    setContent('');
-    setIsExpanded(false);
+
+    if (mode === 'create') {
+      setContent('');
+      setIsExpanded(false);
+    }
   };
 
   const handleCancel = () => {
     if (content.trim() !== '') {
       /* Todo: 삭제 모달 띄우기 */
-      alert('작성 중인 내용을 삭제하시겠습니까?');
+      alert(
+        mode === 'create'
+          ? '작성 중인 댓글이 있어요. 삭제하시겠습니까?'
+          : '변경 사항을 취소하시겠습니까?',
+      );
     }
-    setContent('');
-    setIsExpanded(false);
+
+    if (mode === 'edit') {
+      setContent(initialContent);
+    } else {
+      setContent('');
+      setIsExpanded(false);
+    }
+
+    onCancel?.();
   };
 
   return (
     <div className={styles.container}>
-      {!isExpanded ? (
+      {!isExpanded && mode === 'create' ? (
         <div className={styles.placeholderContainer}>
-          {/* <Avatar /> */}
+          <Avatar src={currentUser.src} alt={currentUser.nickname} name={currentUser.nickname} />
           <div className={styles.placeholder} onClick={() => setIsExpanded(true)}>
             댓글을 남겨보세요
           </div>
@@ -64,12 +103,12 @@ export default function Comment() {
               styles.textareaStyle,
               isExpanded && content.trim() !== '' && styles.filledBlur,
             )}
-            placeholder="댓글을 남겨보세요"
+            placeholder={placeholder}
             value={content}
             onChange={handleTextareaChange}
             ref={textareaRef}
             onBlur={() => {
-              content.trim() === '' && setIsExpanded(false);
+              content.trim() === '' && mode === 'create' && setIsExpanded(false);
             }}
             autoFocus
             rows={1}
@@ -92,7 +131,7 @@ export default function Comment() {
               size="sm"
               className={styles.buttonStyle}
             >
-              등록
+              {mode === 'create' ? '등록' : '수정'}
             </Button>
           </div>
         </form>
