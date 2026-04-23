@@ -12,7 +12,7 @@ export default function Sidebar() {
       <div>
         <header className={styles.logoWrapper}>
           <Link href={PATH.HOME}>
-            <Image src={logo} alt="로고" width={148} height={33} />
+            <Image className={styles.logoImg} src={logo} alt="로고" width={148} height={33} />
           </Link>
         </header>
         <DashBoardList />

@@ -23,3 +23,27 @@
   background-color: #206e4e;
   font: var(--text-xs-semibold);
 }
+
+.userName {
+  font: var(--text-lg-16-medium);
+}
+
+.settingIcon {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 1200px) {
+  .footer {
+    padding: 12px 20px;
+  }
+
+  .profile {
+    width: 26px;
+    height: 26px;
+  }
+
+  .userName {
+    font: var(--text-md-medium);
+  }
+}

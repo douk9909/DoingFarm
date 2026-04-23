@@ -13,3 +13,24 @@
   align-items: center;
   padding: 0 24px;
 }
+
+.logoImg {
+  width: 148px;
+  height: 33px;
+}
+
+@media (max-width: 1200px) {
+  .sideBar {
+    width: 220px;
+    padding-top: 4px;
+  }
+
+  .logoWrapper {
+    padding: 0 10px;
+  }
+
+  .logoImg {
+    width: 107px;
+    height: 23px;
+  }
+}

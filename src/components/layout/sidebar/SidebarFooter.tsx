@@ -7,9 +7,9 @@ export default function SidebarFooter() {
     <footer className={styles.footer}>
       <div className={styles.nameWrapper}>
         <div className={styles.profile}>민영</div>
-        <p>박민영</p>
+        <p className={styles.userName}>박민영</p>
       </div>
-      <Image src={settingIcon} alt="세팅" width={24} height={24} />
+      <Image src={settingIcon} alt="세팅" width={20} height={20} />
     </footer>
   );
 }

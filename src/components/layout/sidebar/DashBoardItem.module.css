@@ -18,6 +18,10 @@
   top: -4px;
 }
 
+.title {
+  font: var(--text-2lg-bold);
+}
+
 .pin {
   width: 24px;
   height: 24px;
@@ -26,7 +30,37 @@
 }
 
 .crown {
+  width: 24px;
+  height: 24px;
   position: relative;
   top: -4px;
   left: -3px;
+}
+
+@media (max-width: 1200px) {
+  .menu {
+    padding: 16px 14px 16px 12px;
+  }
+
+  .hashTag {
+    width: 20px;
+    height: 20px;
+    top: 0;
+  }
+
+  .title {
+    font: var(--text-lg-16-bold);
+  }
+
+  .pin {
+    width: 20px;
+    height: 20px;
+    top: 0;
+  }
+
+  .crown {
+    width: 20px;
+    height: 20px;
+    top: 0;
+  }
 }

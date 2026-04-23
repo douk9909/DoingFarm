@@ -36,7 +36,7 @@ export default function DashBoardItem({ title, color, createdByMe }: DashBoardIt
     <div className={styles.menu}>
       <div>
         <Image className={styles.hashTag} src={getTagIcon(color)} alt="" width={24} height={24} />
-        <p>{title}</p>
+        <p className={styles.title}>{title}</p>
         <Image className={styles.pin} src={pinIcon} alt="" width={24} height={24} />
       </div>
 
