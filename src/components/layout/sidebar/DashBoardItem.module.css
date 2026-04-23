@@ -1,0 +1,32 @@
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 58px;
+  padding: 16px 14px 16px 10px;
+}
+
+.menu div {
+  display: flex;
+  gap: 8px;
+}
+
+.hashTag {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: -4px;
+}
+
+.pin {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  top: -3px;
+}
+
+.crown {
+  position: relative;
+  top: -4px;
+  left: -3px;
+}

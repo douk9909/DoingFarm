@@ -1,0 +1,45 @@
+.sideMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 24px;
+}
+
+.add {
+  padding: 12px 14px 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.add > span {
+  font-family: Pretendard;
+  font: var(--text-lg-16-bold);
+  color: #a39fb2;
+}
+
+.add > button {
+  background-color: var(--color-background);
+  border: none;
+  padding: 8px;
+}
+
+.plus {
+  width: 12.5px;
+  height: 12.5px;
+}
+
+.home a {
+  padding: 22px 14px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.home span {
+  font: var(--text-2lg-medium);
+}
+
+.homeImg {
+  width: 18px;
+  height: 18px;
+}

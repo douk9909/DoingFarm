@@ -1,0 +1,25 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  padding: 12px 30px;
+  border-top: 2px solid #2c2b30;
+}
+
+.nameWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 100px;
+  background-color: #206e4e;
+  font: var(--text-xs-semibold);
+}
