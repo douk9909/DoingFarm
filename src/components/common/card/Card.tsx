@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Avatar from '@/components/common/avatar/Avatar';
 import { formatDate } from '@/lib/utils/formatDate';
 import { getHashColor } from '@/lib/utils/color';
@@ -21,7 +22,7 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
     <div className={styles.cardContainer}>
       {src && (
         <div className={styles.imageWrapper}>
-          <img src={src} alt={title} className={styles.cardImage} />
+          <Image width={300} height={200} src={src} alt={title} className={styles.cardImage} />
         </div>
       )}
 
