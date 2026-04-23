@@ -36,6 +36,11 @@
   align-items: center;
 }
 
+.active {
+  background-color: #2c2b30;
+  border-radius: 15px;
+}
+
 .home span {
   font: var(--text-2lg-medium);
 }
