@@ -6,6 +6,14 @@ import homeIcon from '@/assets/icon/ic_home.svg';
 import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 
+const mockDashBoards = [
+  { id: 1, title: '포트폴리오', color: 'red', createdByMe: true },
+  { id: 2, title: '코드잇', color: 'green', createdByMe: true },
+  { id: 3, title: '3분기 계획', color: 'orange', createdByMe: true },
+  { id: 4, title: '회의록', color: 'yellow', createdByMe: false },
+  { id: 5, title: '중요 문서', color: 'blue', createdByMe: false },
+];
+
 export default function DashBoardList() {
   return (
     <div className={styles.sideMenu}>
@@ -24,7 +32,14 @@ export default function DashBoardList() {
       </section>
 
       <section className={styles.menus}>
-        <DashBoardItem />
+        {mockDashBoards.map((dashboard) => (
+          <DashBoardItem
+            key={dashboard.id}
+            title={dashboard.title}
+            color={dashboard.color}
+            createdByMe={dashboard.createdByMe}
+          />
+        ))}
       </section>
     </div>
   );
