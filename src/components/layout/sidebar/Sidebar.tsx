@@ -6,6 +6,16 @@ import Image from 'next/image';
 import DashBoardList from './DashBoardList';
 import SidebarFooter from './SidebarFooter';
 
+// api 연동 후 삭제
+const mockUser = {
+  id: 0,
+  email: 'text@gmail.com',
+  nickname: '박민영',
+  profileImageUrl: 'string',
+  createdAt: '2026-04-23T11:56:44.104Z',
+  updatedAt: '2026-04-23T11:56:44.104Z',
+};
+
 export default function Sidebar() {
   return (
     <aside className={styles.sideBar}>
@@ -18,7 +28,7 @@ export default function Sidebar() {
         <DashBoardList />
       </div>
 
-      <SidebarFooter />
+      <SidebarFooter nickname={mockUser.nickname} profileImageUrl={mockUser.profileImageUrl} />
     </aside>
   );
 }

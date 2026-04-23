@@ -6,6 +6,7 @@ import homeIcon from '@/assets/icon/ic_home.svg';
 import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 
+// api 연동 후 삭제
 const mockDashBoards = [
   { id: 1, title: '포트폴리오', color: 'red', createdByMe: true },
   { id: 2, title: '코드잇', color: 'green', createdByMe: true },
