@@ -22,7 +22,7 @@
 @media (max-width: 1200px) {
   .sideBar {
     width: 220px;
-    padding-top: 4px;
+    padding-top: 10px;
   }
 
   .logoWrapper {
