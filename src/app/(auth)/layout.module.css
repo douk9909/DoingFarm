@@ -1,0 +1,11 @@
+.toast {
+  width: 255px !important;
+  height: 54px !important;
+}
+
+@media (min-width: 768px) {
+  .toast {
+    width: 281px !important;
+    height: 60px !important;
+  }
+}

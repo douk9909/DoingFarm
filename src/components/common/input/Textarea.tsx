@@ -1,26 +1,25 @@
-import { InputHTMLAttributes, forwardRef, useId } from 'react';
+import { TextareaHTMLAttributes, forwardRef, useId } from 'react';
 import BaseInputField, { BaseInputFieldProps } from './BaseInputField';
 import { cn } from '@/lib/utils/cn';
 import styles from './Input.module.css';
 
-interface InputProps
+interface TextareaProps
   extends
     Omit<BaseInputFieldProps, 'children'>,
-    Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {}
+    Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'id'> {
+  rows?: number;
+}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
   {
-    type = 'text',
     label,
     status = 'default',
     isDisabled = false,
     errorMsg,
-    leftIcon,
-    rightIcon,
-    onRightIconClick,
+    rows = 4,
     className,
     ...props
-  }: InputProps,
+  }: TextareaProps,
   ref,
 ) {
   const generatedId = useId();
@@ -33,17 +32,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
       status={status}
       isDisabled={isDisabled}
       errorMsg={errorMsg}
-      leftIcon={leftIcon}
-      rightIcon={rightIcon}
-      onRightIconClick={onRightIconClick}
     >
-      <input
+      <textarea
         {...props}
-        type={type}
         id={id}
-        className={cn(styles.inputStyle, className)}
+        className={cn(styles.inputStyle, styles.textareaStyle, className)}
         ref={ref}
         disabled={isDisabled}
+        rows={rows}
       />
     </BaseInputField>
   );

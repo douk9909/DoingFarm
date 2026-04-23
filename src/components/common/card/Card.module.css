@@ -1,0 +1,109 @@
+.cardContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+
+  background-color: var(--color-black-300);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-xl);
+
+  padding: 20px;
+}
+
+.cardContainer:hover,
+.cardContainer:focus {
+  border-color: #868391;
+  box-shadow: 1px 4px 14px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+.cardContainer:active {
+  opacity: 0.8;
+  box-shadow: 1px 4px 14px rgba(0, 0, 0, 0.5);
+  transform: translateY(2px);
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.cardContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cardTitle {
+  font: var(--text-2lg-semibold);
+  color: var(--color-gray-900);
+}
+
+.cardTags {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cardTag {
+  font: var(--text-sm-semibold);
+  padding: 4px 6px;
+  border-radius: 6px;
+
+  /* color-mix: tag 배경색에 따른 글자색 자동 조정 */
+  background-color: var(--bg-color);
+  color: var(--color-gray-900); /* 기본값: 흰색 */
+  color: color-mix(in srgb, var(--bg-color), white 80%);
+}
+
+.cardDate {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-700);
+}
+
+.cardAuthor {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cardAuthorAvatar {
+  width: 20px;
+  height: 20px;
+}
+
+.cardAuthorName {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  color: var(--color-gray-900);
+}
+
+@media (min-width: 768px) {
+  .imageWrapper {
+    height: 260px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .imageWrapper {
+    height: 200px;
+  }
+}
