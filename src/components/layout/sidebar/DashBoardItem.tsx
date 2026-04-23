@@ -8,15 +8,41 @@ import tagGreen from '@/assets/hashTags/green.svg';
 import pinIcon from '@/assets/icon/icon_pin.svg';
 import crownIcon from '@/assets/icon/ic_crown.svg';
 
-export default function DashBoardItem() {
+interface DashBoardItemProps {
+  title: string;
+  color: string;
+  createdByMe: boolean;
+}
+
+export default function DashBoardItem({ title, color, createdByMe }: DashBoardItemProps) {
+  const getTagIcon = (color: string) => {
+    switch (color) {
+      case 'red':
+        return tagRed;
+      case 'orange':
+        return tagOrange;
+      case 'yellow':
+        return tagYellow;
+      case 'blue':
+        return tagBlue;
+      case 'green':
+        return tagGreen;
+      default:
+        return tagRed;
+    }
+  };
+
   return (
     <div className={styles.menu}>
       <div>
-        <Image className={styles.hashTag} src={tagRed} alt="" width={24} height={24} />
-        <p>포트폴리오</p>
+        <Image className={styles.hashTag} src={getTagIcon(color)} alt="" width={24} height={24} />
+        <p>{title}</p>
         <Image className={styles.pin} src={pinIcon} alt="" width={24} height={24} />
       </div>
-      <Image className={styles.crown} src={crownIcon} alt="" width={24} height={24} />
+
+      {createdByMe && (
+        <Image className={styles.crown} src={crownIcon} alt="" width={24} height={24} />
+      )}
     </div>
   );
 }
