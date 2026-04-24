@@ -7,7 +7,7 @@ interface WithNavLayoutProps {
 
 export default function WithNavLayout({ children }: WithNavLayoutProps) {
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Sidebar />
       <div>
         <Navbar />

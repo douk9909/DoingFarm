@@ -1,0 +1,70 @@
+/* 모바일  */
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 58px;
+  padding: 16px 14px 16px 12px;
+  border-radius: 12px;
+}
+
+.active {
+  background-color: #2c2b30;
+}
+
+.menu div {
+  display: flex;
+  gap: 8px;
+}
+
+.hashTag {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.title {
+  font: var(--text-lg-16-bold);
+}
+
+.pin {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+.crown {
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+
+/* PC */
+@media (min-width: 1200px) {
+  .menu {
+    padding: 16px 14px 16px 10px;
+  }
+
+  .hashTag {
+    width: 24px;
+    height: 24px;
+    top: -4px;
+  }
+
+  .title {
+    font: var(--text-2lg-bold);
+  }
+
+  .pin {
+    width: 24px;
+    height: 24px;
+    top: -3px;
+  }
+
+  .crown {
+    width: 24px;
+    height: 24px;
+    top: -2px;
+    left: -3px;
+  }
+}
