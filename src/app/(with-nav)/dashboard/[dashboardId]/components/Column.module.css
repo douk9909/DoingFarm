@@ -1,0 +1,51 @@
+.column {
+  width: 334px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cardList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 14px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.titleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font: var(--text-xl-semibold);
+}
+
+.count {
+  font: var(--text-lg-16-semibold);
+  color: var(--color-gray-600);
+}
+
+.addCardButton {
+  height: 40px;
+  border: 1px solid var(--color-gray-200);
+  background-color: var(--color-black-300);
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.iconWrapper {
+  background-color: rgb(177, 174, 174);
+  border-radius: 4px;
+  padding: 3px;
+}
