@@ -1,0 +1,74 @@
+.container {
+  width: 100%;
+}
+
+.placeholderContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.placeholder {
+  flex: 1;
+  padding: 10px 20px;
+  border: 1px solid var(--color-gray-600);
+  border-radius: 100px;
+  font: var(--text-lg-16-medium);
+  color: var(--color-gray-600);
+  cursor: pointer;
+}
+
+.commentInputContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 18px;
+  border: 1px solid var(--color-gray-600);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+
+.commentInputContainer:focus-within {
+  border-color: var(--color-blue-300);
+}
+
+.textareaStyle {
+  width: 100%;
+  min-height: 26px;
+  max-height: 78px;
+  border: none;
+  background-color: transparent;
+
+  font: var(--text-lg-16-medium);
+  resize: none;
+  outline: none;
+  color: var(--color-white);
+  transition:
+    color 0.1s ease,
+    height 0.1s ease;
+  overflow-y: auto;
+}
+
+.textareaStyle.filledBlur:not(:focus) {
+  color: #999999;
+}
+
+.textareaStyle::placeholder {
+  color: var(--color-gray-600);
+}
+
+.buttonWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.buttonStyle {
+  font: var(--text-lg-16-semibold);
+  padding: 6px 20px;
+}
