@@ -2,7 +2,7 @@ import Image, { type StaticImageData } from 'next/image';
 import myDashboardBgImage from '@/assets/backgroundImg/dashboard_bg.svg';
 import dashboardBoxImage from '@/assets/character/empty_box.svg';
 import dashboardCarrotImage from '@/assets/character/empty_carrot.svg';
-import plusIcon from '@/assets/icon/ic_plus.svg';
+import plusIcon from '@/assets/icon/ic_plus3.svg';
 import Button from '@/components/common/button/Button';
 import styles from './page.module.css';
 
