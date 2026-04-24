@@ -1,15 +1,24 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Avatar from '@/components/common/avatar/Avatar';
+
+import { cn } from '@/lib/utils/cn';
+import { PATH } from '@/lib/constants/path';
+
 import characterImg from '@/assets/character/carrot1.svg';
 import sideMenuIcon from '@/assets/icon/ic_sidemenu.svg';
 import settingIcon from '@/assets/icon/ic_setting.svg';
 import userPlusIcon from '@/assets/icon/ic_user-plus.svg';
 import styles from './Navbar.module.css';
-import { cn } from '@/lib/utils/cn';
 
 const MAX_VISIBLE_USERS = 5;
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const isMyDashboard = pathname === PATH.MY_DASHBOARD;
+
   // Todo: 목업 데이터 - API 연동 후 삭제 예정
   const users = [
     { id: 1, nickname: '홍길동', profileImage: null },
@@ -42,20 +51,23 @@ export default function Navbar() {
       </div>
 
       <div className={styles.rightContainer}>
-        {/* Todo: 나의 대시보드 페이지일 땐  보이지 않도록 처리 */}
-        <div className={styles.userList}>
-          {displayUsers.map((user) => (
-            <Avatar
-              key={user.id}
-              src={user.profileImage}
-              name={user.nickname}
-              className={styles.profile}
-            />
-          ))}
-          {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
-        </div>
-
-        <div className={styles.line}></div>
+        {!isMyDashboard && (
+          <>
+            <div className={styles.userList}>
+              {displayUsers.map((user) => (
+                <Avatar
+                  key={user.id}
+                  src={user.profileImage}
+                  name={user.nickname}
+                  alt={user.nickname}
+                  className={styles.profile}
+                />
+              ))}
+              {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
+            </div>
+            <div className={styles.line}></div>
+          </>
+        )}
 
         <div className={styles.buttonContainer}>
           {/* Todo: dashboard/{dashboardId}/edit로 페이지 이동 */}

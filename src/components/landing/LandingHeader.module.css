@@ -1,0 +1,128 @@
+.topbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 24px);
+  margin: 0 auto;
+  padding-top: 14px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease;
+}
+
+.brandMark {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 36px;
+  height: 22px;
+}
+
+.brandCarrot {
+  width: 36px;
+  height: auto;
+}
+
+.logo {
+  width: 98px;
+  height: auto;
+}
+
+.topnav {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  gap: 12px;
+}
+
+.topnavLink {
+  position: relative;
+  color: var(--color-black-100);
+  font: var(--text-xs-medium);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, 0.12);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .topnavLink::after {
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    content: '';
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.2s ease;
+  }
+
+  .topnavLink {
+    transition:
+      color 0.18s ease,
+      text-shadow 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .topnavLink:hover {
+    color: var(--color-black);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.18);
+    transform: translateY(-1px);
+  }
+
+  .topnavLink:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .logoLink:hover {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.14));
+  }
+}
+
+@media (min-width: 768px) {
+  .topbar {
+    width: calc(100% - 32px);
+    padding-top: 18px;
+  }
+
+  .logo {
+    width: 112px;
+  }
+
+  .topnav {
+    gap: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .topbar {
+    width: var(--landing-wide-container-width);
+    padding-top: 22px;
+  }
+
+  .logoLink {
+    margin-left: 120px;
+  }
+
+  .logo {
+    width: 120px;
+  }
+
+  .topnav {
+    margin-right: 120px;
+    gap: 24px;
+  }
+
+  .topnavLink {
+    font: var(--text-md-medium);
+  }
+}
