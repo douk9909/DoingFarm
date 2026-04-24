@@ -12,6 +12,8 @@ import checkActive from '@/assets/icon/check_active.svg';
 import toast from 'react-hot-toast';
 import { Input } from '@/components/common/input/Input';
 import Button from '@/components/common/button/Button';
+import { authApi } from '@/lib/api/auth';
+import { setToken } from '@/lib/utils/storage';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -68,10 +70,15 @@ export default function SignupForm() {
   return (
     <form
       className={styles.form}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        router.push('/login');
-        toast.success('가입이 완료되었습니다.');
+        try {
+          await authApi.signup({ email, nickname, password });
+          toast.success('가입이 완료되었습니다.');
+          router.push('/login');
+        } catch (error) {
+          toast.error(error instanceof Error ? error.message : '회원가입에 실패했습니다.');
+        }
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
