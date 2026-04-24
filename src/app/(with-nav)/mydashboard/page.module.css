@@ -29,10 +29,10 @@
 .backgroundImage {
   object-fit: cover;
   object-position: center center;
-  opacity: 0.74;
-  transform: scale(1.1);
+  opacity: 0.68;
+  transform: scale(1.18);
   transform-origin: center center;
-  filter: saturate(0.95);
+  filter: saturate(0.92);
 }
 
 .canvas {
@@ -192,8 +192,8 @@
   }
 
   .backgroundImage {
-    opacity: 0.68;
-    transform: scale(1.14);
+    opacity: 0.62;
+    transform: scale(1.24);
   }
 
   .inner {
@@ -254,8 +254,8 @@
   }
 
   .backgroundImage {
-    opacity: 0.64;
-    transform: scale(1.18);
+    opacity: 0.56;
+    transform: scale(1.3);
   }
 
   .inner {

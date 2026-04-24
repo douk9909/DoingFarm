@@ -5,12 +5,11 @@
 }
 
 .container {
-  position: fixed;
+  position: sticky;
   top: 0;
   right: 0;
-  left: var(--sidebar-width-mobile);
+  left: 0;
   z-index: 10;
-  transition: left 0.3s ease;
 
   padding: 10px 20px 10px 10px;
 
@@ -105,7 +104,6 @@
 
 @media (min-width: 768px) {
   .container {
-    left: var(--sidebar-width-tablet);
     height: 72px;
     padding: 16px 30px;
   }
@@ -138,11 +136,5 @@
   /* Todo: icon svg 컴포넌트화 하면 제거 */
   .iconStyle {
     filter: brightness(0) invert(1);
-  }
-}
-
-@media (min-width: 1200px) {
-  .container {
-    left: var(--sidebar-width-pc);
   }
 }
