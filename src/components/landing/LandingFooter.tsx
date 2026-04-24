@@ -42,9 +42,15 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
       </div>
 
       <div className={styles.footerSocials}>
-        <span className={styles.socialLink} aria-label="Instagram" role="img">
+        <a
+          href="https://www.instagram.com/doingfarm/"
+          target="_blank"
+          rel="noreferrer"
+          className={styles.socialLink}
+          aria-label="DoingFarm Instagram"
+        >
           <Image src={instagramIcon} alt="" width={18} height={18} />
-        </span>
+        </a>
         <span className={styles.socialLink} aria-label="Facebook" role="img">
           <Image src={facebookIcon} alt="" width={18} height={18} />
         </span>

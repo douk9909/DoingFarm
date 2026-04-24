@@ -2,11 +2,12 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  width: calc(100% - 160px);
+  width: calc(100% - 24px);
   margin: 0 auto;
-  padding: 18px 0 32px;
+  gap: 8px;
+  padding: 14px 0 22px;
 }
 
 .footer::before {
@@ -31,17 +32,17 @@
   display: inline-flex;
   align-items: flex-end;
   justify-content: center;
-  width: 44px;
-  height: 22px;
+  width: 28px;
+  height: 14px;
 }
 
 .footerBrandCarrot {
-  width: 31px;
+  width: 18px;
   height: auto;
 }
 
 .footerLogo {
-  width: 116px;
+  width: 78px;
   height: auto;
 }
 
@@ -49,7 +50,7 @@
 .footerSocials {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
 }
 
 .footerLinks {
@@ -71,8 +72,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background-color: var(--landing-border-soft);
   transition:
@@ -93,19 +94,35 @@
   }
 }
 
-@media (max-width: 1180px) {
+@media (min-width: 768px) {
   .footer {
     width: calc(100% - 48px);
-  }
-}
-
-@media (max-width: 820px) {
-  .footer {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    width: calc(100% - 32px);
     gap: 10px;
+    padding-top: 18px;
     padding-bottom: 22px;
+  }
+
+  .footerBrandMark {
+    width: 44px;
+    height: 22px;
+  }
+
+  .footerBrandCarrot {
+    width: 31px;
+  }
+
+  .footerLogo {
+    width: 116px;
+  }
+
+  .footerLinks,
+  .footerSocials {
+    gap: 16px;
+  }
+
+  .socialLink {
+    width: 24px;
+    height: 24px;
   }
 
   .footerLinks {
@@ -113,37 +130,10 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 1200px) {
   .footer {
-    width: calc(100% - 24px);
-    gap: 8px;
-    padding-top: 14px;
-  }
-
-  .footerBrandMark {
-    width: 28px;
-    height: 14px;
-  }
-
-  .footerBrandCarrot {
-    width: 18px;
-  }
-
-  .footerLogo {
-    width: 78px;
-  }
-
-  .footerLinks,
-  .footerSocials {
-    gap: 8px;
-  }
-
-  .footerTextLink {
-    font: var(--text-xs-medium);
-  }
-
-  .socialLink {
-    width: 20px;
-    height: 20px;
+    grid-template-columns: 1fr auto 1fr;
+    width: calc(100% - 160px);
+    padding-bottom: 32px;
   }
 }

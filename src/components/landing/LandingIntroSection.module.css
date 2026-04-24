@@ -1,8 +1,8 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: 900px;
-  padding-bottom: 80px;
+  min-height: auto;
+  padding-bottom: 56px;
 }
 
 .heroBackground {
@@ -32,25 +32,25 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(520px, 560px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   align-items: start;
-  gap: 22px;
-  width: var(--landing-wide-container-width);
+  gap: 20px;
+  width: calc(100% - 24px);
   margin: 0 auto;
-  padding-top: 38px;
+  padding-top: 20px;
 }
 
 .heroCopy {
   position: relative;
   z-index: 3;
-  padding-top: 300px;
-  margin-left: 150px;
+  padding-top: 12px;
+  margin-left: 0;
 }
 
 .heroTitle {
   margin: 0;
   color: var(--color-white);
-  font-size: clamp(40px, 3.7vw, 58px);
+  font-size: 28px;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -0.05em;
@@ -63,16 +63,16 @@
 
 .heroTitleLine {
   display: block;
-  margin-bottom: 20px;
-  font-size: 54px;
-  white-space: nowrap;
+  margin-bottom: 4px;
+  font-size: 28px;
+  white-space: normal;
 }
 
 .heroTitleAccent {
   display: block;
-  font-size: 76px;
+  font-size: 40px;
   color: var(--color-primary-970);
-  white-space: nowrap;
+  white-space: normal;
   text-shadow:
     1px 1px 0 rgba(228, 255, 137, 0.28),
     0 5px 0 rgba(44, 105, 17, 0.72),
@@ -83,8 +83,9 @@
 .heroActions {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 48px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
 }
 
 .heroButtonSecondary,
@@ -92,9 +93,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 178px;
-  height: 54px;
-  padding: 0 22px;
+  min-width: 112px;
+  height: 34px;
+  padding: 0 14px;
   border-radius: 999px;
   color: var(--color-white);
   font: var(--text-lg-16-bold);
@@ -121,16 +122,17 @@
 .heroShowcase {
   position: relative;
   z-index: 1;
-  min-height: 970px;
+  min-height: auto;
+  margin-top: 8px;
   overflow: visible;
 }
 
 .showcaseMain {
-  position: absolute;
-  top: 80px;
-  right: -95px;
-  width: 1000px;
-  max-width: none;
+  position: relative;
+  top: 0;
+  right: auto;
+  width: 100%;
+  max-width: 100%;
 }
 
 .showcaseMainImage {
@@ -146,10 +148,10 @@
 .heroCarrot {
   position: absolute;
   right: 0;
-  bottom: -54px;
+  bottom: -10px;
   z-index: 3;
-  width: 440px;
-  height: 388px;
+  width: 160px;
+  height: 160px;
   transform: scaleX(-1);
 }
 
@@ -183,79 +185,19 @@
   }
 }
 
-@media (max-width: 1440px) {
-  .showcaseMain {
-    right: calc((100vw - 145%) / -2);
-    width: 860px;
-  }
-
-  .heroShowcase {
-    min-height: 800px;
-  }
-}
-
-@media (max-width: 1180px) {
-  .hero {
-    min-height: auto;
-    padding-bottom: 72px;
-  }
-
-  .heroInner {
-    width: calc(100% - 48px);
-    grid-template-columns: 1fr;
-    gap: 32px;
-    padding-top: 36px;
-  }
-
-  .heroCopy {
-    max-width: 520px;
-    padding-top: 64px;
-    margin-left: 0;
-  }
-
-  .heroTitle {
-    font-size: 46px;
-  }
-
-  .heroTitleLine {
-    margin-bottom: 6px;
-    font-size: 46px;
-  }
-
-  .heroTitleAccent {
-    font-size: 66px;
-  }
-
-  .heroShowcase {
-    min-height: auto;
-  }
-
-  .showcaseMain {
-    position: relative;
-    top: 0;
-    right: auto;
-    width: min(100%, 780px);
-    margin-left: auto;
-  }
-
-  .heroCarrot {
-    right: 20px;
-    bottom: 28px;
-    width: 92px;
-  }
-}
-
-@media (max-width: 820px) {
+@media (min-width: 768px) {
   .hero {
     padding-bottom: 56px;
   }
 
   .heroInner {
     width: calc(100% - 32px);
+    gap: 32px;
     padding-top: 28px;
   }
 
   .heroCopy {
+    max-width: 520px;
     padding-top: 24px;
   }
 
@@ -264,19 +206,26 @@
   }
 
   .heroTitleLine {
-    font-size: 36px;
     margin-bottom: 4px;
-    white-space: normal;
+    font-size: 36px;
   }
 
   .heroTitleAccent {
     font-size: 52px;
   }
 
+  .showcaseMain {
+    width: 100%;
+  }
+
+  .heroCarrot {
+    bottom: -20px;
+    width: 220px;
+    height: 220px;
+  }
+
   .heroActions {
-    flex-wrap: wrap;
     gap: 10px;
-    margin-top: 18px;
   }
 
   .heroButtonSecondary,
@@ -285,63 +234,71 @@
     height: 36px;
     padding: 0 18px;
   }
-
-  .heroShowcase {
-    margin-top: 8px;
-  }
-
-  .showcaseMain {
-    width: 100%;
-  }
-
-  .heroCarrot {
-    right: 0;
-    bottom: -20px;
-    width: 220px;
-    height: 220px;
-  }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 1200px) {
+  .hero {
+    min-height: 900px;
+    padding-bottom: 80px;
+  }
+
   .heroInner {
-    width: calc(100% - 24px);
-    gap: 20px;
-    padding-top: 20px;
+    grid-template-columns: minmax(520px, 560px) minmax(0, 1fr);
+    gap: 22px;
+    width: var(--landing-wide-container-width);
+    padding-top: 38px;
   }
 
   .heroCopy {
-    padding-top: 12px;
+    max-width: none;
+    padding-top: 300px;
+    margin-left: 150px;
   }
 
   .heroTitle {
-    font-size: 28px;
+    font-size: clamp(40px, 3.7vw, 58px);
   }
 
   .heroTitleLine {
-    font-size: 28px;
+    margin-bottom: 20px;
+    font-size: 54px;
+    white-space: nowrap;
   }
 
   .heroTitleAccent {
-    font-size: 40px;
+    font-size: 76px;
+    white-space: nowrap;
   }
 
   .heroActions {
-    flex-direction: row;
-    align-items: center;
-    gap: 8px;
+    gap: 16px;
+    margin-top: 48px;
   }
 
   .heroButtonSecondary,
   .heroButtonPrimary {
-    min-width: 112px;
-    height: 34px;
-    padding: 0 14px;
+    min-width: 178px;
+    height: 54px;
+    padding: 0 22px;
+  }
+
+  .heroShowcase {
+    min-height: clamp(760px, 58vw, 970px);
+    margin-top: 0;
+  }
+
+  .showcaseMain {
+    position: absolute;
+    top: 80px;
+    right: clamp(-95px, -6vw, -24px);
+    width: min(1000px, 62vw);
+    max-width: none;
   }
 
   .heroCarrot {
     right: 0;
-    bottom: -10px;
-    width: 160px;
-    height: 160px;
+    bottom: -54px;
+    width: 440px;
+    height: 388px;
   }
 }
