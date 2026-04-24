@@ -19,9 +19,9 @@
 @media (min-width: 768px) {
   .sideBar {
     display: flex;
-    width: 220px;
+    width: 260px;
     height: 100vh;
-    padding-top: 10px;
+    padding-top: 14px;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--color-black-100);
@@ -34,11 +34,11 @@
 @media (min-width: 1200px) {
   .sideBar {
     width: 340px;
-    padding-top: 15px;
+    padding-top: 18px;
   }
 
   .logoWrapper {
-    padding: 0 24px;
+    padding: 0 28px;
   }
 
   .logoImg {

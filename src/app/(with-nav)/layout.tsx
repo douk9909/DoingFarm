@@ -9,8 +9,8 @@ interface WithNavLayoutProps {
   children: React.ReactNode;
 }
 
-const SIDEBAR_MIN_WIDTH = 88;
-const SIDEBAR_MAX_WIDTH = 248;
+const SIDEBAR_MIN_WIDTH = 220;
+const SIDEBAR_MAX_WIDTH = 340;
 const SIDEBAR_COLLAPSE_WIDTH = 112;
 
 export default function WithNavLayout({ children }: WithNavLayoutProps) {
