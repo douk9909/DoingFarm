@@ -32,6 +32,11 @@
   margin-bottom: 20px;
 }
 
+.submitButton:disabled {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-950);
+}
+
 .signupLink {
   text-align: center;
   font-size: 0.9rem;

@@ -77,7 +77,14 @@ export default function LoginForm() {
         />
       </div>
 
-      <Button type="submit" size="lg" fullWidth className={styles.submitButton} disabled={!isValid}>
+      <Button
+        type="submit"
+        size="lg"
+        fullWidth
+        className={styles.submitButton}
+        disabled={!isValid}
+        useDisabledOpacity={false}
+      >
         로그인
       </Button>
 

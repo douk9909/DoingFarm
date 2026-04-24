@@ -157,6 +157,7 @@ export default function SignupForm() {
         fullWidth
         className={styles.submitButton}
         disabled={!isFormValid}
+        useDisabledOpacity={false}
       >
         가입하기
       </Button>

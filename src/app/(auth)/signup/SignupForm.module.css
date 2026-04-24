@@ -39,6 +39,11 @@
   margin-bottom: 20px;
 }
 
+.submitButton:disabled {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-950);
+}
+
 .loginLink {
   text-align: center;
   font: var(--text-lg-16-medium);
