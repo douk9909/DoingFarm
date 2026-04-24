@@ -54,7 +54,11 @@ export default function Navbar({
           type="button"
           aria-label="사이드바 열기"
           aria-expanded={isMobileSidebarOpen}
-          className={cn(styles.button, styles.sideMenuButton)}
+          className={cn(
+            styles.button,
+            styles.sideMenuButton,
+            isMobileSidebarOpen && styles.sideMenuButtonOpen,
+          )}
           onClick={onOpenMobileSidebar}
         >
           <Image src={sideMenuIcon} alt="" className={styles.onlyMobileIcon} />
@@ -81,13 +85,13 @@ export default function Navbar({
         )}
 
         <div className={styles.buttonContainer}>
-          <button type="button" className={cn(styles.button, styles.textButton)}>
-            <Image src={settingIcon} alt="설정 아이콘" />
+          <button type="button" className={cn(styles.button, styles.textButton, styles.manageButton)}>
+            <Image src={settingIcon} alt="설정 아이콘" className={styles.buttonIcon} />
             <span>관리</span>
           </button>
 
           <button type="button" className={cn(styles.button, styles.textButton, styles.inviteButton)}>
-            <Image src={userPlusIcon} alt="초대 아이콘" className={styles.iconStyle} />
+            <Image src={userPlusIcon} alt="초대 아이콘" className={cn(styles.buttonIcon, styles.iconStyle)} />
             <span>초대</span>
           </button>
         </div>
