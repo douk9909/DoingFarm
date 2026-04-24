@@ -1,46 +1,231 @@
 .page {
-  min-height: 100vh;
-  padding: 32px;
-  background-color: var(--color-background);
+  position: relative;
+  min-height: 100%;
+  background-color: #35363a;
 }
 
-.card {
+.backgroundLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.backgroundImage {
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.canvas {
+  position: relative;
+  min-height: 100%;
+  overflow-y: auto;
+  background:
+    linear-gradient(180deg, rgba(175, 191, 205, 0.98) 0 98px, rgba(53, 54, 58, 0) 98px),
+    linear-gradient(180deg, rgba(26, 25, 31, 0.08), rgba(26, 25, 31, 0.2));
+}
+
+.inner {
+  width: 100%;
+  padding: 0 28px 36px;
+}
+
+.hero {
   display: flex;
-  max-width: 720px;
+  align-items: flex-end;
+  min-height: 98px;
+  padding: 18px 0 14px;
+}
+
+.heroText {
+  display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 28px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 24px;
-  background-color: rgba(255, 255, 255, 0.04);
+  gap: 6px;
+}
+
+.breadcrumb {
+  margin: 0;
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .title {
   margin: 0;
-  color: var(--color-white);
-  font: var(--text-2xl-medium);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
 }
 
-.description {
-  margin: 0;
-  color: var(--color-gray-700);
-  font: var(--text-md-medium);
+.section {
+  margin-top: 10px;
 }
 
-.buttonRow {
+.section + .section {
+  margin-top: 16px;
+}
+
+.sectionTitle {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.panel {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 186px;
+  padding: 24px 20px;
+  border-radius: 24px;
+  background-color: #1f2026;
+  border: 1px solid rgba(255, 255, 255, 0.04);
 }
 
-.modalText {
-  margin: 0;
-  color: var(--color-black-400);
-  font: var(--text-md-medium);
-  line-height: 1.6;
-}
-
-.modalActions {
+.emptyState {
   display: flex;
-  gap: 12px;
-  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.stateImage {
+  display: block;
+  width: 110px;
+  height: auto;
+  object-fit: contain;
+}
+
+.message {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.createButton {
+  min-width: 98px;
+  min-height: 32px;
+  padding: 0 14px;
+  font-size: 12px;
+  border-radius: 999px;
+}
+
+@media (max-width: 1024px) {
+  .inner {
+    padding: 0 20px 28px;
+  }
+
+  .panel {
+    min-height: 174px;
+  }
+}
+
+@media (max-width: 820px) {
+  .canvas {
+    background:
+      linear-gradient(180deg, rgba(175, 191, 205, 0.98) 0 78px, rgba(53, 54, 58, 0) 78px),
+      linear-gradient(180deg, rgba(26, 25, 31, 0.08), rgba(26, 25, 31, 0.2));
+  }
+
+  .inner {
+    padding: 0 14px 22px;
+  }
+
+  .hero {
+    min-height: 78px;
+    padding: 12px 0 10px;
+  }
+
+  .heroText {
+    gap: 4px;
+  }
+
+  .breadcrumb {
+    font-size: 22px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .section {
+    margin-top: 8px;
+  }
+
+  .section + .section {
+    margin-top: 14px;
+  }
+
+  .sectionTitle {
+    margin-bottom: 10px;
+    font-size: 18px;
+  }
+
+  .panel {
+    min-height: 142px;
+    padding: 18px 14px;
+    border-radius: 20px;
+  }
+
+  .emptyState {
+    gap: 10px;
+  }
+
+  .stateImage {
+    width: 82px;
+  }
+
+  .message {
+    font-size: 13px;
+  }
+
+  .createButton {
+    min-width: 82px;
+    min-height: 28px;
+    padding: 0 12px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .inner {
+    padding: 0 12px 20px;
+  }
+
+  .hero {
+    min-height: 70px;
+    padding: 10px 0 8px;
+  }
+
+  .breadcrumb {
+    font-size: 18px;
+  }
+
+  .title {
+    font-size: 13px;
+  }
+
+  .sectionTitle {
+    font-size: 17px;
+  }
+
+  .panel {
+    min-height: 132px;
+    border-radius: 18px;
+  }
+
+  .stateImage {
+    width: 74px;
+  }
+
+  .message {
+    font-size: 12px;
+  }
 }
