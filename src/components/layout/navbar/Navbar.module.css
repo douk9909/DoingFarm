@@ -53,6 +53,10 @@
   margin-left: -13px;
 }
 
+.profile:not(:first-child) {
+  margin-left: -13px;
+}
+
 .extraCount {
   color: var(--color-gray-600);
   padding-left: 8px;
