@@ -15,7 +15,9 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
         <div className={styles.profile}>민영</div>
         <p className={styles.userName}>{nickname}</p>
       </div>
-      <Image src={settingIcon} alt="세팅" width={20} height={20} />
+      <button>
+        <Image src={settingIcon} alt="세팅" width={20} height={20} />
+      </button>
     </footer>
   );
 }

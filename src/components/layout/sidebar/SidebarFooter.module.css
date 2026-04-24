@@ -7,6 +7,12 @@
   border-top: 2px solid #2c2b30;
 }
 
+.footer button {
+  appearance: none;
+  background-color: var(--color-black-100);
+  border: none;
+}
+
 .nameWrapper {
   display: flex;
   align-items: center;
@@ -20,7 +26,7 @@
   width: 30px;
   height: 30px;
   border-radius: 100px;
-  background-color: #206e4e;
+  background-color: var(--color-profile-green);
   font: var(--text-xs-semibold);
 }
 
