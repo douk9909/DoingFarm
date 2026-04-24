@@ -77,7 +77,8 @@ export default function SignupForm() {
           toast.success('가입이 완료되었습니다.');
           router.push('/login');
         } catch (error) {
-          toast.error(error instanceof Error ? error.message : '회원가입에 실패했습니다.');
+          const message = error instanceof Error ? error.message : '회원가입에 실패했습니다.';
+          setEmailError(message);
         }
       }}
     >
