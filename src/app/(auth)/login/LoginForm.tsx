@@ -9,6 +9,8 @@ import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
 import { Input } from '@/components/common/input/Input';
 import Button from '@/components/common/button/Button';
+import { authApi } from '@/lib/api/auth';
+import { setToken } from '@/lib/utils/storage';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,9 +42,23 @@ export default function LoginForm() {
   return (
     <form
       className={styles.form}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        router.push('/mydashboard');
+        try {
+          const res = await authApi.login({ email, password });
+          setToken(res.data.accessToken);
+          router.push('/mydashboard');
+        } catch (error) {
+          const message = error instanceof Error ? error.message : '로그인에 실패했습니다.';
+
+          if (message.includes('이메일')) {
+            setEmailError(message);
+          } else if (message.includes('비밀번호')) {
+            setPasswordError(message);
+          } else {
+            setEmailError(message);
+          }
+        }
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
