@@ -1,16 +1,7 @@
 import { useMemo } from 'react';
 import { cn } from '@/lib/utils/cn';
+import { getHashColor } from '@/lib/utils/color';
 import styles from './Avatar.module.css';
-
-const COLORS = [
-  'var(--color-profile-green)',
-  'var(--color-profile-violet)',
-  'var(--color-profile-cyan)',
-  'var(--color-profile-rose)',
-  'var(--color-profile-cobalt)',
-  'var(--color-profile-yellow)',
-  'var(--color-profile-orange)',
-] as const;
 
 interface AvatarProps {
   src?: string | null;
@@ -32,10 +23,7 @@ export default function Avatar({ src, alt = 'profileImage', name, className }: A
     }
   }, [name]);
 
-  const profileBgColor = useMemo(() => {
-    const charCodeSum = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return COLORS[charCodeSum % COLORS.length];
-  }, [name]);
+  const profileBgColor = useMemo(() => getHashColor(name), [name]);
 
   return (
     <div
