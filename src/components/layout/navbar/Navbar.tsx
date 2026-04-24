@@ -49,6 +49,7 @@ export default function Navbar() {
               key={user.id}
               src={user.profileImage}
               name={user.nickname}
+              alt={user.nickname}
               className={styles.profile}
             />
           ))}
