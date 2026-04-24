@@ -3,10 +3,8 @@
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Avatar from '@/components/common/avatar/Avatar';
-
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
-
 import characterImg from '@/assets/character/carrot1.svg';
 import sideMenuIcon from '@/assets/icon/ic_sidemenu.svg';
 import settingIcon from '@/assets/icon/ic_setting.svg';
@@ -15,20 +13,28 @@ import styles from './Navbar.module.css';
 
 const MAX_VISIBLE_USERS = 5;
 
-export default function Navbar() {
+interface NavbarProps {
+  isMobileSidebarOpen?: boolean;
+  onOpenMobileSidebar?: () => void;
+}
+
+export default function Navbar({
+  isMobileSidebarOpen = false,
+  onOpenMobileSidebar,
+}: NavbarProps) {
   const pathname = usePathname();
   const isMyDashboard = pathname === PATH.MY_DASHBOARD;
 
-  // Todo: 목업 데이터 - API 연동 후 삭제 예정
+  // Mock 유저
   const users = [
-    { id: 1, nickname: '홍길동', profileImage: null },
-    { id: 2, nickname: '김순덕', profileImage: null },
-    { id: 3, nickname: '박미자', profileImage: null },
-    { id: 4, nickname: '김순이', profileImage: null },
-    { id: 5, nickname: '박순자', profileImage: null },
-    { id: 6, nickname: '제갈순이', profileImage: null },
-    { id: 7, nickname: '신짱구', profileImage: null },
-    { id: 8, nickname: '홍길순', profileImage: null },
+    { id: 1, nickname: '김순미', profileImage: null },
+    { id: 2, nickname: '김선달', profileImage: null },
+    { id: 3, nickname: '박민영', profileImage: null },
+    { id: 4, nickname: '김서이', profileImage: null },
+    { id: 5, nickname: '박지연', profileImage: null },
+    { id: 6, nickname: '손유림', profileImage: null },
+    { id: 7, nickname: '최민규', profileImage: null },
+    { id: 8, nickname: '정하민', profileImage: null },
   ];
 
   const displayUsers = users.slice(0, MAX_VISIBLE_USERS);
@@ -39,14 +45,19 @@ export default function Navbar() {
       <div className={styles.leftContainer}>
         <Image
           src={characterImg}
-          alt="캐릭터이미지"
+          alt="캐릭터 이미지"
           width={60}
           height={72}
           className={styles.characterImg}
         />
-        <button className={cn(styles.button, styles.sideMenuButton)}>
-          {/* Todo: 사이드메뉴 열기 */}
-          <Image src={sideMenuIcon} alt="사이드메뉴아이콘" className={styles.onlyMobileIcon} />
+        <button
+          type="button"
+          aria-label="사이드바 열기"
+          aria-expanded={isMobileSidebarOpen}
+          className={cn(styles.button, styles.sideMenuButton)}
+          onClick={onOpenMobileSidebar}
+        >
+          <Image src={sideMenuIcon} alt="" className={styles.onlyMobileIcon} />
         </button>
       </div>
 
@@ -70,15 +81,13 @@ export default function Navbar() {
         )}
 
         <div className={styles.buttonContainer}>
-          {/* Todo: dashboard/{dashboardId}/edit로 페이지 이동 */}
-          <button className={cn(styles.button, styles.textButton)}>
-            <Image src={settingIcon} alt="설정아이콘" />
+          <button type="button" className={cn(styles.button, styles.textButton)}>
+            <Image src={settingIcon} alt="설정 아이콘" />
             <span>관리</span>
           </button>
 
-          {/* Todo: 초대하기 모달창 띄우기 */}
-          <button className={cn(styles.button, styles.textButton, styles.inviteButton)}>
-            <Image src={userPlusIcon} alt="초대아이콘" className={styles.iconStyle} />
+          <button type="button" className={cn(styles.button, styles.textButton, styles.inviteButton)}>
+            <Image src={userPlusIcon} alt="초대 아이콘" className={styles.iconStyle} />
             <span>초대</span>
           </button>
         </div>

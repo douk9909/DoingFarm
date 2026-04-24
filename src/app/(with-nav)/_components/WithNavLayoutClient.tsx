@@ -5,8 +5,6 @@ import Navbar from '@/components/layout/navbar/Navbar';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
 import styles from '../layout.module.css';
 import {
-  SIDEBAR_MAX_WIDTH,
-  SIDEBAR_MIN_WIDTH,
   SIDEBAR_VIEWPORT_COOKIE_NAME,
   SIDEBAR_WIDTH_COOKIE_NAME,
   type ViewportMode,
@@ -14,22 +12,26 @@ import {
   getViewportMode,
 } from '../_lib/sidebarWidth';
 
-interface WithNavShellProps {
+interface WithNavLayoutClientProps {
   children: React.ReactNode;
   initialSidebarWidth: number | null;
 }
 
-// 쿠키 저장
+// Cookie 저장
 function writeCookie(name: string, value: string) {
   document.cookie = `${name}=${value}; path=/; max-age=31536000; samesite=lax`;
 }
 
-// 레이아웃 클라이언트 로직
-export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavShellProps) {
-  // 초기 폭 반영
+// With-nav 셸
+export function WithNavLayoutClient({
+  children,
+  initialSidebarWidth,
+}: WithNavLayoutClientProps) {
+  // 초기 폭
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(initialSidebarWidth);
   const [viewportMode, setViewportMode] = useState<ViewportMode>('mobile');
   const [isResizing, setIsResizing] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     // 뷰포트 동기화
@@ -43,6 +45,9 @@ export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavSh
       if (nextViewportMode === 'mobile') {
         return;
       }
+
+      // 모바일 닫힘
+      setIsMobileSidebarOpen(false);
 
       // 저장 폭 유지
       setSidebarWidth((currentSidebarWidth) =>
@@ -59,11 +64,44 @@ export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavSh
   }, []);
 
   useEffect(() => {
+    // 스크롤 잠금
+    if (viewportMode !== 'mobile' || !isMobileSidebarOpen) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileSidebarOpen, viewportMode]);
+
+  useEffect(() => {
+    if (viewportMode !== 'mobile' || !isMobileSidebarOpen) {
+      return;
+    }
+
+    // Esc 닫힘
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsMobileSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileSidebarOpen, viewportMode]);
+
+  useEffect(() => {
     if (!isResizing) {
       return;
     }
 
-    // 드래그 폭 갱신
+    // 드래그 폭
     const handleMouseMove = (event: MouseEvent) => {
       const nextSidebarWidth = clampSidebarWidth(event.clientX);
       setSidebarWidth(nextSidebarWidth);
@@ -96,16 +134,30 @@ export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavSh
             }
       }
     >
-      <Sidebar />
+      <Sidebar
+        isMobileOpen={isMobileSidebarOpen}
+        onCloseMobile={() => setIsMobileSidebarOpen(false)}
+      />
       <div
         className={styles.resizeHandle}
         role="presentation"
         onMouseDown={() => setIsResizing(true)}
       />
       <div className={styles.contentArea}>
-        <Navbar />
+        <Navbar
+          isMobileSidebarOpen={isMobileSidebarOpen}
+          onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+        />
         <main className={styles.main}>{children}</main>
       </div>
+      <button
+        type="button"
+        aria-label="사이드바 닫기"
+        className={`${styles.mobileOverlay} ${
+          isMobileSidebarOpen ? styles.mobileOverlayVisible : ''
+        }`}
+        onClick={() => setIsMobileSidebarOpen(false)}
+      />
     </div>
   );
 }
