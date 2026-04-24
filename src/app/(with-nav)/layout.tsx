@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { WithNavShell } from './_components/WithNavShell';
+import { WithNavLayoutClient } from './_components/WithNavLayoutClient';
 import {
   SIDEBAR_VIEWPORT_COOKIE_NAME,
   SIDEBAR_WIDTH_COOKIE_NAME,
@@ -28,5 +28,9 @@ export default async function WithNavLayout({ children }: WithNavLayoutProps) {
       : savedSidebarWidth ?? getDefaultSidebarWidth(savedViewportMode);
 
   // 클라이언트 셸 연결
-  return <WithNavShell initialSidebarWidth={initialSidebarWidth}>{children}</WithNavShell>;
+  return (
+    <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>
+      {children}
+    </WithNavLayoutClient>
+  );
 }

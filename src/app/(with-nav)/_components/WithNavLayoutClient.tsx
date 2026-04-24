@@ -24,8 +24,8 @@ function writeCookie(name: string, value: string) {
   document.cookie = `${name}=${value}; path=/; max-age=31536000; samesite=lax`;
 }
 
-// 리사이즈 셸
-export function WithNavShell({ children, initialSidebarWidth }: WithNavShellProps) {
+// 레이아웃 클라이언트 로직
+export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavShellProps) {
   // 초기 폭 반영
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(initialSidebarWidth);
   const [viewportMode, setViewportMode] = useState<ViewportMode>('mobile');

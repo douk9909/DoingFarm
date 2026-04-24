@@ -124,7 +124,7 @@
 
 .stateImage {
   display: block;
-  width: 74px;
+  width: 96px;
   height: auto;
   object-fit: contain;
 }
@@ -233,7 +233,7 @@
   }
 
   .stateImage {
-    width: 94px;
+    width: 128px;
   }
 
   .message {
@@ -274,7 +274,7 @@
   }
 
   .stateImage {
-    width: 110px;
+    width: 152px;
   }
 
   .message {
