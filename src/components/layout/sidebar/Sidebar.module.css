@@ -19,7 +19,8 @@
 @media (min-width: 768px) {
   .sideBar {
     display: flex;
-    width: 260px;
+    width: 100%;
+    min-width: 0;
     height: 100vh;
     padding-top: 14px;
     flex-direction: column;
@@ -33,7 +34,7 @@
 /* PC */
 @media (min-width: 1200px) {
   .sideBar {
-    width: 340px;
+    width: 100%;
     padding-top: 18px;
   }
 

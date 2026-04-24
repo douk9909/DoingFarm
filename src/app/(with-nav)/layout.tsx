@@ -9,20 +9,66 @@ interface WithNavLayoutProps {
   children: React.ReactNode;
 }
 
-const SIDEBAR_MIN_WIDTH = 220;
-const SIDEBAR_MAX_WIDTH = 340;
-const SIDEBAR_COLLAPSE_WIDTH = 112;
+const SIDEBAR_TABLET_WIDTH = 280;
+const SIDEBAR_PC_WIDTH = 600;
+const SIDEBAR_MIN_WIDTH = SIDEBAR_TABLET_WIDTH;
+const SIDEBAR_MAX_WIDTH = SIDEBAR_PC_WIDTH;
+
+function getSidebarDefaultWidth(windowWidth: number) {
+  if (windowWidth >= 1200) {
+    return SIDEBAR_PC_WIDTH;
+  }
+
+  if (windowWidth >= 768) {
+    return SIDEBAR_TABLET_WIDTH;
+  }
+
+  return 0;
+}
+
+function getViewportMode(windowWidth: number) {
+  if (windowWidth >= 1200) {
+    return 'pc';
+  }
+
+  if (windowWidth >= 768) {
+    return 'tablet';
+  }
+
+  return 'mobile';
+}
 
 export default function WithNavLayout({ children }: WithNavLayoutProps) {
-  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_MAX_WIDTH);
+  const [sidebarWidth, setSidebarWidth] = useState(SIDEBAR_PC_WIDTH);
   const [isResizing, setIsResizing] = useState(false);
+  const [viewportMode, setViewportMode] = useState<'mobile' | 'tablet' | 'pc'>('pc');
+
+  useEffect(() => {
+    const applyDefaultSidebarWidth = () => {
+      const nextViewportMode = getViewportMode(window.innerWidth);
+
+      setViewportMode((currentViewportMode) => {
+        if (currentViewportMode !== nextViewportMode) {
+          setSidebarWidth(getSidebarDefaultWidth(window.innerWidth));
+        }
+
+        return nextViewportMode;
+      });
+    };
+
+    applyDefaultSidebarWidth();
+    window.addEventListener('resize', applyDefaultSidebarWidth);
+
+    return () => {
+      window.removeEventListener('resize', applyDefaultSidebarWidth);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isResizing) {
       return;
     }
 
-    // 드래그 중에는 마우스 위치를 바로 폭으로 반영
     const handleMouseMove = (event: MouseEvent) => {
       const nextWidth = Math.min(
         SIDEBAR_MAX_WIDTH,
@@ -48,15 +94,19 @@ export default function WithNavLayout({ children }: WithNavLayoutProps) {
   return (
     <div
       className={styles.shell}
-      style={{ gridTemplateColumns: `${sidebarWidth}px 8px minmax(0, 1fr)` }}
+      style={{
+        gridTemplateColumns:
+          sidebarWidth > 0 ? `${sidebarWidth}px 8px minmax(0, 1fr)` : '0px 0px minmax(0, 1fr)',
+      }}
     >
-      <Sidebar/>
-      <div
-        className={styles.resizeHandle}
-        role="presentation"
-        // 경계선에서만 드래그가 시작되게 분리
-        onMouseDown={() => setIsResizing(true)}
-      />
+      <Sidebar />
+      {sidebarWidth > 0 ? (
+        <div
+          className={styles.resizeHandle}
+          role="presentation"
+          onMouseDown={() => setIsResizing(true)}
+        />
+      ) : null}
       <div className={styles.contentArea}>
         <Navbar />
         <main className={styles.main}>{children}</main>
