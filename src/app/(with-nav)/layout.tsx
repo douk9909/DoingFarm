@@ -1,21 +1,21 @@
 import { cookies } from 'next/headers';
-import WithNavShell from './WithNavShell';
+import { WithNavShell } from './_components/WithNavShell';
 import {
   SIDEBAR_VIEWPORT_COOKIE_NAME,
   SIDEBAR_WIDTH_COOKIE_NAME,
   getDefaultSidebarWidth,
   parseSidebarViewportMode,
   parseSidebarWidth,
-} from './sidebarWidth';
+} from './_lib/sidebarWidth';
 
 interface WithNavLayoutProps {
   children: React.ReactNode;
 }
 
-// 서버 초기 폭 계산
 export default async function WithNavLayout({ children }: WithNavLayoutProps) {
-  // 쿠키 복원
   const cookieStore = await cookies();
+
+  // 쿠키 복원
   const savedViewportMode = parseSidebarViewportMode(
     cookieStore.get(SIDEBAR_VIEWPORT_COOKIE_NAME)?.value,
   );

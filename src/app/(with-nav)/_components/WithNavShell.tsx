@@ -3,16 +3,16 @@
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/navbar/Navbar';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
-import styles from './layout.module.css';
+import styles from '../layout.module.css';
 import {
   SIDEBAR_MAX_WIDTH,
   SIDEBAR_MIN_WIDTH,
   SIDEBAR_VIEWPORT_COOKIE_NAME,
   SIDEBAR_WIDTH_COOKIE_NAME,
-  ViewportMode,
+  type ViewportMode,
   clampSidebarWidth,
   getViewportMode,
-} from './sidebarWidth';
+} from '../_lib/sidebarWidth';
 
 interface WithNavShellProps {
   children: React.ReactNode;
@@ -25,7 +25,7 @@ function writeCookie(name: string, value: string) {
 }
 
 // 리사이즈 셸
-export default function WithNavShell({ children, initialSidebarWidth }: WithNavShellProps) {
+export function WithNavShell({ children, initialSidebarWidth }: WithNavShellProps) {
   // 초기 폭 반영
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(initialSidebarWidth);
   const [viewportMode, setViewportMode] = useState<ViewportMode>('mobile');
@@ -88,7 +88,6 @@ export default function WithNavShell({ children, initialSidebarWidth }: WithNavS
   return (
     <div
       className={styles.shell}
-      // 모바일 기본값 사용
       style={
         sidebarWidth === null || viewportMode === 'mobile'
           ? undefined
