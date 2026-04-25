@@ -5,6 +5,7 @@ import tagYellow from '@/assets/hashTags/yellow.svg';
 import tagBlue from '@/assets/hashTags/blue.svg';
 import tagGreen from '@/assets/hashTags/green.svg';
 import styles from './DashboardHeader.module.css';
+import AddColumnButton from './AddColumnButton';
 
 interface DashBoardHeaderProps {
   title: string;
@@ -31,8 +32,11 @@ const getTagIcon = (color: string) => {
 export default function DashBoardHeader({ title, color }: DashBoardHeaderProps) {
   return (
     <header className={styles.header}>
-      <Image src={getTagIcon(color)} alt="" width={36} height={36} />
-      <h1 className={styles.title}>{title}</h1>
+      <div className={styles.titleWrapper}>
+        <Image src={getTagIcon(color)} alt="" width={36} height={36} />
+        <h1 className={styles.title}>{title}</h1>
+      </div>
+      <AddColumnButton />
     </header>
   );
 }

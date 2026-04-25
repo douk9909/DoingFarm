@@ -1,0 +1,9 @@
+.columnList {
+  display: flex;
+  gap: 30px;
+  padding: 10px 50px;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
