@@ -2,6 +2,8 @@ import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
+import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
+import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 
 export default function MembersList() {
   return (
@@ -11,8 +13,12 @@ export default function MembersList() {
         <div className={styles.pageWrapper}>
           <span className={styles.pageInfo}>n 페이지 중 n</span>
           <div className={styles.pageButton}>
-            <button></button>
-            <button></button>
+            <button>
+              <ArrowLeftIcon size={20} color="var(--color-gray-500)" />
+            </button>
+            <button>
+              <ArrowRightIcon size={20} color="var(--color-gray-500)" />
+            </button>
           </div>
         </div>
       </div>

@@ -3,6 +3,7 @@ import MembersList from './components/MembersList';
 import InvitationsList from './components/InvitationsList';
 
 import styles from './edit.module.css';
+import TrashFillIcon from '@/assets/icons/TrashFillIcon';
 
 interface DashboardEditPageProps {
   params: Promise<{
@@ -25,7 +26,9 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
         {/* 대시보드 초대 내역 */}
         <InvitationsList />
         {/* 대시보드 삭제 버튼 */}
-        <button className={styles.deleteButton}>대시보드 삭제 </button>
+        <button className={styles.deleteButton}>
+          <span>대시보드 삭제</span>
+        </button>
       </div>
     </section>
   );
