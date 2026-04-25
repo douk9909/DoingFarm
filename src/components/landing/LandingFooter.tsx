@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import carrotMarkImage from '@/assets/character/carrot1.svg';
-import facebookIcon from '@/assets/icon/facebook.svg';
-import instagramIcon from '@/assets/icon/instagram.svg';
+import InstagramIcon from '@/assets/icons/InstagramIcon';
+import FacebookIcon from '@/assets/icons/FacebookIcon';
 import logoImage from '@/assets/logo/Do!ngFarm.svg';
 import { PATH } from '@/lib/constants/path';
 import styles from './LandingFooter.module.css';
@@ -49,10 +49,10 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
           className={styles.socialLink}
           aria-label="DoingFarm Instagram"
         >
-          <Image src={instagramIcon} alt="" width={18} height={18} />
+          <InstagramIcon size={18} />
         </a>
         <span className={styles.socialLink} aria-label="Facebook" role="img">
-          <Image src={facebookIcon} alt="" width={18} height={18} />
+          <FacebookIcon size={18} />
         </span>
       </div>
     </footer>
