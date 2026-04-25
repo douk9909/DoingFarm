@@ -9,10 +9,14 @@ import styles from '../edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 
-export default function MembersList() {
+interface MembersListProps {
+  dashboardId: string;
+}
+
+export default function MembersList({ dashboardId }: MembersListProps) {
   // Todo: API 연결 후 제거
   const mockData = [
-    { id: 1, userId: 101, nickname: '제나', profileImageUrl: null, isOwner: true },
+    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
     { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
     { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
   ];

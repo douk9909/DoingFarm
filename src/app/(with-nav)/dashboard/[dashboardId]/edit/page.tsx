@@ -5,6 +5,8 @@ import InvitationsList from './components/InvitationsList';
 import { DASHBOARD_COLORS } from '@/lib/constants/color';
 
 import styles from './edit.module.css';
+import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
+import DeleteDashboardButton from './components/DeleteDashboardButton';
 
 interface DashboardEditPageProps {
   params: Promise<{
@@ -24,19 +26,19 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
 
   return (
     <section className={styles.container}>
-      <button className={styles.prevButton}>돌아가기</button>
-
+      <button className={styles.prevButton}>
+        <ArrowLeftIcon size={20} />
+        <span>돌아가기</span>
+      </button>
       <div className={styles.contentWrapper}>
         {/* 대시보드 이름 변경 */}
         <EditForm initialTitle={initialData.title} initialColor={initialData.color} />
         {/* 대시보드 구성원 변경 */}
-        <MembersList />
+        <MembersList dashboardId={dashboardId} />
         {/* 대시보드 초대 내역 */}
-        <InvitationsList />
+        <InvitationsList dashboardId={dashboardId} />
         {/* 대시보드 삭제 버튼 */}
-        <button className={styles.deleteButton}>
-          <span>대시보드 삭제</span>
-        </button>
+        <DeleteDashboardButton dashboardId={dashboardId} />
       </div>
     </section>
   );

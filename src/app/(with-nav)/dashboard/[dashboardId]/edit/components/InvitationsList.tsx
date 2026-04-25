@@ -8,7 +8,11 @@ import Avatar from '@/components/common/avatar/Avatar';
 import styles from '../edit.module.css';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
-export default function InvitationsList() {
+interface InvitationsListProps {
+  dashboardId: string;
+}
+
+export default function InvitationsList({ dashboardId }: InvitationsListProps) {
   // Todo: API 연결 후 제거
   const mockData = [
     { id: 1, email: 'code_master@test.com' },
