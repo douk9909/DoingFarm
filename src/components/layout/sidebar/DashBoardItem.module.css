@@ -1,42 +1,106 @@
 /* 모바일  */
 .menu {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 58px;
   padding: 16px 14px 16px 12px;
   border-radius: 12px;
+  overflow: hidden;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .active {
-  background-color: #2c2b30;
+  background: var(--sidebar-item-active-bg);
+  box-shadow: var(--sidebar-item-active-shadow);
 }
 
 .menu div {
   display: flex;
   gap: 8px;
+  align-items: center;
+  min-width: 0;
 }
 
 .hashTag {
   width: 20px;
   height: 20px;
   position: relative;
+  transition: transform 0.2s ease;
 }
 
 .title {
   font: var(--text-lg-16-bold);
+  color: rgba(255, 255, 255, 0.94);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .pin {
   width: 20px;
   height: 20px;
   position: relative;
+  opacity: 0.7;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .crown {
   width: 20px;
   height: 20px;
   position: relative;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
+}
+
+.menu::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(112, 255, 94, 0.12), transparent 38%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  content: '';
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .menu:hover {
+    background: var(--sidebar-item-hover-bg);
+    box-shadow: var(--sidebar-item-hover-shadow);
+    transform: translateX(calc(var(--sidebar-item-hover-offset) + 1px));
+  }
+
+  .menu:hover::before {
+    opacity: 1;
+  }
+
+  .menu:hover .hashTag {
+    transform: scale(1.08);
+  }
+
+  .menu:hover .title {
+    color: var(--color-white);
+    transform: translateX(1px);
+  }
+
+  .menu:hover .pin {
+    opacity: 1;
+    transform: translateY(-1px);
+  }
+
+  .menu:hover .crown {
+    transform: translateY(-1px) scale(1.04);
+    filter: drop-shadow(0 4px 10px rgba(255, 203, 70, 0.22));
+  }
 }
 
 /* PC */

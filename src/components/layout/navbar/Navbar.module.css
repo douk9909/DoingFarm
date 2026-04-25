@@ -1,47 +1,38 @@
-:root {
-  --sidebar-width-pc: 340px;
-  --sidebar-width-tablet: 220px;
-  --sidebar-width-mobile: 0px;
-}
-
 .container {
-  position: fixed;
+  position: sticky;
   top: 0;
   right: 0;
-  left: var(--sidebar-width-mobile);
+  left: 0;
   z-index: 10;
-  transition: left 0.3s ease;
-
-  padding: 10px 20px 10px 10px;
-
-  height: 60px;
   display: flex;
+  height: 60px;
   align-items: center;
   justify-content: space-between;
-
-  background-color: var(--color-background);
-  border-bottom: 2px solid var(--color-black-300);
+  padding: 10px 16px 10px 10px;
+  background:
+    linear-gradient(180deg, rgba(29, 29, 35, 0.98), rgba(21, 21, 27, 0.96));
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.14),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(18px);
 }
 
 .leftContainer {
+  display: flex;
   flex: 1;
+  align-items: center;
 }
 
 .characterImg {
   display: none;
 }
 
-.sideMenuButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .rightContainer {
-  height: 100%;
   display: flex;
+  height: 100%;
   align-items: center;
-  gap: 24px;
+  gap: 18px;
 }
 
 .userList {
@@ -51,6 +42,11 @@
 
 .profile {
   margin-left: -13px;
+  border: 2px solid rgba(24, 24, 30, 0.9);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.14);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .profile:not(:first-child) {
@@ -58,54 +54,110 @@
 }
 
 .extraCount {
-  color: var(--color-gray-600);
   padding-left: 8px;
+  color: rgba(255, 255, 255, 0.66);
   font: var(--text-sm-medium);
 }
 
 .line {
-  width: 2px;
-  height: 14px;
-  background-color: var(--color-black-300);
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.14), transparent);
 }
 
 .buttonContainer {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
 }
 
 .button {
-  background-color: transparent;
-  border: none;
-  display: flex;
+  position: relative;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  border: none;
   border-radius: var(--radius-sm);
+  background-color: transparent;
   padding: 10px 12px;
+  color: var(--color-gray-700);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
 
   & span {
     display: none;
   }
 }
 
+.button::before {
+  display: none;
+}
+
+.buttonIcon {
+  transition:
+    transform 0.18s ease,
+    filter 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.sideMenuButton {
+  width: 42px;
+  height: 42px;
+}
+
+.sideMenuButtonOpen {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: var(--color-white);
+}
+
+.onlyMobileIcon {
+  width: 18px;
+  height: 18px;
+}
+
 .textButton {
   gap: 9px;
   font: var(--text-lg-16-medium);
-  color: var(--color-gray-700);
 }
 
-.button:hover {
-  background-color: var(--color-black-300);
+.manageButton {
+}
+
+.inviteButton {
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .button:hover {
+    background-color: var(--color-black-300);
+    color: var(--color-white);
+  }
+
+  .button:hover .buttonIcon {
+    transform: none;
+  }
+
+  .sideMenuButton:hover {
+    background-color: var(--color-black-300);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--color-black-300);
+  }
+
+  .userList:hover .profile {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.16);
+  }
 }
 
 .button:active {
   background-color: var(--color-black-400);
-  transform: scale(0.95);
+  transform: scale(0.97);
 }
 
 @media (min-width: 768px) {
   .container {
-    left: var(--sidebar-width-tablet);
     height: 72px;
     padding: 16px 30px;
   }
@@ -119,30 +171,32 @@
     display: none;
   }
 
+  .rightContainer {
+    gap: 24px;
+  }
+
+  .textButton {
+    padding: 10px 14px;
+  }
+
   .textButton span {
     display: inline;
   }
 
   .inviteButton {
-    background-color: var(--color-primary-500);
     color: var(--color-white);
+    background-color: var(--color-primary-500);
   }
 
   .inviteButton:hover {
     background-color: var(--color-primary-700);
   }
-  .inviteButton:active {
-    background-color: var(--color-primary-800);
-  }
 
-  /* Todo: icon svg 컴포넌트화 하면 제거 */
   .iconStyle {
     filter: brightness(0) invert(1);
   }
-}
 
-@media (min-width: 1200px) {
-  .container {
-    left: var(--sidebar-width-pc);
+  .inviteButton:active {
+    background-color: var(--color-primary-800);
   }
 }
