@@ -53,7 +53,7 @@ export default function Column({ id, title, cards, totalCount }: ColumnProps) {
         </button>
       </div>
 
-      <div className={styles.cardList}>
+      <div className={`${styles.cardList} custom-scrollbar`}>
         {cards.map((card) => (
           <Card
             key={card.id}

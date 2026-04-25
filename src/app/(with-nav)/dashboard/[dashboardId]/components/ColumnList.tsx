@@ -1,5 +1,9 @@
 import Column from './Column';
 import styles from './ColumnList.module.css';
+import CardImg1 from '@/assets/columnImg1.svg';
+import CardImg2 from '@/assets/columnImg2.svg';
+import CardImg3 from '@/assets/columnImg3.svg';
+
 export default async function ColumnList({ dashboardId }: { dashboardId: number }) {
   // api 연동 후 fetch
   const mockColumns = [
@@ -22,7 +26,7 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
           tags: ['프로젝트', '디자인', '상'],
           dueDate: '2025-07-18',
           assignee: { nickname: '박민영', profileImage: null },
-          src: null,
+          src: CardImg1,
         },
         {
           id: 3,
@@ -45,7 +49,7 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
           tags: ['프로젝트', '디자인', '상'],
           dueDate: '2025-07-17',
           assignee: { nickname: '박민영', profileImage: null },
-          src: null,
+          src: CardImg2,
         },
       ],
     },
@@ -68,7 +72,7 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
           tags: ['프로젝트'],
           dueDate: '2025-06-30',
           assignee: { nickname: '박민영', profileImage: null },
-          src: null,
+          src: CardImg3,
         },
       ],
     },
