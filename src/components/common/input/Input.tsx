@@ -8,7 +8,7 @@ interface InputProps
     Omit<BaseInputFieldProps, 'children'>,
     Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {}
 
-export const InputCore = forwardRef<HTMLInputElement, InputProps>(function InputCore(
+export const Input = forwardRef<HTMLInputElement, InputProps>(function InputCore(
   {
     type = 'text',
     label,
@@ -49,4 +49,4 @@ export const InputCore = forwardRef<HTMLInputElement, InputProps>(function Input
   );
 });
 
-export default InputCore;
+export default Input;
