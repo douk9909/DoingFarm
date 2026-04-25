@@ -4,11 +4,12 @@ import landingCircleLineRightImage from '@/assets/backgroundImg/landing-circle-l
 import mainImage1 from '@/assets/mainImg/mainimg1.svg';
 import mainImage2 from '@/assets/mainImg/mainimg2.svg';
 import mainImage3 from '@/assets/mainImg/mainimg3.svg';
+import doingfarmInstaImage from '@/assets/mainImg/doingfarmInsta.svg';
 import type { FeatureContent } from './landingContent';
 import styles from './LandingFeatureSections.module.css';
 
 interface LandingFeatureSectionsProps {
-  featureContents: readonly [FeatureContent, FeatureContent, FeatureContent];
+  featureContents: readonly [FeatureContent, FeatureContent, FeatureContent, FeatureContent];
 }
 
 interface FeatureCopyBlockProps extends FeatureContent {
@@ -91,6 +92,20 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
             width={1434}
             height={329}
             className={styles.featureWideImage}
+          />
+        </div>
+      </section>
+
+      <section className={styles.featureSectionColumn}>
+        <FeatureCopyBlock {...featureContents[3]} wide />
+
+        <div className={styles.featureInstaPanel}>
+          <Image
+            src={doingfarmInstaImage}
+            alt="두잉팜 인스타그램 안내 카드"
+            width={977}
+            height={269}
+            className={styles.featureInstaImage}
           />
         </div>
       </section>

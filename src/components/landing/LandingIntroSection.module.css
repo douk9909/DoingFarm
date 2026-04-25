@@ -34,7 +34,7 @@
   display: grid;
   grid-template-columns: 1fr;
   align-items: start;
-  gap: 20px;
+  gap: 16px;
   width: calc(100% - 24px);
   margin: 0 auto;
   padding-top: 20px;
@@ -45,6 +45,7 @@
   z-index: 3;
   padding-top: 12px;
   margin-left: 0;
+  max-width: 340px;
 }
 
 .heroTitle {
@@ -65,14 +66,14 @@
   display: block;
   margin-bottom: 4px;
   font-size: 28px;
-  white-space: normal;
+  word-break: keep-all;
 }
 
 .heroTitleAccent {
   display: block;
   font-size: 40px;
   color: var(--color-primary-970);
-  white-space: normal;
+  word-break: keep-all;
   text-shadow:
     1px 1px 0 rgba(228, 255, 137, 0.28),
     0 5px 0 rgba(44, 105, 17, 0.72),
@@ -85,7 +86,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .heroButtonSecondary,
@@ -122,17 +123,18 @@
 .heroShowcase {
   position: relative;
   z-index: 1;
-  min-height: auto;
-  margin-top: 8px;
+  min-height: 220px;
+  margin-top: -10px;
   overflow: visible;
 }
 
 .showcaseMain {
   position: relative;
   top: 0;
-  right: auto;
-  width: 100%;
-  max-width: 100%;
+  right: 0;
+  width: min(150%, 600px);
+  max-width: none;
+  margin-left: auto;
 }
 
 .showcaseMainImage {
@@ -192,13 +194,13 @@
 
   .heroInner {
     width: calc(100% - 32px);
-    gap: 32px;
+    gap: 18px;
     padding-top: 28px;
   }
 
   .heroCopy {
-    max-width: 520px;
-    padding-top: 24px;
+    max-width: 420px;
+    padding-top: 18px;
   }
 
   .heroTitle {
@@ -215,7 +217,7 @@
   }
 
   .showcaseMain {
-    width: 100%;
+    width: min(132%, 720px);
   }
 
   .heroCarrot {
@@ -300,5 +302,39 @@
     bottom: -54px;
     width: 440px;
     height: 388px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1500px) {
+  .heroInner {
+    grid-template-columns: minmax(430px, 500px) minmax(540px, 1fr);
+    width: calc(100% - 88px);
+    gap: 20px;
+  }
+
+  .heroCopy {
+    padding-top: 230px;
+    margin-left: 92px;
+    max-width: 460px;
+  }
+
+  .heroTitleLine {
+    font-size: 44px;
+    white-space: normal;
+  }
+
+  .heroTitleAccent {
+    font-size: 60px;
+    white-space: normal;
+  }
+
+  .heroActions {
+    margin-top: 28px;
+  }
+
+  .showcaseMain {
+    top: 74px;
+    right: -28px;
+    width: min(920px, 58vw);
   }
 }
