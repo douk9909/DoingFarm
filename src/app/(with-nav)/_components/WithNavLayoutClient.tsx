@@ -17,12 +17,12 @@ interface WithNavLayoutClientProps {
   initialSidebarWidth: number | null;
 }
 
-// Cookie 저장
-function writeCookie(name: string, value: string) {
+// 쿠키 저장
+function setSidebarCookie(name: string, value: string) {
   document.cookie = `${name}=${value}; path=/; max-age=31536000; samesite=lax`;
 }
 
-// With-nav 셸
+// With-nav 클라이언트 셸
 export function WithNavLayoutClient({
   children,
   initialSidebarWidth,
@@ -30,23 +30,23 @@ export function WithNavLayoutClient({
   // 초기 폭
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(initialSidebarWidth);
   const [viewportMode, setViewportMode] = useState<ViewportMode>('mobile');
-  const [isResizing, setIsResizing] = useState(false);
+  const [isSidebarResizing, setIsSidebarResizing] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     // 뷰포트 동기화
-    const syncViewportMode = () => {
+    const updateViewportMode = () => {
       const nextViewportMode = getViewportMode(window.innerWidth);
       setViewportMode(nextViewportMode);
 
       // 뷰포트 저장
-      writeCookie(SIDEBAR_VIEWPORT_COOKIE_NAME, nextViewportMode);
+      setSidebarCookie(SIDEBAR_VIEWPORT_COOKIE_NAME, nextViewportMode);
 
       if (nextViewportMode === 'mobile') {
         return;
       }
 
-      // 모바일 닫힘
+      // 모바일 드로어 닫힘
       setIsMobileSidebarOpen(false);
 
       // 저장 폭 유지
@@ -55,11 +55,11 @@ export function WithNavLayoutClient({
       );
     };
 
-    syncViewportMode();
-    window.addEventListener('resize', syncViewportMode);
+    updateViewportMode();
+    window.addEventListener('resize', updateViewportMode);
 
     return () => {
-      window.removeEventListener('resize', syncViewportMode);
+      window.removeEventListener('resize', updateViewportMode);
     };
   }, []);
 
@@ -83,45 +83,45 @@ export function WithNavLayoutClient({
     }
 
     // Esc 닫힘
-    const handleKeyDown = (event: KeyboardEvent) => {
+    const closeMobileSidebarOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setIsMobileSidebarOpen(false);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', closeMobileSidebarOnEscape);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', closeMobileSidebarOnEscape);
     };
   }, [isMobileSidebarOpen, viewportMode]);
 
   useEffect(() => {
-    if (!isResizing) {
+    if (!isSidebarResizing) {
       return;
     }
 
-    // 드래그 폭
-    const handleMouseMove = (event: MouseEvent) => {
+    // 리사이즈 반영
+    const handleSidebarResize = (event: MouseEvent) => {
       const nextSidebarWidth = clampSidebarWidth(event.clientX);
       setSidebarWidth(nextSidebarWidth);
 
-      // 리사이즈 저장
-      writeCookie(SIDEBAR_WIDTH_COOKIE_NAME, String(nextSidebarWidth));
+      // 폭 저장
+      setSidebarCookie(SIDEBAR_WIDTH_COOKIE_NAME, String(nextSidebarWidth));
     };
 
-    const handleMouseUp = () => {
-      setIsResizing(false);
+    const finishSidebarResize = () => {
+      setIsSidebarResizing(false);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
+    window.addEventListener('mousemove', handleSidebarResize);
+    window.addEventListener('mouseup', finishSidebarResize);
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener('mousemove', handleSidebarResize);
+      window.removeEventListener('mouseup', finishSidebarResize);
     };
-  }, [isResizing]);
+  }, [isSidebarResizing]);
 
   return (
     <div
@@ -141,7 +141,7 @@ export function WithNavLayoutClient({
       <div
         className={styles.resizeHandle}
         role="presentation"
-        onMouseDown={() => setIsResizing(true)}
+        onMouseDown={() => setIsSidebarResizing(true)}
       />
       <div className={styles.contentArea}>
         <Navbar
