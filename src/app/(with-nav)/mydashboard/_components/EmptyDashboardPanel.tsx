@@ -1,40 +1,31 @@
-import Image, { type StaticImageData } from 'next/image';
+import Image from 'next/image';
 import Button from '@/components/common/button/Button';
 import plusIcon from '@/assets/icon/ic_plus3.svg';
+import type { DashboardEmptySection } from '../_content/dashboardContent';
 import styles from '../page.module.css';
 
 interface EmptyDashboardPanelProps {
-  message: string;
-  image: StaticImageData;
-  imageAlt: string;
-  actionLabel?: string;
-  priority?: boolean;
+  section: DashboardEmptySection;
 }
 
-export default function EmptyDashboardPanel({
-  message,
-  image,
-  imageAlt,
-  actionLabel,
-  priority = false,
-}: EmptyDashboardPanelProps) {
+export default function EmptyDashboardPanel({ section }: EmptyDashboardPanelProps) {
   return (
     <div className={styles.panel}>
       <div className={styles.emptyState}>
         <Image
-          src={image}
-          alt={imageAlt}
+          src={section.image}
+          alt={section.imageAlt}
           width={110}
           height={74}
           className={styles.stateImage}
-          priority={priority}
+          priority={section.priority}
         />
 
-        <p className={styles.message}>{message}</p>
+        <p className={styles.message}>{section.message}</p>
 
-        {actionLabel ? (
+        {section.actionLabel ? (
           <Button size="sm" className={styles.createButton}>
-            {actionLabel}
+            {section.actionLabel}
             <Image
               src={plusIcon}
               alt=""
