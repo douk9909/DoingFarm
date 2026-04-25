@@ -57,12 +57,9 @@
 }
 
 .active {
-  background:
-    linear-gradient(180deg, rgba(54, 54, 61, 0.96), rgba(42, 42, 48, 0.96));
+  background: var(--sidebar-item-active-bg);
   border-radius: 15px;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.05),
-    0 10px 24px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--sidebar-item-active-shadow);
 }
 
 .home span {
@@ -77,8 +74,8 @@
 
 @media (hover: hover) and (pointer: fine) {
   .add > button:hover {
-    background: rgba(101, 255, 88, 0.12);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
+    background: var(--sidebar-add-button-hover-bg);
+    box-shadow: var(--sidebar-add-button-hover-shadow);
     transform: translateY(-1px);
   }
 
@@ -87,11 +84,9 @@
   }
 
   .home:hover {
-    background: linear-gradient(180deg, rgba(50, 50, 56, 0.88), rgba(38, 38, 44, 0.92));
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.05),
-      0 14px 28px rgba(0, 0, 0, 0.16);
-    transform: translateX(2px);
+    background: var(--sidebar-item-hover-bg);
+    box-shadow: var(--sidebar-item-hover-shadow);
+    transform: translateX(var(--sidebar-item-hover-offset));
   }
 }
 
