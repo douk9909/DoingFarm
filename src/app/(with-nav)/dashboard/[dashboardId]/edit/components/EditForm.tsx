@@ -7,6 +7,7 @@ import Button from '@/components/common/button/Button';
 import { cn } from '@/lib/utils/cn';
 
 import styles from '../edit.module.css';
+import ColorPicker from './ColorPicker';
 
 interface EditFormProps {
   initialTitle: string;
@@ -21,7 +22,7 @@ export default function EditForm({ initialTitle, initialColor }: EditFormProps) 
     <form className={cn(styles.section, styles.editTitleForm)}>
       <h2 className={styles.title}>{initialTitle}</h2>
       <Input type="text" label="대시보드 이름" value={initialTitle} className={styles.inputTitle} />
-      <div className={styles.colorButtons}></div>
+      <ColorPicker />
       <Button
         type="submit"
         disabled={title === initialTitle && color === initialColor}
