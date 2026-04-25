@@ -2,8 +2,7 @@ import Image, { type StaticImageData } from 'next/image';
 import myDashboardBgImage from '@/assets/backgroundImg/dashboard_bg.svg';
 import dashboardBoxImage from '@/assets/character/empty_box.svg';
 import dashboardCarrotImage from '@/assets/character/empty_carrot.svg';
-import plusIcon from '@/assets/icon/ic_plus3.svg';
-import Button from '@/components/common/button/Button';
+import EmptyDashboardPanel from './_components/EmptyDashboardPanel';
 import styles from './page.module.css';
 
 interface DashboardSection {
@@ -13,6 +12,7 @@ interface DashboardSection {
   imageAlt: string;
   actionLabel?: string;
   hideTitle?: boolean;
+  priority?: boolean;
 }
 
 const dashboardSections: readonly DashboardSection[] = [
@@ -23,12 +23,13 @@ const dashboardSections: readonly DashboardSection[] = [
     imageAlt: '대시보드 박스',
     actionLabel: '생성하기',
     hideTitle: true,
+    priority: true,
   },
   {
     title: '초대 받은 대시보드',
     message: '아직 초대받은 대시보드가 없습니다.',
     image: dashboardCarrotImage,
-    imageAlt: '초대 받은 대시보드 캐럿',
+    imageAlt: '초대 받은 대시보드 캐릭터',
   },
 ] as const;
 
@@ -60,33 +61,13 @@ export default function MyDashboardPage() {
                   <h2 className={styles.sectionTitle}>{section.title}</h2>
                 )}
 
-                <div className={styles.panel}>
-                  <div className={styles.emptyState}>
-                    <Image
-                      src={section.image}
-                      alt={section.imageAlt}
-                      width={110}
-                      height={74}
-                      className={styles.stateImage}
-                      priority={section.title === '내 대시보드'}
-                    />
-
-                    <p className={styles.message}>{section.message}</p>
-
-                    {section.actionLabel ? (
-                      <Button size="sm" className={styles.createButton}>
-                        {section.actionLabel}
-                        <Image
-                          src={plusIcon}
-                          alt=""
-                          width={12}
-                          height={12}
-                          className={styles.createButtonPlus}
-                        />
-                      </Button>
-                    ) : null}
-                  </div>
-                </div>
+                <EmptyDashboardPanel
+                  message={section.message}
+                  image={section.image}
+                  imageAlt={section.imageAlt}
+                  actionLabel={section.actionLabel}
+                  priority={section.priority}
+                />
               </section>
             ))}
           </div>

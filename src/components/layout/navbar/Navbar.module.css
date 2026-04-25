@@ -126,8 +126,6 @@
 }
 
 .inviteButton {
-  color: var(--color-white);
-  background-color: var(--color-primary-500);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -145,7 +143,7 @@
   }
 
   .inviteButton:hover {
-    background-color: var(--color-primary-700);
+    background-color: var(--color-black-300);
   }
 
   .userList:hover .profile {
@@ -183,6 +181,15 @@
 
   .textButton span {
     display: inline;
+  }
+
+  .inviteButton {
+    color: var(--color-white);
+    background-color: var(--color-primary-500);
+  }
+
+  .inviteButton:hover {
+    background-color: var(--color-primary-700);
   }
 
   .iconStyle {
