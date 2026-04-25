@@ -1,0 +1,21 @@
+import { SVGProps } from 'react';
+
+interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+  size?: number;
+  color?: string;
+}
+
+export default function HomeIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill={color || '#a39fb2'}
+      {...props}
+    >
+      <path d="M21 11.25v9a.75.75 0 0 1-.75.75H15a.75.75 0 0 1-.75-.75v-4.875a.375.375 0 0 0-.375-.375h-3.75a.375.375 0 0 0-.375.375v4.875A.75.75 0 0 1 9 21H3.75a.75.75 0 0 1-.75-.75v-9c0-.398.158-.78.44-1.06l7.5-7.5a1.5 1.5 0 0 1 2.12 0l7.5 7.5a1.5 1.5 0 0 1 .44 1.06" />
+    </svg>
+  );
+}
