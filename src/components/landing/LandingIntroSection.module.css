@@ -25,7 +25,7 @@
 
 .heroBackgroundImage {
   object-fit: cover;
-  object-position: center top;
+  object-position: center bottom;
 }
 
 .heroInner {
