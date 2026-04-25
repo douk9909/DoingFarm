@@ -1,0 +1,29 @@
+.colorList {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 23px;
+}
+
+.colorButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background-color: color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.colorButton:hover {
+  transform: scale(1.1);
+}
+
+.colorButton:active {
+  transform: scale(0.92);
+}
+
+.selected {
+  outline-offset: 2px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}

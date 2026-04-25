@@ -169,20 +169,6 @@
   opacity: 0.8;
 }
 
-.colorList {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 23px;
-}
-
-.pickColor {
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  background-color: color;
-}
-
 @media (min-width: 768px) {
   .container {
     padding: 20px;
