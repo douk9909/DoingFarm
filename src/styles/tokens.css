@@ -1,10 +1,16 @@
 :root {
   /* brand */
-  --color-primary: #00a300;
-  --color-primary-hover: #08ba08;
-  --color-primary-dark: #007910;
-  --color-primary-light: #4fcf3f;
-  --color-primary-pale: #cfffd2;
+  --color-primary-100: #cff8d2;
+  --color-primary-200: #a6ebaa;
+  --color-primary-300: #6bda71;
+  --color-primary-400: #3fc03f;
+  --color-primary-500: #00a200;
+  --color-primary-600: #0b8a0b;
+  --color-primary-700: #0d7910;
+  --color-primary-800: #10671f;
+  --color-primary-900: #00490c;
+  --color-primary-950: #00330d;
+  --color-primary-970: #98e309;
 
   /* background */
   --color-background: #1b1a1f;
@@ -47,16 +53,11 @@
   --color-profile-rose: #ae2e24;
   --color-profile-cobalt: #1458bc;
   --color-profile-yellow: #bd8c00;
-  --color-profile-orange: #9f4b00;
+  --color-profile-orange: #e56c00;
 
-  /* typography */
-  --font-size-12: 12px;
-  --font-size-14: 14px;
-  --font-size-16: 16px;
-  --font-size-18: 18px;
-  --font-size-20: 20px;
-  --font-size-24: 24px;
-  --font-size-32: 32px;
+  /* logo color */
+  --color-logo-green: #98e309;
+  --color-logo-red: #cb2f33;
 
   /* radius */
   --radius-sm: 8px;

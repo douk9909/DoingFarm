@@ -1,0 +1,110 @@
+/* 모바일  */
+.sideMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
+}
+
+.add {
+  padding: 12px 14px 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add > span {
+  font: var(--text-lg-14-bold);
+  color: #a39fb2;
+}
+
+.add > button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.02);
+  border: none;
+  padding: 0;
+  transition:
+    background-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.plus {
+  width: 12.5px;
+  height: 12.5px;
+  display: block;
+  transition: transform 0.18s ease;
+}
+
+.home {
+  border-radius: 15px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.home a {
+  padding: 16px 14px 16px 12px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.active {
+  background: var(--sidebar-item-active-bg);
+  border-radius: 15px;
+  box-shadow: var(--sidebar-item-active-shadow);
+}
+
+.home span {
+  font: var(--text-lg-16-medium);
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.homeImg {
+  width: 18px;
+  height: 18px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .add > button:hover {
+    background: var(--sidebar-add-button-hover-bg);
+    box-shadow: var(--sidebar-add-button-hover-shadow);
+    transform: translateY(-1px);
+  }
+
+  .add > button:hover .plus {
+    transform: rotate(90deg) scale(1.04);
+  }
+
+  .home:hover {
+    background: var(--sidebar-item-hover-bg);
+    box-shadow: var(--sidebar-item-hover-shadow);
+    transform: translateX(var(--sidebar-item-hover-offset));
+  }
+}
+
+/* PC */
+@media (min-width: 1200px) {
+  .sideMenu {
+    padding: 20px 24px;
+  }
+
+  .add > span {
+    font: var(--text-lg-16-bold);
+  }
+
+  .home > a {
+    padding: 22px 14px;
+  }
+
+  .home span {
+    font: var(--text-2lg-medium);
+  }
+}

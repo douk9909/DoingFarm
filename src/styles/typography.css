@@ -1,0 +1,53 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  /* Font Family */
+  --font-family: 'Pretendard', sans-serif;
+
+  /* Font Weight */
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Typography */
+  /* xs - 12px */
+  --text-xs-medium: 500 12px/normal var(--font-family);
+  --text-xs-semibold: 600 12px/normal var(--font-family);
+
+  /* sm - 13px */
+  --text-sm-medium: 500 13px/normal var(--font-family);
+  --text-sm-semibold: 600 13px/normal var(--font-family);
+
+  /* md - 14px */
+  --text-md-medium: 500 14px/normal var(--font-family);
+  --text-md-medium-150: 500 14px/150% var(--font-family);
+
+  /* lg - 14px */
+  --text-lg-14-semibold: 600 14px/normal var(--font-family);
+  --text-lg-14-bold: 700 14px/normal var(--font-family);
+
+  /* lg - 16px */
+  --text-lg-16-medium: 500 16px/normal var(--font-family);
+  --text-lg-16-semibold: 600 16px/normal var(--font-family);
+  --text-lg-16-medium-160: 500 16px/160% var(--font-family);
+  --text-lg-16-bold: 700 16px/normal var(--font-family);
+
+  /* 2lg - 18px */
+  --text-2lg-medium: 500 18px/normal var(--font-family);
+  --text-2lg-semibold: 600 18px/normal var(--font-family);
+  --text-2lg-bold: 700 18px/normal var(--font-family);
+
+  /* xl - 20px */
+  --text-xl-medium: 500 20px/normal var(--font-family);
+  --text-xl-semibold: 600 20px/normal var(--font-family);
+  --text-xl-bold: 700 20px/normal var(--font-family);
+
+  /* 2xl - 24px */
+  --text-2xl-medium: 500 24px/normal var(--font-family);
+  --text-2xl-semibold: 600 24px/normal var(--font-family);
+  --text-2xl-bold: 700 24px/normal var(--font-family);
+
+  /* 3xl - 32px */
+  --text-3xl-semibold: 600 32px/normal var(--font-family);
+  --text-3xl-bold: 700 32px/normal var(--font-family);
+}

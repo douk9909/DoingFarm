@@ -1,0 +1,48 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 520px;
+}
+
+.logoWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.inputGroup {
+  margin-bottom: 12px;
+}
+
+.inputGroup:last-of-type {
+  margin-bottom: 40px;
+}
+
+.eyeButton {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-gray-500);
+}
+
+.submitButton {
+  margin-bottom: 20px;
+}
+
+.submitButton:disabled {
+  background-color: var(--color-primary-800);
+  color: var(--color-primary-950);
+}
+
+.signupLink {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-gray-600);
+}
+
+.signupLink a {
+  color: var(--color-gray-700);
+}
