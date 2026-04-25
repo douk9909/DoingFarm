@@ -13,12 +13,23 @@ interface LandingFeatureSectionsProps {
 }
 
 interface FeatureCopyBlockProps extends FeatureContent {
+  className?: string;
   wide?: boolean;
 }
 
-function FeatureCopyBlock({ label, title, description, wide = false }: FeatureCopyBlockProps) {
+function FeatureCopyBlock({
+  className,
+  label,
+  title,
+  description,
+  wide = false,
+}: FeatureCopyBlockProps) {
+  const copyClassName = [wide ? styles.featureCopyWide : styles.featureCopy, className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className={wide ? styles.featureCopyWide : styles.featureCopy}>
+    <div className={copyClassName}>
       <p className={styles.pointLabel}>{label}</p>
       <h2 className={styles.pointTitle}>
         <span className={styles.titleLine}>{title[0]}</span>
@@ -97,7 +108,7 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
       </section>
 
       <section className={styles.featureSectionColumn}>
-        <FeatureCopyBlock {...featureContents[3]} wide />
+        <FeatureCopyBlock {...featureContents[3]} className={styles.featureInstaCopy} wide />
 
         <div className={styles.featureInstaPanel}>
           <Image

@@ -134,6 +134,10 @@
   margin: 28px auto 0;
 }
 
+.featureInstaCopy {
+  padding-top: 18px;
+}
+
 .featureWideImage {
   display: block;
   width: 100%;
@@ -149,7 +153,7 @@
   width: 100%;
   max-width: 977px;
   height: auto;
-  margin: 0 auto;
+  margin: 0;
   filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.16));
   transition:
     transform 0.28s ease,
@@ -300,6 +304,13 @@
   }
 
   .featureInstaPanel {
-    margin-top: 32px;
+    width: min(100%, 977px);
+    margin-top: 36px;
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .featureInstaCopy {
+    padding-top: 24px;
   }
 }
