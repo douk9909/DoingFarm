@@ -11,15 +11,6 @@
   background-color: var(--color-background);
 }
 
-.prevButton {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  font: var(--text-md-medium);
-  color: var(--color-gray-600);
-}
-
 .contentWrapper {
   width: 284px;
   display: flex;
@@ -29,6 +20,123 @@
   gap: 24px;
 }
 
+.prevButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font: var(--text-md-medium);
+  color: var(--color-gray-600);
+  cursor: pointer;
+}
+
+.section {
+  width: 100%;
+  padding: 32px 28px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+}
+
+.title {
+  font: var(--text-xl-bold);
+  color: var(--color-gray-700);
+}
+
+.subTitle {
+  font: var(--text-lg-16-medium);
+  font-weight: 400;
+  color: #9fa6b2;
+}
+
+/* 대시보드 title 수정 section */
+.editTitleForm {
+  gap: 24px;
+  font: var(--text-lg-14-semibold);
+}
+
+.inputTitle {
+  width: 100%;
+}
+
+.editButton {
+  margin-top: 16px;
+  border-radius: 8px;
+  font: var(--text-lg-16-semibold);
+}
+
+/* 구성원 및 이메일 section*/
+.sectionHeader {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pageWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.pageInfo {
+  font: var(--text-xs-medium);
+  color: #9fa6b2;
+}
+
+.pageButton {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sectionContent {
+  width: 100%;
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-black-400);
+}
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.profileWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.profileName {
+  font: var(--text-lg-16-medium);
+  font-weight: 400;
+  color: var(--color-gray-900);
+}
+
+.buttonStyle {
+  border-radius: 4px;
+  padding: 7px 20px;
+}
+
+/* 하단 삭제 버튼 */
 .deleteButton {
   width: 320px;
   padding: 16px 76px;
@@ -45,39 +153,6 @@
   background-color: var(--color-danger);
   color: var(--color-white);
   opacity: 0.8;
-}
-
-.section {
-  width: 100%;
-  padding: 32px 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 24px;
-
-  background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
-}
-
-.title {
-  font: var(--text-xl-bold);
-  color: var(--color-gray-700);
-}
-
-.inputTitle {
-  width: 100%;
-}
-
-.editTitleForm {
-  gap: 24px;
-  font: var(--text-lg-14-semibold);
-}
-
-.editButton {
-  margin-top: 16px;
-  border-radius: 8px;
-  font: var(--text-lg-16-semibold);
 }
 
 @media (min-width: 768px) {
@@ -100,5 +175,13 @@
 
   .editButton {
     font: var(--text-lg-16-semibold);
+  }
+
+  .pageInfo {
+    font: var(--text-md-medium);
+  }
+
+  .item {
+    padding: 16px 0;
   }
 }

@@ -6,23 +6,27 @@ import styles from '../edit.module.css';
 export default function MembersList() {
   return (
     <div className={styles.section}>
-      <div>
+      <div className={styles.sectionHeader}>
         <h2 className={styles.title}>구성원</h2>
-        <div>
-          <span>n 페이지 중 n</span>
-          <div>
+        <div className={styles.pageWrapper}>
+          <span className={styles.pageInfo}>n 페이지 중 n</span>
+          <div className={styles.pageButton}>
             <button></button>
             <button></button>
           </div>
         </div>
       </div>
-      <div>
-        <p>이름</p>
-        <ul>
-          <li>
-            <Avatar name="이름" />
-            <span>이름</span>
-            <Button>삭제</Button>
+      <div className={styles.sectionContent}>
+        <p className={styles.subTitle}>이름</p>
+        <ul className={styles.list}>
+          <li className={styles.item}>
+            <div className={styles.profileWrapper}>
+              <Avatar name="이름" />
+              <span className={styles.profileName}>이름</span>
+            </div>
+            <Button variant="secondary" className={styles.buttonStyle}>
+              삭제
+            </Button>
           </li>
         </ul>
       </div>
