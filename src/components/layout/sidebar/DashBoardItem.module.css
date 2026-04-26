@@ -64,7 +64,8 @@
 .menu::before {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(112, 255, 94, 0.12), transparent 38%);
+  background:
+    linear-gradient(90deg, rgba(112, 255, 94, 0.12), transparent 38%);
   opacity: 0;
   transition: opacity 0.2s ease;
   content: '';
@@ -111,6 +112,7 @@
   .hashTag {
     width: 24px;
     height: 24px;
+    top: -4px;
   }
 
   .title {
@@ -120,6 +122,7 @@
   .pin {
     width: 24px;
     height: 24px;
+    top: -3px;
   }
 
   .crown {

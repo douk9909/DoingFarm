@@ -48,7 +48,7 @@ export default function Column({ id, title, cards, totalCount }: ColumnProps) {
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{totalCount}</span>
         </div>
-        <button className={styles.settingButton}>
+        <button>
           <Image src={SettingIcon} alt="설정" width={20} height={20} />
         </button>
       </div>

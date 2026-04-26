@@ -1,9 +1,14 @@
 .header {
   width: 100%;
-  padding: 24px 50px 14px 50px;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.hashTag {
+  width: 20px;
+  height: 20px;
 }
 
 .titleWrapper {
@@ -13,6 +18,31 @@
 }
 
 .title {
-  font: var(--text-3xl-bold);
+  font: var(--text-xl-bold);
   color: var(--color-gray-900);
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 18px 0 10px 0px;
+  }
+
+  .hashTag {
+    width: 30px;
+    height: 30px;
+  }
+
+  .title {
+    font: var(--text-2lg-bold);
+  }
+}
+
+@media (min-width: 1200px) {
+  .header {
+    padding: 24px 50px 14px 50px;
+  }
+
+  .title {
+    font: var(--text-3xl-bold);
+  }
 }

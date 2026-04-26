@@ -33,7 +33,7 @@ export default function DashBoardHeader({ title, color }: DashBoardHeaderProps) 
   return (
     <header className={styles.header}>
       <div className={styles.titleWrapper}>
-        <Image src={getTagIcon(color)} alt="" width={36} height={36} />
+        <Image className={styles.hashTag} src={getTagIcon(color)} alt="" width={36} height={36} />
         <h1 className={styles.title}>{title}</h1>
       </div>
       <AddColumnButton />

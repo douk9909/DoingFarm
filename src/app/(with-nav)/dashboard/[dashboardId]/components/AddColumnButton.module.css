@@ -1,12 +1,42 @@
 .addButton {
   display: flex;
   align-items: center;
-  padding: 14px 20px;
-  gap: 8px;
+  padding: 6px 10px;
+  gap: 6px;
   background-color: rgba(255, 255, 255, 0.2);
   border-radius: 8px;
 }
 
 .buttonText {
-  font: var(--text-2lg-medium);
+  font: var(--text-sm-medium);
+}
+
+.addIcon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (min-width: 768px) {
+  .addButton {
+    padding: 12px 18px;
+  }
+
+  .buttonText {
+    font: var(--text-lg-16-medium);
+  }
+
+  .addIcon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .addButton {
+    padding: 14px 20px;
+  }
+
+  .buttonText {
+    font: var(--text-2lg-medium);
+  }
 }
