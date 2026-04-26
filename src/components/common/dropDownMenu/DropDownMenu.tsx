@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react';
 
+import { cn } from '@/lib/utils/cn';
+
 import styles from './DropdownMenu.module.css';
 
 interface MenuItem {
@@ -15,9 +17,14 @@ interface MenuItem {
 interface DropdownMenuProps {
   trigger: React.ReactNode;
   menuItems: MenuItem[];
+  position?: 'top' | 'bottom';
 }
 
-export default function DropdownMenu({ trigger, menuItems }: DropdownMenuProps) {
+export default function DropdownMenu({
+  trigger,
+  menuItems,
+  position = 'bottom',
+}: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +46,7 @@ export default function DropdownMenu({ trigger, menuItems }: DropdownMenuProps) 
         {trigger}
       </button>
       {isOpen && (
-        <ul className={styles.menuContainer}>
+        <ul className={cn(styles.menuContainer, position === 'top' ? styles.top : styles.bottom)}>
           {menuItems.map((item) => (
             <li
               key={item.id}
