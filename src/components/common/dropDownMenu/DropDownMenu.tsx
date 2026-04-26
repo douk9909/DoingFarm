@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import styles from './DropdownMenu.module.css';
 
 interface MenuItem {
+  id: string;
   icon?: React.ComponentType<{ className?: string; color?: string }>;
   color?: string;
   label: string;
@@ -12,34 +13,36 @@ interface MenuItem {
 }
 
 interface DropdownMenuProps {
-  children?: React.ReactNode;
+  trigger: React.ReactNode;
   menuItems: MenuItem[];
 }
 
-export default function DropdownMenu({ children, menuItems, ...props }: DropdownMenuProps) {
+export default function DropdownMenu({ trigger, menuItems }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setIsOpen(false);
       }
     };
-    if (isOpen) document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isOpen, setIsOpen]);
+  }, [isOpen]);
 
   return (
     <div className={styles.container} ref={menuRef}>
-      <button className={styles.triggerButton} onClick={() => setIsOpen(!isOpen)}>
-        {children}
+      <button className={styles.triggerButton} onClick={() => setIsOpen((prev) => !prev)}>
+        {trigger}
       </button>
       {isOpen && (
         <ul className={styles.menuContainer}>
           {menuItems.map((item) => (
             <li
-              key={item.label}
+              key={item.id}
               onClick={(e) => {
                 e.stopPropagation();
                 item.onClick();
