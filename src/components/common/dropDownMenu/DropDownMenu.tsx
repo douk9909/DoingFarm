@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import MoreIcon from '@/assets/icons/MoreIcon';
 import SettingIcon from '@/assets/icons/SettingIcon';
 
-import styles from './dropDownMenu.module.css';
+import styles from './DropdownMenu.module.css';
 
 interface dropDownMenuProps {
   status: 'setting' | 'kebab';
@@ -20,7 +20,7 @@ const ICON_MAP = {
   kebab: MoreIcon,
 };
 
-export default function DropDownMenu({ status, menuItems }: dropDownMenuProps) {
+export default function DropdownMenu({ status, menuItems }: dropDownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
