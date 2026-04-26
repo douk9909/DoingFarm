@@ -131,8 +131,11 @@
 }
 
 .featureInstaPanel {
+  display: block;
   width: 100%;
   margin: 28px auto 0;
+  border-radius: 8px;
+  outline: none;
 }
 
 .featureInstaCopy {
@@ -187,6 +190,11 @@
   .featureInstaImage:hover {
     transform: translateY(-6px) scale(1.008);
   }
+}
+
+.featureInstaPanel:focus-visible {
+  outline: 3px solid var(--color-primary-400);
+  outline-offset: 6px;
 }
 
 @media (min-width: 768px) {

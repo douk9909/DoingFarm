@@ -328,3 +328,41 @@
     height: 388px;
   }
 }
+
+@media (min-width: 1200px) and (max-width: 1700px) {
+  .heroInner {
+    grid-template-columns: minmax(430px, 500px) minmax(620px, 1fr);
+    width: calc(100% - 88px);
+    gap: 20px;
+  }
+
+  .heroCopy {
+    max-width: 430px;
+    margin-left: 70px;
+    padding-top: 230px;
+  }
+
+  .heroTitleLine {
+    font-size: 42px;
+    white-space: normal;
+  }
+
+  .heroTitleAccent {
+    font-size: 58px;
+    white-space: normal;
+  }
+
+  .heroActions {
+    margin-top: 28px;
+  }
+
+  .heroShowcase {
+    min-height: clamp(720px, 56vw, 920px);
+  }
+
+  .showcaseMain {
+    top: 74px;
+    right: clamp(-150px, -8vw, -72px);
+    width: min(920px, 60vw);
+  }
+}

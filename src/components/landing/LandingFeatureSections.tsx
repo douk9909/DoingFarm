@@ -110,7 +110,13 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
       <section className={styles.featureSectionColumn}>
         <FeatureCopyBlock {...featureContents[3]} className={styles.featureInstaCopy} wide />
 
-        <div className={styles.featureInstaPanel}>
+        <a
+          href="https://www.instagram.com/doingfarm/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.featureInstaPanel}
+          aria-label="두잉팜 인스타그램으로 이동"
+        >
           <Image
             src={doingfarmInstaImage}
             alt="두잉팜 인스타그램 안내 카드"
@@ -118,7 +124,7 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
             height={269}
             className={styles.featureInstaImage}
           />
-        </div>
+        </a>
       </section>
     </main>
   );
