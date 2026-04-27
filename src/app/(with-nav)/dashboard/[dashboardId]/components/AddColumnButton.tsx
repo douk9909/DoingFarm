@@ -1,11 +1,10 @@
-import AddIcon from '@/assets/icon/ic_plus.svg';
-import Image from 'next/image';
+import PlusCircleIcon from '@/assets/icons/PlusCircleIcon';
 import styles from './AddColumnButton.module.css';
 
 export default function AddColumnButton() {
   return (
-    <button className={styles.addButton}>
-      <Image className={styles.addIcon} src={AddIcon} alt="칼럼 추가" width={24} height={24} />
+    <button aria-label="컬럼 추가" className={styles.addButton}>
+      <PlusCircleIcon width={24} color="var(--color-gray-900)" />
       <span className={styles.buttonText}>새로운 컬럼 추가</span>
     </button>
   );

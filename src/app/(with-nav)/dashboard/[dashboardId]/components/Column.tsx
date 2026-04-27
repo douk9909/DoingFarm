@@ -4,8 +4,8 @@ import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
 import PumpkinIcon from '@/assets/character/pumkin.svg';
-import SettingIcon from '@/assets/icon/ic_setting.svg';
-import PlusIcon from '@/assets/icon/ic_plus_white.svg';
+import PlusIcon from '@/assets/icons/PlusIconCard';
+import SettingIcon from '@/assets/icons/SettingIcon';
 import Image from 'next/image';
 
 interface CardData {
@@ -49,8 +49,8 @@ export default function Column({ title, cards, totalCount }: ColumnProps) {
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{totalCount}</span>
         </div>
-        <button>
-          <Image src={SettingIcon} alt="설정" width={20} height={20} />
+        <button aria-label="컬럼 수정">
+          <SettingIcon size={20} />
         </button>
       </div>
 
@@ -67,9 +67,9 @@ export default function Column({ title, cards, totalCount }: ColumnProps) {
           />
         ))}
       </div>
-      <button className={styles.addCardButton}>
+      <button aria-label="카드 추가" className={styles.addCardButton}>
         <div className={styles.iconWrapper}>
-          <Image src={PlusIcon} alt="콜럼 추가" width={16} height={16} />
+          <PlusIcon size={16} color={'var(--color-gray-900)'} />
         </div>
       </button>
     </div>
