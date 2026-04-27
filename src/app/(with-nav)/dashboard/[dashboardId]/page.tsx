@@ -7,12 +7,13 @@ import ColumnList from './components/ColumnList';
 
 interface DashboardDetailPageProps {
   params: Promise<{
-    dashboardId: number;
+    dashboardId: string;
   }>;
 }
 
 export default async function DashboardDetailPage({ params }: DashboardDetailPageProps) {
   const { dashboardId } = await params;
+  const id = Number(dashboardId);
 
   return (
     <section className={styles.container}>
@@ -25,7 +26,7 @@ export default async function DashboardDetailPage({ params }: DashboardDetailPag
       <div className={styles.content}>
         {/* Todo - api 연동 후 변경 */}
         <DashBoardHeader title="포트폴리오" color="red" />
-        <ColumnList dashboardId={dashboardId} />
+        <ColumnList dashboardId={id} />
       </div>
     </section>
   );

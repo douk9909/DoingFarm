@@ -3,6 +3,7 @@ import Card from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
+import PumpkinIcon from '@/assets/character/pumkin.svg';
 import SettingIcon from '@/assets/icon/ic_setting.svg';
 import PlusIcon from '@/assets/icon/ic_plus_white.svg';
 import Image from 'next/image';
@@ -26,20 +27,20 @@ interface ColumnProps {
   totalCount: number;
 }
 
-export default function Column({ id, title, cards, totalCount }: ColumnProps) {
-  const getColumnIcon = (title: string) => {
-    switch (title) {
-      case 'To-do':
-        return SeedTodo;
-      case 'On Progress':
-        return SeedOnProgress;
-      case 'Done':
-        return CarrotDone;
-      default:
-        return SeedTodo;
-    }
-  };
+const getColumnIcon = (title: string) => {
+  switch (title) {
+    case 'To-do':
+      return SeedTodo;
+    case 'On Progress':
+      return SeedOnProgress;
+    case 'Done':
+      return CarrotDone;
+    default:
+      return PumpkinIcon;
+  }
+};
 
+export default function Column({ title, cards, totalCount }: ColumnProps) {
   return (
     <div className={styles.column}>
       <div className={styles.header}>
