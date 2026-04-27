@@ -1,16 +1,16 @@
 import { TextareaHTMLAttributes, forwardRef, useId } from 'react';
 import BaseInputField, { BaseInputFieldProps } from './BaseInputField';
 import { cn } from '@/lib/utils/cn';
-import styles from './Input.module.css';
+import styles from './TextInput.module.css';
 
-interface TextareaProps
+interface TextAreaProps
   extends
     Omit<BaseInputFieldProps, 'children'>,
     Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'id'> {
   rows?: number;
 }
 
-export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function Textarea(
+export const TextAreaInput = forwardRef<HTMLTextAreaElement, TextAreaProps>(function TextAreaInput(
   {
     label,
     status = 'default',
@@ -19,7 +19,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     rows = 4,
     className,
     ...props
-  }: TextareaProps,
+  }: TextAreaProps,
   ref,
 ) {
   const generatedId = useId();
@@ -44,3 +44,5 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(function 
     </BaseInputField>
   );
 });
+
+export default TextAreaInput;

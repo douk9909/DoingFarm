@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { Input } from '@/components/common/input/Input';
+import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { cn } from '@/lib/utils/cn';
 
@@ -28,7 +28,7 @@ export default function EditForm({ initialTitle, initialColor }: EditFormProps) 
   return (
     <form className={cn(styles.section, styles.editTitleForm)} onSubmit={handleSubmit}>
       <h2 className={styles.title}>{initialTitle}</h2>
-      <Input
+      <Input.Text
         type="text"
         label="대시보드 이름"
         value={title}
