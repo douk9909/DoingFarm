@@ -7,6 +7,7 @@ interface DashboardCreateModalContextValue {
   openDashboardCreateModal: () => void;
 }
 
+// 사이드바와 빈 대시보드 화면에서 같은 생성 모달 공유
 const DashboardCreateModalContext = createContext<DashboardCreateModalContextValue | null>(null);
 
 interface DashboardCreateModalProviderProps {

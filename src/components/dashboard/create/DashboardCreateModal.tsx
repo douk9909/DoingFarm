@@ -17,10 +17,12 @@ interface DashboardCreateModalProps {
 export default function DashboardCreateModal({ onClose }: DashboardCreateModalProps) {
   const [title, setTitle] = useState('');
   const [color, setColor] = useState<string>(DASHBOARD_COLORS[0]);
+  // 공백만 입력한 이름은 생성할 수 없게 처리
+  const isSubmitDisabled = title.trim().length === 0;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // 폼 제출 시 페이지 새로고침 방지
+    // 생성 API 연결 전까지 기본 submit 동작만 차단
   };
 
   return (
@@ -57,7 +59,13 @@ export default function DashboardCreateModal({ onClose }: DashboardCreateModalPr
           >
             취소
           </Button>
-          <Button type="submit" size="lg" fullWidth className={styles.submitButton}>
+          <Button
+            type="submit"
+            size="lg"
+            fullWidth
+            disabled={isSubmitDisabled}
+            className={styles.submitButton}
+          >
             생성
           </Button>
         </div>
