@@ -15,20 +15,18 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
   return (
     <footer className={styles.footer}>
       <Link href={PATH.HOME} className={styles.footerLogoLink}>
-        <span className={styles.footerBrandMark}>
-          <Image
-            src={carrotMarkImage}
-            alt=""
-            width={18}
-            height={22}
-            className={styles.footerBrandCarrot}
-          />
-        </span>
+        <Image
+          src={carrotMarkImage}
+          alt=""
+          width={28}
+          height={28}
+          className={styles.footerBrandCarrot}
+        />
         <Image
           src={logoImage}
           alt="Do!ngFarm"
-          width={96}
-          height={22}
+          width={116}
+          height={32}
           className={styles.footerLogo}
         />
       </Link>
@@ -51,9 +49,6 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
         >
           <InstagramIcon size={18} />
         </a>
-        <span className={styles.socialLink} aria-label="Facebook" role="img">
-          <FacebookIcon size={18} />
-        </span>
       </div>
     </footer>
   );
