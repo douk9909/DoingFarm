@@ -21,7 +21,7 @@
 - 협업 도구는 GitHub, Linear, Notion, Figma를 사용합니다.
 - 코드 품질 관리는 ESLint, Prettier를 사용합니다.
 - 패키지 매니저는 npm을 사용합니다.
-- 배포는 Vercel을 사용합니다.
+- 배포는 AWS S3와 AWS CloudFront를 기준으로 검토합니다.
 
 ---
 
@@ -44,14 +44,20 @@
 
 프로젝트는 다음 구조를 기준으로 리뷰해 주세요.
 
-- `public/images` : 이미지 파일
-- `public/icons` : 아이콘 파일
+- `src/assets/backgroundImg` : 배경 이미지 에셋
+- `src/assets/character` : 캐릭터 이미지 에셋
+- `src/assets/hashTags` : 해시태그 이미지 에셋
+- `src/assets/icon`, `src/assets/icons` : SVG 아이콘 에셋과 React 아이콘 컴포넌트
+- `src/assets/logo` : 로고 이미지 에셋
+- `src/assets/mainImg` : 랜딩/메인 화면 이미지 에셋
 - `src/app` : App Router 기반 페이지, 라우트 그룹, 레이아웃
+- `src/app/api` : Route Handler 기반 API 엔드포인트
 - `src/components/common` : 공통 UI 컴포넌트
 - `src/components/layout` : Navbar, Sidebar 등 레이아웃 컴포넌트
-- `src/components/dashboard` : 대시보드 관련 컴포넌트
-- `src/components/card` : 카드 관련 컴포넌트
-- `src/components/column` : 컬럼 관련 컴포넌트
+- `src/components/landing` : 랜딩 페이지 전용 컴포넌트
+- `src/components/dashboard` : 대시보드 도메인 컴포넌트가 추가될 위치
+- `src/components/card` : 카드 도메인 컴포넌트가 추가될 위치
+- `src/components/column` : 컬럼 도메인 컴포넌트가 추가될 위치
 - `src/hooks/queries` : 조회 관련 커스텀 훅
 - `src/hooks/mutations` : 생성, 수정, 삭제 관련 커스텀 훅
 - `src/hooks/ui` : UI 상태 관련 커스텀 훅
@@ -80,7 +86,9 @@
 - 공통 컴포넌트는 `src/components/common`에 위치해야 합니다.
 - Button, Input, Modal, Dropdown, Avatar처럼 재사용 가능한 컴포넌트는 common에 분리해 주세요.
 - Navbar, Sidebar 같은 레이아웃 컴포넌트는 `src/components/layout`에 위치해야 합니다.
+- 랜딩 페이지에서만 쓰는 컴포넌트는 `src/components/landing`에 위치해야 합니다.
 - 도메인 성격이 강한 컴포넌트는 `dashboard`, `card`, `column` 폴더에 맞게 분리해 주세요.
+- 현재 비어 있는 도메인 폴더를 사용할 때는 실제 사용처와 책임이 명확한지 함께 확인해 주세요.
 - 컴포넌트는 하나의 책임만 가지도록 리뷰해 주세요.
 - JSX가 너무 길거나 복잡하면 컴포넌트 분리를 제안해 주세요.
 
@@ -92,11 +100,11 @@
 - 컴포넌트 파일과 CSS Module 파일은 같은 폴더에 함께 위치해야 합니다.
   - 예: `Button.tsx`
   - 예: `Button.module.css`
-- 전역 스타일은 `globals.css` 또는 `src/styles/tokens.css`에만 작성하는 것을 권장해 주세요.
+- 전역 스타일은 `src/styles/global.css`, `src/styles/tokens.css`, `src/styles/typography.css`, `src/styles/reset.css`의 역할에 맞게 작성하는 것을 권장해 주세요.
 - CSS Module 클래스명은 의미가 명확해야 합니다.
 - 반응형은 모바일, 태블릿, 데스크탑 기준으로 고려해 주세요.
 - 불필요한 inline style 사용은 지양해 주세요.
-- 중복되는 색상, spacing, font-size는 `tokens.css` 활용을 제안해 주세요.
+- 중복되는 색상은 `tokens.css`, font-family/font-size/font-weight는 `typography.css` 활용을 제안해 주세요.
 
 ---
 
