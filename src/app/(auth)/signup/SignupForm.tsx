@@ -10,6 +10,10 @@ import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
 import checkActive from '@/assets/icon/check_active.svg';
 import toast from 'react-hot-toast';
+import Input from '@/components/common/input';
+import Button from '@/components/common/button/Button';
+import { authApi } from '@/lib/api/auth';
+import { setToken } from '@/lib/utils/storage';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -54,13 +58,28 @@ export default function SignupForm() {
     confirmPasswordError === '' &&
     agreed;
 
+  const EyeIcon = (
+    <Image
+      src={showPassword ? visibilityOn : visibilityOff}
+      alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
+      width={24}
+      height={24}
+    />
+  );
+
   return (
     <form
       className={styles.form}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        router.push('/login');
-        toast.success('가입이 완료되었습니다.');
+        try {
+          await authApi.signup({ email, nickname, password });
+          toast.success('가입이 완료되었습니다.');
+          router.push('/login');
+        } catch (error) {
+          const message = error instanceof Error ? error.message : '회원가입에 실패했습니다.';
+          setEmailError(message);
+        }
       }}
     >
       <Link href="/" className={styles.logoWrapper}>
@@ -68,89 +87,59 @@ export default function SignupForm() {
       </Link>
 
       <div className={styles.inputGroup}>
-        <label htmlFor="email">이메일</label>
-        <input
-          id="email"
+        <Input.Text
           type="email"
+          label="이메일"
           placeholder="이메일을 입력해 주세요"
-          className={`${styles.inputField} ${emailError ? styles.inputError : ''}`}
+          status={emailError ? 'error' : 'default'}
+          errorMsg={emailError}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           onBlur={() => validateEmail(email)}
         />
-        {emailError && <p className={styles.errorMessage}>{emailError}</p>}
       </div>
 
       <div className={styles.inputGroup}>
-        <label htmlFor="nickname">닉네임</label>
-        <div className={styles.nicknameWrapper}>
-          <input
-            id="nickname"
-            type="nickname"
-            placeholder="닉네임을 입력해 주세요"
-            className={`${styles.inputField} ${nicknameError ? styles.inputError : ''}`}
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            onBlur={() => validateNickname(nickname)}
-          />
-        </div>
-        {nicknameError && <p className={styles.errorMessage}>{nicknameError}</p>}
+        <Input.Text
+          type="nickname"
+          label="닉네임"
+          placeholder="닉네임을 입력해 주세요"
+          status={nicknameError ? 'error' : 'default'}
+          errorMsg={nicknameError}
+          value={nickname}
+          onChange={(e) => setNickname(e.target.value)}
+          onBlur={() => validateNickname(nickname)}
+        />
       </div>
 
       <div className={styles.inputGroup}>
-        <label htmlFor="password">비밀번호</label>
-        <div className={styles.passwordWrapper}>
-          <input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="8자 이상 입력해 주세요"
-            className={`${styles.inputField} ${passwordError ? styles.inputError : ''}`}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={() => validatePassword(password)}
-          />
-          <button
-            type="button"
-            className={styles.eyeButton}
-            onClick={() => setShowPassword((prev) => !prev)}
-          >
-            <Image
-              src={showPassword ? visibilityOn : visibilityOff}
-              alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
-        {passwordError && <p className={styles.errorMessage}>{passwordError}</p>}
+        <Input.Text
+          type={showPassword ? 'text' : 'password'}
+          label="비밀번호"
+          placeholder="8자 이상 입력해 주세요"
+          status={passwordError ? 'error' : 'default'}
+          errorMsg={passwordError}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onBlur={() => validatePassword(password)}
+          rightIcon={EyeIcon}
+          onRightIconClick={() => setShowPassword((prev) => !prev)}
+        />
       </div>
 
       <div className={styles.inputGroup}>
-        <label htmlFor="password">비밀번호 확인</label>
-        <div className={styles.passwordWrapper}>
-          <input
-            id="confirmPassword"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호를 한 번 더 입력해 주세요"
-            className={`${styles.inputField} ${confirmPasswordError ? styles.inputError : ''}`}
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            onBlur={() => validateConfirmPassword(confirmPassword)}
-          />
-          <button
-            type="button"
-            className={styles.eyeButton}
-            onClick={() => setShowPassword((prev) => !prev)}
-          >
-            <Image
-              src={showPassword ? visibilityOn : visibilityOff}
-              alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-              width={24}
-              height={24}
-            />
-          </button>
-        </div>
-        {confirmPasswordError && <p className={styles.errorMessage}>{confirmPasswordError}</p>}
+        <Input.Text
+          type={showPassword ? 'text' : 'password'}
+          label="비밀번호 확인"
+          placeholder="비밀번호를 한 번 더 입력해 주세요"
+          status={confirmPasswordError ? 'error' : 'default'}
+          errorMsg={confirmPasswordError}
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          onBlur={() => validateConfirmPassword(confirmPassword)}
+          rightIcon={EyeIcon}
+          onRightIconClick={() => setShowPassword((prev) => !prev)}
+        />
       </div>
 
       <div className={styles.agreeWrapper}>
@@ -158,7 +147,7 @@ export default function SignupForm() {
           type="button"
           className={styles.agreeButton}
           onClick={() => setAgreed((prev) => !prev)}
-          aria-pressed={agreed ? true : false}
+          aria-pressed={agreed}
         >
           <Image
             src={agreed ? checkActive : checkEmpty}
@@ -170,9 +159,16 @@ export default function SignupForm() {
         </button>
       </div>
 
-      <button type="submit" className={styles.submitButton} disabled={!isFormValid}>
+      <Button
+        type="submit"
+        size="lg"
+        fullWidth
+        className={styles.submitButton}
+        disabled={!isFormValid}
+        useDisabledOpacity={false}
+      >
         가입하기
-      </button>
+      </Button>
 
       <p className={styles.loginLink}>
         이미 회원이신가요? <Link href="/login">로그인하기</Link>

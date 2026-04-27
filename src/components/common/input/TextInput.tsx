@@ -1,14 +1,14 @@
 import { InputHTMLAttributes, forwardRef, useId } from 'react';
 import BaseInputField, { BaseInputFieldProps } from './BaseInputField';
 import { cn } from '@/lib/utils/cn';
-import styles from './Input.module.css';
+import styles from './TextInput.module.css';
 
 interface InputProps
   extends
     Omit<BaseInputFieldProps, 'children'>,
     Omit<InputHTMLAttributes<HTMLInputElement>, 'id'> {}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(function TextInput(
   {
     type = 'text',
     label,
@@ -48,3 +48,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     </BaseInputField>
   );
 });
+
+export default TextInput;
