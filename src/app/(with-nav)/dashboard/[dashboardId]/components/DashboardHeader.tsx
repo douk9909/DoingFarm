@@ -11,7 +11,7 @@ export default function DashBoardHeader({ title, color }: DashBoardHeaderProps) 
   return (
     <header className={styles.header}>
       <div className={styles.titleWrapper}>
-        <HashTagIcon className={styles.hashTag} size={36} color={color} />
+        <HashTagIcon className={styles.hashTag} color={color} />
         <h1 className={styles.title}>{title}</h1>
       </div>
       <AddColumnButton />

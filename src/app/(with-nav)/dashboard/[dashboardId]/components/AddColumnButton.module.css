@@ -36,6 +36,11 @@
     padding: 14px 20px;
   }
 
+  .addIcon {
+    width: 24px;
+    height: 24px;
+  }
+
   .buttonText {
     font: var(--text-2lg-medium);
   }
