@@ -9,9 +9,11 @@
 .cardList {
   display: flex;
   flex-direction: row;
+
   gap: 16px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  justify-content: space-around;
   align-items: flex-start;
 }
 
@@ -94,6 +96,7 @@
     overflow-x: unset;
     overflow-y: auto;
     scroll-snap-type: unset;
+    padding-right: 0;
   }
 
   .cardList > * {
