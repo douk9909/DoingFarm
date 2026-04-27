@@ -36,6 +36,7 @@ export default function DropdownMenu({
         setIsOpen(false);
       }
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
@@ -48,18 +49,20 @@ export default function DropdownMenu({
       {isOpen && (
         <ul className={cn(styles.menuContainer, position === 'top' ? styles.top : styles.bottom)}>
           {menuItems.map((item) => (
-            <li
-              key={item.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                item.onClick();
-                setIsOpen(false);
-              }}
-              className={styles.menuItem}
-              style={{ color: item.color }}
-            >
-              {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
-              <span>{item.label}</span>
+            <li key={item.id} className={styles.menuLi}>
+              <button
+                type="button"
+                className={styles.menuItem}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  item.onClick();
+                  setIsOpen(false);
+                }}
+                style={{ color: item.color }}
+              >
+                {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
+                <span>{item.label}</span>
+              </button>
             </li>
           ))}
         </ul>

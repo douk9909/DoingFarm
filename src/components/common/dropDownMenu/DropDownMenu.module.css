@@ -49,6 +49,10 @@
   margin-top: 8px;
 }
 
+.menuLi {
+  list-style: none;
+}
+
 .menuItem {
   width: 100%;
   padding: 10px 12px;
