@@ -8,6 +8,7 @@ import Button from '@/components/common/button/Button';
 import styles from '../edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import { usePagination } from '@/hooks/queries/usePagination';
 
 interface MembersListProps {
   dashboardId: string;
@@ -16,19 +17,26 @@ interface MembersListProps {
 export default function MembersList({ dashboardId }: MembersListProps) {
   // Todo: API 연결 후 제거
   const mockData = [
-    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
-    { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
-    { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
-    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
-    { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
-    { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
-    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
-    { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
-    { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
+    { id: 1, userId: 101, nickname: '사용자1', profileImageUrl: null, isOwner: true },
+    { id: 2, userId: 102, nickname: '사용자2', profileImageUrl: null, isOwner: false },
+    { id: 3, userId: 103, nickname: '사용자3', profileImageUrl: null, isOwner: false },
+    { id: 4, userId: 104, nickname: '사용자4', profileImageUrl: null, isOwner: false },
+    { id: 5, userId: 105, nickname: '사용자5', profileImageUrl: null, isOwner: false },
+    { id: 6, userId: 106, nickname: '사용자6', profileImageUrl: null, isOwner: false },
+    { id: 7, userId: 107, nickname: '사용자7', profileImageUrl: null, isOwner: false },
+    { id: 8, userId: 108, nickname: '사용자8', profileImageUrl: null, isOwner: false },
+    { id: 9, userId: 109, nickname: '사용자9', profileImageUrl: null, isOwner: false },
   ];
 
   const [members, setMembers] = useState(mockData);
-  // Todo: 페이지네이션 추가
+  const { page, size, goToNext, goToPrev } = usePagination({
+    initialSize: 4,
+    isResponsive: false,
+  });
+
+  const totalPages = Math.ceil(members.length / size);
+  const startIndex = (page - 1) * size;
+  const currentMembers = members.slice(startIndex, startIndex + size);
 
   const handleDeleteMember = (id: number, nickname: string) => {
     if (confirm(`${nickname} 님을 삭제하시겠습니까?`)) {
@@ -49,13 +57,21 @@ export default function MembersList({ dashboardId }: MembersListProps) {
         </div>
 
         <div className={styles.pageWrapper}>
-          <span className={styles.pageInfo}>n 페이지 중 n</span>
+          <span className={styles.pageInfo}>
+            {totalPages || 1} 페이지 중 {page}
+          </span>
           <div className={styles.pageButton}>
-            <button>
-              <ArrowLeftIcon size={20} color="var(--color-gray-500)" />
+            <button onClick={goToPrev} disabled={page === 1}>
+              <ArrowLeftIcon
+                size={20}
+                color={page === 1 ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+              />
             </button>
-            <button>
-              <ArrowRightIcon size={20} color="var(--color-gray-500)" />
+            <button onClick={goToNext} disabled={page >= totalPages}>
+              <ArrowRightIcon
+                size={20}
+                color={page >= totalPages ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+              />
             </button>
           </div>
         </div>
@@ -63,7 +79,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       <div className={styles.sectionContent}>
         <p className={styles.subTitle}>이름</p>
         <ul className={styles.list}>
-          {members.map((member) => (
+          {currentMembers.map((member) => (
             <li key={member.id} className={styles.item}>
               <div className={styles.profileWrapper}>
                 <Avatar src={member.profileImageUrl} name={member.nickname} />
