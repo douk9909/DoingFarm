@@ -19,6 +19,12 @@ export default function MembersList({ dashboardId }: MembersListProps) {
     { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
     { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
     { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
+    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
+    { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
+    { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
+    { id: 1, userId: 101, nickname: '사용자', profileImageUrl: null, isOwner: true },
+    { id: 2, userId: 102, nickname: '사용자1', profileImageUrl: null, isOwner: false },
+    { id: 3, userId: 103, nickname: '사용자2', profileImageUrl: null, isOwner: false },
   ];
 
   const [members, setMembers] = useState(mockData);
@@ -37,7 +43,11 @@ export default function MembersList({ dashboardId }: MembersListProps) {
   return (
     <div className={styles.section}>
       <div className={styles.sectionHeader}>
-        <h2 className={styles.title}>구성원</h2>
+        <div className={styles.headerWrapper}>
+          <h2 className={styles.title}>구성원</h2>
+          <span className={styles.memberNum}>{members.length}</span>
+        </div>
+
         <div className={styles.pageWrapper}>
           <span className={styles.pageInfo}>n 페이지 중 n</span>
           <div className={styles.pageButton}>

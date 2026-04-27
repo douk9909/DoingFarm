@@ -83,6 +83,17 @@
   align-items: center;
 }
 
+.headerWrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.memberNum {
+  font: var(--text-2lg-semibold);
+  color: var(--color-gray-500);
+}
+
 .pageWrapper {
   display: flex;
   align-items: center;
