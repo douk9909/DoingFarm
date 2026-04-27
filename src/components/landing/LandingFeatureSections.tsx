@@ -119,7 +119,7 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
         >
           <Image
             src={doingfarmInstaImage}
-            alt="두잉팜 인스타그램 안내 카드"
+            alt="두잉팜 공식 인스타그램 바로가기"
             width={977}
             height={269}
             className={styles.featureInstaImage}
