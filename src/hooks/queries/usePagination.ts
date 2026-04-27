@@ -20,20 +20,27 @@ export function usePagination({
   };
 
   const [page, setPage] = useState(initialPage);
-  const [size, setSize] = useState(isResponsive ? getResponsiveSize() : initialSize);
+  const [size, setSize] = useState(initialSize);
 
   useEffect(() => {
     if (!isResponsive) return;
+
     const handleResize = () => {
       const newSize = getResponsiveSize();
-      if (newSize !== size) {
-        setSize(newSize);
-        setPage(1);
-      }
+      setSize((prevSize) => {
+        if (newSize !== prevSize) {
+          setPage(1);
+          return newSize;
+        }
+        return prevSize;
+      });
     };
+
+    handleResize();
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isResponsive, size]);
+  }, [isResponsive]);
 
   const goToNext = () => setPage((prev) => prev + 1);
   const goToPrev = () => setPage((prev) => Math.max(prev - 1, 1));
