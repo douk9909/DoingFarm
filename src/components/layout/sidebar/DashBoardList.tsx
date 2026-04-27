@@ -9,7 +9,7 @@ import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
-// api 연동 후 삭제
+// 임시 대시보드 목록, API 연결 후 응답 데이터로 교체
 const mockDashBoards = [
   { id: 1, title: '포트폴리오', color: 'red', createdByMe: true },
   { id: 2, title: '코드잇', color: 'green', createdByMe: true },
@@ -27,7 +27,6 @@ export default function DashBoardList() {
     <div className={styles.sideMenu}>
       <section className={styles.add}>
         <span>대시보드 추가</span>
-        {/* todo: 클릭 후 대시보드 생성 모달 */}
         <button type="button" onClick={openDashboardCreateModal}>
           <Image className={styles.plus} src={plusIcon} alt="추가" width={12.5} height={12.5} />
         </button>
