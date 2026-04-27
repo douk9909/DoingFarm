@@ -1,0 +1,17 @@
+.columnList {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+}
+
+@media (min-width: 1200px) {
+  .columnList {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 10px 50px 20px 50px;
+  }
+}

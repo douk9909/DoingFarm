@@ -5,13 +5,19 @@ interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
   color?: string;
 }
 
-export default function HashTagIcon({ size = 16, color, ...props }: CheckActiveIconProps) {
+export default function HashTagIcon({
+  size = 16,
+  color,
+  className,
+  ...props
+}: CheckActiveIconProps) {
   return (
     <svg
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 16 16"
       fill="none"
       {...props}
     >
