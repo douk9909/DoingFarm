@@ -7,7 +7,7 @@ import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
 import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
-import { Input } from '@/components/common/input/Input';
+import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
@@ -66,7 +66,7 @@ export default function LoginForm() {
       </Link>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type="email"
           label="이메일"
           placeholder="이메일을 입력해 주세요"
@@ -79,7 +79,7 @@ export default function LoginForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type={showPassword ? 'text' : 'password'}
           label="비밀번호"
           placeholder="8자 이상 입력해 주세요"

@@ -10,7 +10,7 @@ import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
 import checkActive from '@/assets/icon/check_active.svg';
 import toast from 'react-hot-toast';
-import { Input } from '@/components/common/input/Input';
+import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
@@ -87,7 +87,7 @@ export default function SignupForm() {
       </Link>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type="email"
           label="이메일"
           placeholder="이메일을 입력해 주세요"
@@ -100,7 +100,7 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type="nickname"
           label="닉네임"
           placeholder="닉네임을 입력해 주세요"
@@ -113,7 +113,7 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type={showPassword ? 'text' : 'password'}
           label="비밀번호"
           placeholder="8자 이상 입력해 주세요"
@@ -128,7 +128,7 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type={showPassword ? 'text' : 'password'}
           label="비밀번호 확인"
           placeholder="비밀번호를 한 번 더 입력해 주세요"
