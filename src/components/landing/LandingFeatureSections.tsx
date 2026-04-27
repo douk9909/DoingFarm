@@ -4,20 +4,32 @@ import landingCircleLineRightImage from '@/assets/backgroundImg/landing-circle-l
 import mainImage1 from '@/assets/mainImg/mainimg1.svg';
 import mainImage2 from '@/assets/mainImg/mainimg2.svg';
 import mainImage3 from '@/assets/mainImg/mainimg3.svg';
+import doingfarmInstaImage from '@/assets/mainImg/doingfarmInsta.svg';
 import type { FeatureContent } from './landingContent';
 import styles from './LandingFeatureSections.module.css';
 
 interface LandingFeatureSectionsProps {
-  featureContents: readonly [FeatureContent, FeatureContent, FeatureContent];
+  featureContents: readonly [FeatureContent, FeatureContent, FeatureContent, FeatureContent];
 }
 
 interface FeatureCopyBlockProps extends FeatureContent {
+  className?: string;
   wide?: boolean;
 }
 
-function FeatureCopyBlock({ label, title, description, wide = false }: FeatureCopyBlockProps) {
+function FeatureCopyBlock({
+  className,
+  label,
+  title,
+  description,
+  wide = false,
+}: FeatureCopyBlockProps) {
+  const copyClassName = [wide ? styles.featureCopyWide : styles.featureCopy, className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <div className={wide ? styles.featureCopyWide : styles.featureCopy}>
+    <div className={copyClassName}>
       <p className={styles.pointLabel}>{label}</p>
       <h2 className={styles.pointTitle}>
         <span className={styles.titleLine}>{title[0]}</span>
@@ -93,6 +105,26 @@ export function LandingFeatureSections({ featureContents }: LandingFeatureSectio
             className={styles.featureWideImage}
           />
         </div>
+      </section>
+
+      <section className={styles.featureSectionColumn}>
+        <FeatureCopyBlock {...featureContents[3]} className={styles.featureInstaCopy} wide />
+
+        <a
+          href="https://www.instagram.com/doingfarm/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles.featureInstaPanel}
+          aria-label="두잉팜 인스타그램으로 이동"
+        >
+          <Image
+            src={doingfarmInstaImage}
+            alt="두잉팜 인스타그램 안내 카드"
+            width={977}
+            height={269}
+            className={styles.featureInstaImage}
+          />
+        </a>
       </section>
     </main>
   );

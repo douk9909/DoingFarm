@@ -1,8 +1,20 @@
 .hero {
   position: relative;
   overflow: hidden;
-  min-height: auto;
-  padding-bottom: 56px;
+  min-height: 640px;
+  padding-bottom: 0;
+}
+
+.hero::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  z-index: 5;
+  height: 3px;
+  background-color: var(--color-black-100);
+  content: '';
+  pointer-events: none;
 }
 
 .heroBackground {
@@ -17,15 +29,15 @@
   background: linear-gradient(
     180deg,
     rgba(18, 19, 24, 0.02) 0%,
-    rgba(18, 19, 24, 0.08) 45%,
-    rgba(18, 19, 24, 0.28) 100%
+    rgba(18, 19, 24, 0.08) 48%,
+    rgba(18, 19, 24, 0.3) 100%
   );
   content: '';
 }
 
 .heroBackgroundImage {
   object-fit: cover;
-  object-position: center top;
+  object-position: center bottom;
 }
 
 .heroInner {
@@ -33,26 +45,27 @@
   z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
-  align-items: start;
-  gap: 20px;
-  width: calc(100% - 24px);
+  width: 100%;
   margin: 0 auto;
-  padding-top: 20px;
+  padding-top: 60px;
 }
 
 .heroCopy {
   position: relative;
-  z-index: 3;
-  padding-top: 12px;
-  margin-left: 0;
+  z-index: 4;
+  max-width: 320px;
+  margin: 0 auto;
+  padding-top: 150px;
+  text-align: center;
 }
 
 .heroTitle {
   margin: 0;
   color: var(--color-white);
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: 30px;
+  font-family: var(--font-family);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.08;
   letter-spacing: -0.05em;
   text-shadow:
     1px 1px 0 rgba(255, 255, 255, 0.32),
@@ -63,16 +76,16 @@
 
 .heroTitleLine {
   display: block;
-  margin-bottom: 4px;
-  font-size: 28px;
-  white-space: normal;
+  margin-bottom: 20px;
+  font-size: 35px;
+  white-space: nowrap;
 }
 
 .heroTitleAccent {
   display: block;
-  font-size: 40px;
+  font-size: 50px;
   color: var(--color-primary-970);
-  white-space: normal;
+  white-space: nowrap;
   text-shadow:
     1px 1px 0 rgba(228, 255, 137, 0.28),
     0 5px 0 rgba(44, 105, 17, 0.72),
@@ -83,9 +96,10 @@
 .heroActions {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 18px;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  margin-top: 40px;
 }
 
 .heroButtonSecondary,
@@ -93,46 +107,43 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 112px;
-  height: 34px;
-  padding: 0 14px;
+  width: 151.5px;
+  height: 56px;
+  padding: 0 18px;
   border-radius: 999px;
   color: var(--color-white);
-  font: var(--text-lg-16-bold);
+  font-size: 16px;
+  font-weight: 700;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   box-shadow:
-    0 10px 22px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    0 10px 28px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition:
-    transform 0.18s ease,
-    background-color 0.18s ease,
-    box-shadow 0.18s ease;
+    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 0.22s ease,
+    box-shadow 0.22s ease,
+    filter 0.22s ease;
 }
 
 .heroButtonSecondary {
-  background-color: var(--landing-surface-soft);
+  background-color: rgba(48, 48, 54, 0.85);
 }
 
 .heroButtonPrimary {
-  background-color: var(--color-primary-500);
+  background-color: rgba(0, 162, 0, 0.92);
   box-shadow:
-    0 12px 26px rgba(0, 162, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 14px 32px rgba(0, 162, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .heroShowcase {
-  position: relative;
-  z-index: 1;
-  min-height: auto;
-  margin-top: 8px;
-  overflow: visible;
+  display: none;
 }
 
 .showcaseMain {
   position: relative;
-  top: 0;
-  right: auto;
-  width: 100%;
-  max-width: 100%;
+  max-width: none;
 }
 
 .showcaseMainImage {
@@ -147,38 +158,44 @@
 
 .heroCarrot {
   position: absolute;
-  right: 0;
-  bottom: -10px;
-  z-index: 3;
-  width: 160px;
-  height: 160px;
+  right: 12px;
+  bottom: 22px;
+  z-index: 4;
+  display: none;
+  width: 120px;
+  height: auto;
   transform: scaleX(-1);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .heroButtonSecondary:hover,
   .heroButtonPrimary:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px) scale(1.03);
+    filter: brightness(1.05);
   }
 
   .heroButtonSecondary:hover {
-    background-color: rgba(35, 36, 42, 0.94);
+    background-color: rgba(60, 60, 66, 0.95);
     box-shadow:
-      0 16px 32px rgba(0, 0, 0, 0.28),
-      0 0 0 5px rgba(255, 255, 255, 0.06),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      0 14px 34px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
   }
 
   .heroButtonPrimary:hover {
-    background-color: var(--color-primary-600);
+    background-color: rgba(0, 180, 0, 1);
     box-shadow:
-      0 18px 36px rgba(0, 162, 0, 0.34),
-      0 0 0 6px rgba(0, 162, 0, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+      0 16px 38px rgba(0, 162, 0, 0.34),
+      inset 0 1px 0 rgba(255, 255, 255, 0.24);
+  }
+
+  .heroButtonSecondary:active,
+  .heroButtonPrimary:active {
+    transform: scale(0.96);
   }
 
   .showcaseMainImage:hover {
     filter:
+      brightness(1.05)
       drop-shadow(0 34px 54px rgba(0, 0, 0, 0.3))
       drop-shadow(0 0 18px rgba(255, 255, 255, 0.08));
     transform: translateY(-8px) rotate(-0.8deg) scale(1.015);
@@ -187,52 +204,67 @@
 
 @media (min-width: 768px) {
   .hero {
-    padding-bottom: 56px;
+    min-height: 700px;
   }
 
   .heroInner {
-    width: calc(100% - 32px);
-    gap: 32px;
-    padding-top: 28px;
+    padding-top: 90px;
   }
 
   .heroCopy {
-    max-width: 520px;
-    padding-top: 24px;
+    max-width: 300px;
+    margin-left: 108px;
+    padding-top: 72px;
+    text-align: left;
   }
 
   .heroTitle {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .heroTitleLine {
-    margin-bottom: 4px;
-    font-size: 36px;
+    font-size: 30px;
+    margin-bottom: 20px;
   }
 
   .heroTitleAccent {
-    font-size: 52px;
-  }
-
-  .showcaseMain {
-    width: 100%;
-  }
-
-  .heroCarrot {
-    bottom: -20px;
-    width: 220px;
-    height: 220px;
+    font-size: 56px;
   }
 
   .heroActions {
-    gap: 10px;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 220px;
+    gap: 14px;
+    margin-top: 34px;
   }
 
   .heroButtonSecondary,
   .heroButtonPrimary {
-    min-width: 120px;
-    height: 36px;
-    padding: 0 18px;
+    width: 293px;
+    height: 60px;
+  }
+
+  .heroShowcase {
+    position: absolute;
+    top: 102px;
+    right: -330px;
+    z-index: 3;
+    display: block;
+    width: 640px;
+    overflow: visible;
+  }
+
+  .showcaseMain {
+    width: 640px;
+    margin-left: 0;
+  }
+
+  .heroCarrot {
+    right: 18px;
+    bottom: 20px;
+    width: 160px;
   }
 }
 
@@ -243,16 +275,19 @@
   }
 
   .heroInner {
+    position: static;
     grid-template-columns: minmax(520px, 560px) minmax(0, 1fr);
     gap: 22px;
     width: var(--landing-wide-container-width);
+    margin: 0 auto;
     padding-top: 38px;
   }
 
   .heroCopy {
     max-width: none;
-    padding-top: 300px;
     margin-left: 150px;
+    padding-top: 220px;
+    text-align: left;
   }
 
   .heroTitle {
@@ -262,43 +297,90 @@
   .heroTitleLine {
     margin-bottom: 20px;
     font-size: 54px;
-    white-space: nowrap;
   }
 
   .heroTitleAccent {
     font-size: 76px;
-    white-space: nowrap;
   }
 
   .heroActions {
+    flex-direction: row;
+    align-items: center;
     gap: 16px;
+    width: auto;
     margin-top: 48px;
   }
 
   .heroButtonSecondary,
   .heroButtonPrimary {
-    min-width: 178px;
-    height: 54px;
+    width: auto;
+    min-width: 200px;
+    height: 60px;
     padding: 0 22px;
   }
 
   .heroShowcase {
+    position: absolute;
+    top: 118px;
+    right: 0;
+    z-index: 1;
+    display: block;
+    width: min(1000px, 62vw);
     min-height: clamp(760px, 58vw, 970px);
-    margin-top: 0;
   }
 
   .showcaseMain {
-    position: absolute;
-    top: 80px;
-    right: clamp(-95px, -6vw, -24px);
-    width: min(1000px, 62vw);
-    max-width: none;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100%;
   }
 
   .heroCarrot {
     right: 0;
     bottom: -54px;
+    display: block;
     width: 440px;
     height: 388px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1700px) {
+  .heroInner {
+    grid-template-columns: minmax(430px, 500px) minmax(620px, 1fr);
+    width: calc(100% - 88px);
+    gap: 20px;
+  }
+
+  .heroCopy {
+    max-width: 430px;
+    margin-left: 70px;
+    padding-top: 230px;
+  }
+
+  .heroTitleLine {
+    font-size: 42px;
+    white-space: normal;
+  }
+
+  .heroTitleAccent {
+    font-size: 58px;
+    white-space: normal;
+  }
+
+  .heroActions {
+    margin-top: 28px;
+  }
+
+  .heroShowcase {
+    top: 112px;
+    width: min(920px, 60vw);
+    min-height: clamp(720px, 56vw, 920px);
+  }
+
+  .showcaseMain {
+    top: auto;
+    right: auto;
+    width: 100%;
   }
 }

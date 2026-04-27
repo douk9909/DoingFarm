@@ -48,6 +48,14 @@ export const landingFeatureContents = [
       '환경을 조율하면 할 일에 더 가볍고 빠르게 다가갈 수 있습니다',
     ],
   },
-] as const satisfies readonly [FeatureContent, FeatureContent, FeatureContent];
+  {
+    label: 'Point 4',
+    title: ['인스타그램에서', '업데이트 소식을 받아보세요'],
+    description: [
+      '두잉팜 인스타그램에서 업데이트 소식과 공지,',
+      '서비스 관련 이야기를 가장 빠르게 확인할 수 있어요',
+    ],
+  },
+] as const satisfies readonly [FeatureContent, FeatureContent, FeatureContent, FeatureContent];
 
 export const landingFooterLinks = ['Privacy Policy', 'FAQ'] as const;
