@@ -1,0 +1,39 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  color: var(--color-gray-700);
+  font: var(--text-lg-16-semibold);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.cancelButton,
+.submitButton {
+  border-radius: 999px;
+  font: var(--text-lg-16-semibold);
+}
+
+.cancelButton {
+  background-color: var(--color-black-500);
+}
+
+@media (min-width: 480px) {
+  .actions {
+    grid-template-columns: 1fr 1fr;
+  }
+}

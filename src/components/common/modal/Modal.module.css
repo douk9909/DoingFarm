@@ -1,6 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
+  z-index: 100;
   background-color: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
@@ -19,8 +20,38 @@
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
 .title {
-  margin: 0 0 16px;
+  margin: 0;
   color: var(--color-white);
   font: var(--text-2xl-bold);
+}
+
+.closeButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  color: var(--color-gray-600);
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid var(--color-primary-300);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .closeButton:hover {
+    background-color: var(--color-gray-100);
+  }
 }
