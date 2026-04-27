@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
-import { Input } from '@/components/common/input/Input';
+import { Input } from '@/components/common/input/index';
 import { DASHBOARD_COLORS } from '@/lib/constants/color';
 import characterImg from '@/assets/character/carrot1.svg';
 import styles from './DashboardCreateModal.module.css';
@@ -34,7 +34,7 @@ export default function DashboardCreateModal({ onClose }: DashboardCreateModalPr
         aria-hidden
       />
       <form className={styles.form} onSubmit={handleSubmit}>
-        <Input
+        <Input.Text
           label="대시보드 이름"
           value={title}
           placeholder="새로운 대시보드"
