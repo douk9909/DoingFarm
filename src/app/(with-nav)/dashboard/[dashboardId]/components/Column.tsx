@@ -1,3 +1,5 @@
+'use client';
+
 import styles from './Column.module.css';
 import Card from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
@@ -7,24 +9,13 @@ import PumpkinIcon from '@/assets/character/pumkin.svg';
 import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
 import Image from 'next/image';
-
-interface CardData {
-  id: number;
-  title: string;
-  tags?: string[];
-  dueDate: string;
-  assignee: {
-    nickname: string;
-    profileImage: string | null;
-  };
-  src?: string | null;
-}
+import type { Card as CardType } from '@/types/card';
+import { cardApi } from '@/lib/api/card';
+import { useFetch } from '@/hooks/queries/useFetch';
 
 interface ColumnProps {
   id: number;
   title: string;
-  cards: CardData[];
-  totalCount: number;
 }
 
 const getColumnIcon = (title: string) => {
@@ -40,14 +31,21 @@ const getColumnIcon = (title: string) => {
   }
 };
 
-export default function Column({ title, cards, totalCount }: ColumnProps) {
+export default function Column({ id, title }: ColumnProps) {
+  const { data, isLoading, error } = useFetch(() =>
+    cardApi.getList({ columnId: id }).then((res) => ({ data: res.data })),
+  );
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div>에러: {error}</div>;
+
   return (
     <div className={styles.column}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
           <Image src={getColumnIcon(title)} alt="콜럼 아이콘" width={17} height={24} />
           <h2 className={styles.title}>{title}</h2>
-          <span className={styles.count}>{totalCount}</span>
+          <span className={styles.count}>{data?.totalCount}</span>
         </div>
         <button aria-label="컬럼 수정">
           <SettingIcon size={20} />
@@ -55,7 +53,7 @@ export default function Column({ title, cards, totalCount }: ColumnProps) {
       </div>
 
       <div className={`${styles.cardList} custom-scrollbar`}>
-        {cards.map((card) => (
+        {data?.cards.map((card: CardType) => (
           <Card
             key={card.id}
             id={card.id}
@@ -63,7 +61,7 @@ export default function Column({ title, cards, totalCount }: ColumnProps) {
             tags={card.tags}
             dueDate={card.dueDate}
             assignee={card.assignee}
-            src={card.src}
+            src={card.imageUrl}
           />
         ))}
       </div>
