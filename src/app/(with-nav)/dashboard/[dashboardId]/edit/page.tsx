@@ -7,22 +7,27 @@ import { DASHBOARD_COLORS } from '@/lib/constants/color';
 import styles from './edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './components/DeleteDashboardButton';
+import { dashboardApi } from '@/lib/api/dashboard';
+import { Dashboard } from '@/types/dashboard';
 
 interface DashboardEditPageProps {
-  params: Promise<{
+  params: {
     dashboardId: string;
-  }>;
+  };
 }
 
 export default async function DashboardEditPage({ params }: DashboardEditPageProps) {
-  const { dashboardId } = await params;
+  const dashboardId = Number(params.dashboardId);
 
-  // Todo: API 연결 후 mock data삭제
-  const initialData = {
-    id: '1',
-    title: '테스트 프로젝트',
-    color: DASHBOARD_COLORS[0], // ColorPicker 팔레트에 있는 값 중 하나
-  };
+  let dashboardData: Dashboard | null = null;
+
+  try {
+    const response = await dashboardApi.getOne(dashboardId);
+    dashboardData = response.data;
+  } catch (error) {
+    // Todo: 토스트 띄우기로 에러처리
+    console.error('대시보드 정보를 불러오는 중 오류 발생:', error);
+  }
 
   return (
     <section className={styles.container}>
@@ -32,7 +37,13 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
       </button>
       <div className={styles.contentWrapper}>
         {/* 대시보드 이름 변경 */}
-        <EditForm initialTitle={initialData.title} initialColor={initialData.color} />
+        {dashboardData && (
+          <EditForm
+            dashboardId={dashboardId}
+            initialTitle={dashboardData.title}
+            initialColor={dashboardData.color}
+          />
+        )}
         {/* 대시보드 구성원 변경 */}
         <MembersList dashboardId={dashboardId} />
         {/* 대시보드 초대 내역 */}
