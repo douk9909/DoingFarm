@@ -1,0 +1,203 @@
+.todoModal {
+  max-width: 420px;
+  padding: 22px 20px 20px;
+  border-color: var(--color-overlay-stroke);
+}
+
+.todoModal h2 {
+  font: var(--text-lg-16-semibold);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label,
+.requiredLabel {
+  color: var(--color-gray-700);
+  font: var(--text-sm-semibold);
+}
+
+.requiredLabel::after {
+  content: '*';
+  color: var(--color-primary-500);
+}
+
+.textInput,
+.textarea,
+.selectWrapper,
+.dateInput {
+  width: 100%;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-800);
+  background-color: var(--color-black-200);
+  font: var(--text-sm-medium);
+}
+
+.textInput,
+.dateInput {
+  min-height: 38px;
+  padding: 0 14px;
+}
+
+.textarea {
+  min-height: 110px;
+  padding: 14px;
+  outline: none;
+  resize: none;
+}
+
+.textInput {
+  outline: none;
+}
+
+.textInput:focus,
+.textarea:focus,
+.selectWrapper:focus-within,
+.dateInput:focus {
+  border-color: var(--color-blue-300);
+}
+
+.textInput::placeholder,
+.textarea::placeholder,
+.dateInput::placeholder {
+  color: var(--color-gray-600);
+}
+
+.selectRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+}
+
+.select {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 36px 0 14px;
+  border: 0;
+  outline: none;
+  appearance: none;
+  color: var(--color-gray-800);
+  background-color: transparent;
+  font: var(--text-sm-medium);
+}
+
+.select option {
+  color: var(--color-white);
+  background-color: var(--color-black-300);
+}
+
+.selectWrapper svg {
+  position: absolute;
+  right: 12px;
+  pointer-events: none;
+}
+
+.dateField {
+  position: relative;
+  display: block;
+}
+
+.dateField::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--color-gray-600);
+  border-top-width: 3px;
+  border-radius: 2px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.datePickerWrapper {
+  width: 100%;
+}
+
+.dateInput {
+  padding-left: 36px;
+  outline: none;
+}
+
+.imageUpload {
+  position: relative;
+  min-height: 98px;
+  border: 1px dashed var(--color-gray-500);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-600);
+  font: var(--text-sm-semibold);
+  cursor: pointer;
+}
+
+.imageUpload span {
+  max-width: 100%;
+  padding: 0 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.imageUpload:focus-within {
+  border-color: var(--color-blue-300);
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.cancelButton {
+  background-color: var(--color-black-500);
+}
+
+.submitButton,
+.cancelButton {
+  min-height: 42px;
+  font: var(--text-sm-semibold);
+}
+
+@media (max-width: 479px) {
+  .todoModal {
+    padding: 20px 18px;
+  }
+
+  .selectRow,
+  .actions {
+    grid-template-columns: 1fr;
+  }
+}
