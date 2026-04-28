@@ -2,8 +2,6 @@ import EditForm from './components/EditForm';
 import MembersList from './components/MembersList';
 import InvitationsList from './components/InvitationsList';
 
-import { DASHBOARD_COLORS } from '@/lib/constants/color';
-
 import styles from './edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './components/DeleteDashboardButton';

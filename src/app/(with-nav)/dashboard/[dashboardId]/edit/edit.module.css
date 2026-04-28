@@ -184,6 +184,11 @@
   opacity: 0.8;
 }
 
+.modalDeleteButton {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+
 @media (min-width: 768px) {
   .container {
     padding: 20px;

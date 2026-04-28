@@ -1,51 +1,85 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Member, memberApi } from '@/lib/api/member';
+import { usePagination } from '@/hooks/queries/usePagination';
 
 import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
+import Modal from '@/components/common/modal/Modal';
 
-import styles from '../edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
-import { usePagination } from '@/hooks/queries/usePagination';
+
+import styles from '../edit.module.css';
+import CrownIcon from '@/assets/icons/CrownIcon';
 
 interface MembersListProps {
-  dashboardId: string;
+  dashboardId: number;
 }
 
 export default function MembersList({ dashboardId }: MembersListProps) {
-  // Todo: API 연결 후 제거
-  const mockData = [
-    { id: 1, userId: 101, nickname: '사용자1', profileImageUrl: null, isOwner: true },
-    { id: 2, userId: 102, nickname: '사용자2', profileImageUrl: null, isOwner: false },
-    { id: 3, userId: 103, nickname: '사용자3', profileImageUrl: null, isOwner: false },
-    { id: 4, userId: 104, nickname: '사용자4', profileImageUrl: null, isOwner: false },
-    { id: 5, userId: 105, nickname: '사용자5', profileImageUrl: null, isOwner: false },
-    { id: 6, userId: 106, nickname: '사용자6', profileImageUrl: null, isOwner: false },
-    { id: 7, userId: 107, nickname: '사용자7', profileImageUrl: null, isOwner: false },
-    { id: 8, userId: 108, nickname: '사용자8', profileImageUrl: null, isOwner: false },
-    { id: 9, userId: 109, nickname: '사용자9', profileImageUrl: null, isOwner: false },
-  ];
+  const [members, setMembers] = useState<Member[]>([]);
+  const [membersTotalCount, setMembersTotalCount] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [targetMember, setTargetMember] = useState<Member | null>(null);
 
-  const [members, setMembers] = useState(mockData);
   const { page, size, goToNext, goToPrev } = usePagination({
     initialSize: 4,
     isResponsive: false,
   });
 
-  const totalPages = Math.ceil(members.length / size);
+  // 멤버 불러오기
+  useEffect(() => {
+    const fetchMembers = async () => {
+      try {
+        const response = await memberApi.getList({ dashboardId, page, size });
+        const { members, totalCount } = response.data;
+        setMembers(members);
+        setMembersTotalCount(totalCount);
+      } catch (error) {
+        // Todo: 토스트 띄우기로 오류알림
+        console.error('대시보드 정보를 불러오는 중 오류 발생:', error);
+        alert('변경에 실패했습니다. 다시 시도해주세요.');
+      }
+    };
+    fetchMembers();
+  }, [dashboardId, page, size]);
+
+  const totalPages = Math.ceil(membersTotalCount / size);
   const startIndex = (page - 1) * size;
   const currentMembers = members.slice(startIndex, startIndex + size);
 
-  const handleDeleteMember = (id: number, nickname: string) => {
-    if (confirm(`${nickname} 님을 삭제하시겠습니까?`)) {
-      setMembers((prev) => prev.filter((member) => member.id !== id));
-      // Todo: API 연결
-    }
+  // 삭제 버튼 클릭 시 모달 열기
+  const handleDeleteClick = (member: Member) => {
+    setTargetMember(member);
+    setIsModalOpen(true);
+  };
 
-    // Todo: 토스트 띄우기
-    alert('삭제되었습니다');
+  // 모달에서 삭제 확정 시 멤버 삭제
+  const handleDeleteMember = async () => {
+    if (!targetMember) return;
+
+    const previousMembers = [...members];
+    const previousTotalCount = membersTotalCount;
+
+    try {
+      setMembers((prev) => prev.filter((member) => member.id !== targetMember.id));
+      setMembersTotalCount((prev) => prev - 1);
+
+      await memberApi.deleteMember(targetMember.id);
+
+      // Todo: 토스트 띄우기
+      alert('삭제되었습니다');
+    } catch (error) {
+      // Todo: 토스트 띄우기로 오류알림
+      console.error('구성원 삭제 중 오류 발생:', error);
+
+      setMembers(previousMembers);
+      setMembersTotalCount(previousTotalCount);
+
+      alert('변경에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
@@ -53,7 +87,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       <div className={styles.sectionHeader}>
         <div className={styles.headerWrapper}>
           <h2 className={styles.title}>구성원</h2>
-          <span className={styles.memberNum}>{members.length}</span>
+          <span className={styles.memberNum}>{membersTotalCount}</span>
         </div>
 
         <div className={styles.pageWrapper}>
@@ -84,11 +118,13 @@ export default function MembersList({ dashboardId }: MembersListProps) {
               <div className={styles.profileWrapper}>
                 <Avatar src={member.profileImageUrl} name={member.nickname} />
                 <span className={styles.profileName}>{member.nickname}</span>
+                {member.isOwner && <CrownIcon size={16} />}
               </div>
               <Button
                 variant="secondary"
-                onClick={() => handleDeleteMember(member.id, member.nickname)}
+                onClick={() => handleDeleteClick(member)}
                 className={styles.buttonStyle}
+                disabled={member.isOwner}
               >
                 삭제
               </Button>
@@ -96,6 +132,17 @@ export default function MembersList({ dashboardId }: MembersListProps) {
           ))}
         </ul>
       </div>
+      {isModalOpen && targetMember && (
+        <Modal title="구성원 삭제">
+          <p className={styles.modalText}>{`${targetMember.nickname} 님을 삭제하시겠습니까?`}</p>
+          <div className={styles.modalButtonWrapper}>
+            <Button onClick={() => setIsModalOpen(false)}>취소</Button>
+            <Button onClick={handleDeleteMember} className={styles.modalDeleteButton}>
+              삭제
+            </Button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
