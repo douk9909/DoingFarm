@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import EditIcon from '@/assets/icons/EditIcon';
@@ -56,7 +57,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
         ) : (
           <div className={styles.profile}>{nickname.slice(0, 2)}</div>
         )}
-        <p className={styles.userName}>{nickname}</p>
+        <span className={styles.userName}>{nickname}</span>
       </button>
 
       <DropdownMenu trigger={trigger} menuItems={menuItems} position="top" />
