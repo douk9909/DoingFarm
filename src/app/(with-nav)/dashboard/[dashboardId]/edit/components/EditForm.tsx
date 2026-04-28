@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import Input from '@/components/common/input';
@@ -24,12 +24,14 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
+  const isFetching = useRef(false);
 
   const isChanged = title !== initialTitle || color !== initialColor;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (isFetching.current) return;
     if (!isChanged || isLoading) return;
 
     if (!title.trim()) {
@@ -39,6 +41,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
 
     try {
       setIsLoading(true);
+      isFetching.current = true;
 
       await dashboardApi.update(dashboardId, { title, color });
       router.refresh();
@@ -54,6 +57,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
       alert('변경에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setIsLoading(false);
+      isFetching.current = false;
     }
   };
 
