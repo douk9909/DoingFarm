@@ -9,6 +9,8 @@ import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './components/DeleteDashboardButton';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { Dashboard } from '@/types/dashboard';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 
 interface DashboardEditPageProps {
   params: {
@@ -31,10 +33,10 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
 
   return (
     <section className={styles.container}>
-      <button className={styles.prevButton}>
+      <Link href={`/dashboard/${dashboardId}`} className={styles.prevButton}>
         <ArrowLeftIcon size={20} />
         <span>돌아가기</span>
-      </button>
+      </Link>
       <div className={styles.contentWrapper}>
         {/* 대시보드 이름 변경 */}
         {dashboardData && (
