@@ -35,6 +35,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
     try {
       const response = await memberApi.getList({ dashboardId, page, size });
       const { members, totalCount } = response.data;
+
       setMembers(members);
       setMembersTotalCount(totalCount);
     } catch (error) {
@@ -42,7 +43,6 @@ export default function MembersList({ dashboardId }: MembersListProps) {
     }
   }, [dashboardId, page, size]);
 
-  // 2. 초기 렌더링 및 페이지 변경 시 호출
   useEffect(() => {
     fetchMembers();
   }, [fetchMembers]);
@@ -68,7 +68,12 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
       await memberApi.deleteMember(targetMember.id);
 
-      await fetchMembers();
+      // 페이지에 남은 멤버가 없는 경우 이전 페이지로 이동
+      if (members.length === 1 && page > 1) {
+        goToPrev();
+      } else {
+        await fetchMembers();
+      }
 
       // Todo: 토스트 띄우기
       alert('삭제되었습니다');
@@ -136,6 +141,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
           ))}
         </ul>
       </div>
+
       {isModalOpen && targetMember && (
         <Modal>
           <div className={styles.modalProfileWrapper}>
