@@ -49,7 +49,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
 
   return (
     <form className={cn(styles.section, styles.editTitleForm)} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>{initialTitle}</h2>
+      <h2 className={styles.title}>{title}</h2>
       <Input.Text
         type="text"
         label="대시보드 이름"
