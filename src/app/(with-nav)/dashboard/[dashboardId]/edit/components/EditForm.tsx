@@ -10,18 +10,19 @@ import styles from '../edit.module.css';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
 
 interface EditFormProps {
+  dashboardId: number;
   initialTitle: string;
   initialColor: string;
 }
 
-export default function EditForm({ initialTitle, initialColor }: EditFormProps) {
+export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [color, setColor] = useState(initialColor);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Todo: API 연결, 성공 시 토스트 띄우기
-    console.log('수정할 데이터:', { title, color });
+    console.log('수정할 데이터:', { dashboardId, title, color });
     alert('변경되었습니다');
   };
 
