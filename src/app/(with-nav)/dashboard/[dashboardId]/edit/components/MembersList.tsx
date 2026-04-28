@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Member, memberApi } from '@/lib/api/member';
 import { usePagination } from '@/hooks/queries/usePagination';
+import { cn } from '@/lib/utils/cn';
 
 import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
@@ -30,25 +31,23 @@ export default function MembersList({ dashboardId }: MembersListProps) {
   });
 
   // 멤버 불러오기
-  useEffect(() => {
-    const fetchMembers = async () => {
-      try {
-        const response = await memberApi.getList({ dashboardId, page, size });
-        const { members, totalCount } = response.data;
-        setMembers(members);
-        setMembersTotalCount(totalCount);
-      } catch (error) {
-        // Todo: 토스트 띄우기로 오류알림
-        console.error('대시보드 정보를 불러오는 중 오류 발생:', error);
-        alert('변경에 실패했습니다. 다시 시도해주세요.');
-      }
-    };
-    fetchMembers();
+  const fetchMembers = useCallback(async () => {
+    try {
+      const response = await memberApi.getList({ dashboardId, page, size });
+      const { members, totalCount } = response.data;
+      setMembers(members);
+      setMembersTotalCount(totalCount);
+    } catch (error) {
+      console.error('로드 실패:', error);
+    }
   }, [dashboardId, page, size]);
 
+  // 2. 초기 렌더링 및 페이지 변경 시 호출
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
+
   const totalPages = Math.ceil(membersTotalCount / size);
-  const startIndex = (page - 1) * size;
-  const currentMembers = members.slice(startIndex, startIndex + size);
 
   // 삭제 버튼 클릭 시 모달 열기
   const handleDeleteClick = (member: Member) => {
@@ -69,6 +68,8 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
       await memberApi.deleteMember(targetMember.id);
 
+      await fetchMembers();
+
       // Todo: 토스트 띄우기
       alert('삭제되었습니다');
     } catch (error) {
@@ -79,6 +80,9 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       setMembersTotalCount(previousTotalCount);
 
       alert('변경에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsModalOpen(false);
+      setTargetMember(null);
     }
   };
 
@@ -113,7 +117,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       <div className={styles.sectionContent}>
         <p className={styles.subTitle}>이름</p>
         <ul className={styles.list}>
-          {currentMembers.map((member) => (
+          {members.map((member) => (
             <li key={member.id} className={styles.item}>
               <div className={styles.profileWrapper}>
                 <Avatar src={member.profileImageUrl} name={member.nickname} />
@@ -133,13 +137,25 @@ export default function MembersList({ dashboardId }: MembersListProps) {
         </ul>
       </div>
       {isModalOpen && targetMember && (
-        <Modal title="구성원 삭제">
-          <p className={styles.modalText}>{`${targetMember.nickname} 님을 삭제하시겠습니까?`}</p>
-          <div className={styles.modalButtonWrapper}>
-            <Button onClick={() => setIsModalOpen(false)}>취소</Button>
-            <Button onClick={handleDeleteMember} className={styles.modalDeleteButton}>
-              삭제
-            </Button>
+        <Modal>
+          <div className={styles.modalProfileWrapper}>
+            <h2 className={styles.modalTitle}>구성원 삭제</h2>
+            <p className={styles.modalText}>{`${targetMember.nickname} 님을 삭제하시겠습니까?`}</p>
+            <div className={styles.modalButtonWrapper}>
+              <Button
+                variant="secondary"
+                onClick={() => setIsModalOpen(false)}
+                className={cn(styles.modalButton, styles.modalCancelButton)}
+              >
+                취소
+              </Button>
+              <Button
+                onClick={handleDeleteMember}
+                className={cn(styles.modalButton, styles.modalDeleteButton)}
+              >
+                삭제
+              </Button>
+            </div>
           </div>
         </Modal>
       )}
