@@ -20,8 +20,11 @@ interface EditFormProps {
 export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [color, setColor] = useState(initialColor);
+  const [displayTitle, setDisplayTitle] = useState(initialTitle);
   const [isLoading, setIsLoading] = useState(false);
+
   const router = useRouter();
+
   const isChanged = title !== initialTitle || color !== initialColor;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,11 +32,18 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
 
     if (!isChanged || isLoading) return;
 
+    if (!title.trim()) {
+      alert('대시보드 이름을 입력해주세요.');
+      return;
+    }
+
     try {
       setIsLoading(true);
 
       await dashboardApi.update(dashboardId, { title, color });
       router.refresh();
+
+      setDisplayTitle(title);
 
       // Todo: 토스트 띄우기로 변경 완료 알림
       console.log('수정 데이터:', { dashboardId, title, color });
@@ -49,7 +59,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
 
   return (
     <form className={cn(styles.section, styles.editTitleForm)} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>{title}</h2>
+      <h2 className={styles.title}>{displayTitle}</h2>
       <Input.Text
         type="text"
         label="대시보드 이름"
@@ -60,7 +70,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
       <ColorPicker selectedColor={color} onSelect={(newColor) => setColor(newColor)} />
       <Button
         type="submit"
-        disabled={!isChanged || isLoading}
+        disabled={!isChanged || isLoading || !title.trim()}
         fullWidth
         className={styles.editButton}
       >
