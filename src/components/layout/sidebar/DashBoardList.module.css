@@ -1,4 +1,4 @@
-/* 모바일  */
+/* 모바일 */
 .sideMenu {
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@
 
 .add > span {
   font: var(--text-lg-14-bold);
-  color: #a39fb2;
+  color: var(--color-gray-500);
 }
 
 .add > button {

@@ -11,7 +11,7 @@ interface UseDashboardsReturn {
   refetchDashboards: () => Promise<void>;
 }
 
-// refreshKey가 바뀌면 사이드바 대시보드 목록을 다시 조회
+// refreshKey가 바뀌면 사이드바 대시보드 목록 다시 조회
 export const useDashboards = (refreshKey = 0): UseDashboardsReturn => {
   const [dashboards, setDashboards] = useState<Dashboard[]>([]);
   const [isLoading, setIsLoading] = useState(true);
