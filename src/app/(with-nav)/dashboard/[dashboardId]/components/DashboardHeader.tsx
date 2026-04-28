@@ -5,18 +5,23 @@ import AddColumnButton from './AddColumnButton';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
+import { useRouter } from 'next/navigation';
 
 interface DashBoardHeaderProps {
   dashboardId: number;
 }
 
 export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
+  const router = useRouter();
   const { data, isLoading, error } = useFetch(() =>
     dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
   );
 
   if (isLoading) return <div>로딩 중...</div>;
-  if (error) return <div>에러: {error}</div>;
+  if (error) {
+    router.push('/not-found');
+    return null;
+  }
 
   return (
     <header className={styles.header}>
