@@ -1,8 +1,7 @@
-import Column from './Column';
-import styles from './ColumnList.module.css';
+import DashboardBoard from './DashboardBoard';
 
 export default async function ColumnList({ dashboardId }: { dashboardId: number }) {
-  // api 연동 후 fetch
+  // API 연결 전까지 상세 페이지 레이아웃 확인용 데이터 사용
   const mockColumns = [
     {
       id: 1,
@@ -20,7 +19,7 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
         {
           id: 2,
           title: '레퍼런스 찾기',
-          tags: ['프로젝트', '디자인', '상'],
+          tags: ['프로젝트', '디자인', '중'],
           dueDate: '2025-07-18',
           assignee: { nickname: '박민영', profileImage: null },
           src: null,
@@ -43,7 +42,7 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
         {
           id: 4,
           title: '와이어프레임 만들기',
-          tags: ['프로젝트', '디자인', '상'],
+          tags: ['프로젝트', '디자인', '중'],
           dueDate: '2025-07-17',
           assignee: { nickname: '박민영', profileImage: null },
           src: null,
@@ -75,17 +74,5 @@ export default async function ColumnList({ dashboardId }: { dashboardId: number 
     },
   ];
 
-  return (
-    <div className={styles.columnList}>
-      {mockColumns.map((column) => (
-        <Column
-          key={column.id}
-          id={column.id}
-          title={column.title}
-          cards={column.cards}
-          totalCount={column.totalCount}
-        />
-      ))}
-    </div>
-  );
+  return <DashboardBoard columns={mockColumns} />;
 }
