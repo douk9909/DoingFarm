@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
@@ -8,6 +9,7 @@ import { cn } from '@/lib/utils/cn';
 
 import styles from '../edit.module.css';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
+import { dashboardApi } from '@/lib/api/dashboard';
 
 interface EditFormProps {
   dashboardId: number;
@@ -18,12 +20,31 @@ interface EditFormProps {
 export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [color, setColor] = useState(initialColor);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const isChanged = title !== initialTitle || color !== initialColor;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Todo: API 연결, 성공 시 토스트 띄우기
-    console.log('수정할 데이터:', { dashboardId, title, color });
-    alert('변경되었습니다');
+
+    if (!isChanged || isLoading) return;
+
+    try {
+      setIsLoading(true);
+
+      await dashboardApi.update(dashboardId, { title, color });
+      router.refresh();
+
+      // Todo: 토스트 띄우기로 변경 완료 알림
+      console.log('수정 데이터:', { dashboardId, title, color });
+      alert('변경되었습니다');
+    } catch (error) {
+      // Todo: 토스트 띄우기로 오류알림
+      console.error('대시보드 정보를 수정하는 중 오류 발생:', error);
+      alert('변경에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -39,11 +60,11 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
       <ColorPicker selectedColor={color} onSelect={(newColor) => setColor(newColor)} />
       <Button
         type="submit"
-        disabled={title === initialTitle && color === initialColor}
+        disabled={!isChanged || isLoading}
         fullWidth
         className={styles.editButton}
       >
-        변경
+        {isLoading ? '변경 중...' : '변경'}
       </Button>
     </form>
   );

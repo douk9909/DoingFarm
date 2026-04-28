@@ -9,7 +9,6 @@ import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './components/DeleteDashboardButton';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { Dashboard } from '@/types/dashboard';
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface DashboardEditPageProps {
@@ -29,6 +28,11 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
   } catch (error) {
     // Todo: 토스트 띄우기로 에러처리
     console.error('대시보드 정보를 불러오는 중 오류 발생:', error);
+  }
+
+  // Todo: 데이터 로드 에러 로직 처리
+  if (!dashboardData) {
+    return <div>데이터를 불러오지 못했습니다.</div>;
   }
 
   return (
