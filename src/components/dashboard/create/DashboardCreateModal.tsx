@@ -13,9 +13,10 @@ import styles from './DashboardCreateModal.module.css';
 
 interface DashboardCreateModalProps {
   onClose: () => void;
+  onCreated: () => void;
 }
 
-export default function DashboardCreateModal({ onClose }: DashboardCreateModalProps) {
+export default function DashboardCreateModal({ onClose, onCreated }: DashboardCreateModalProps) {
   const [title, setTitle] = useState('');
   const [color, setColor] = useState<DashboardColor>(DASHBOARD_COLORS[0]);
   const { createDashboard, isPending, error } = useCreateDashboard();
@@ -39,6 +40,7 @@ export default function DashboardCreateModal({ onClose }: DashboardCreateModalPr
 
     if (createdDashboard) {
       // 생성 성공 후 목록 반영은 사이드바 API 연결에서 처리
+      onCreated();
       onClose();
     }
   };

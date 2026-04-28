@@ -8,20 +8,14 @@ import homeIcon from '@/assets/icon/ic_home.svg';
 import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
-
-// 임시 대시보드 목록, API 연결 후 응답 데이터로 교체
-const mockDashBoards = [
-  { id: 1, title: '포트폴리오', color: 'red', createdByMe: true },
-  { id: 2, title: '코드잇', color: 'green', createdByMe: true },
-  { id: 3, title: '3분기 계획', color: 'orange', createdByMe: true },
-  { id: 4, title: '회의록', color: 'yellow', createdByMe: false },
-  { id: 5, title: '중요 문서', color: 'blue', createdByMe: false },
-];
+import { useDashboards } from '@/hooks/queries/useDashboards';
 
 export default function DashBoardList() {
   const pathName = usePathname();
   const isHomeActive = pathName === PATH.MY_DASHBOARD;
-  const { openDashboardCreateModal } = useDashboardCreateModal();
+  const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
+  // 생성 모달에서 version을 올리면 목록을 다시 불러옴
+  const { dashboards, isLoading, error } = useDashboards(dashboardListVersion);
 
   return (
     <div className={styles.sideMenu}>
@@ -40,7 +34,12 @@ export default function DashBoardList() {
       </section>
 
       <section className={styles.menus}>
-        {mockDashBoards.map((dashboard) => (
+        {isLoading ? <p className={styles.statusText}>대시보드를 불러오는 중</p> : null}
+        {error ? <p className={styles.statusText}>{error}</p> : null}
+        {!isLoading && !error && dashboards.length === 0 ? (
+          <p className={styles.statusText}>대시보드가 없습니다</p>
+        ) : null}
+        {dashboards.map((dashboard) => (
           <DashBoardItem
             key={dashboard.id}
             id={dashboard.id}

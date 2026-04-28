@@ -9,6 +9,7 @@ import tagGreen from '@/assets/hashTags/green.svg';
 import pinIcon from '@/assets/icon/icon_pin.svg';
 import crownIcon from '@/assets/icon/ic_crown.svg';
 import Link from 'next/link';
+import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
 interface DashBoardItemProps {
   id: number;
@@ -22,16 +23,22 @@ export default function DashBoardItem({ id, title, color, createdByMe }: DashBoa
   const isActive = pathName === `/dashboard/${id}`;
 
   const getTagIcon = (color: string) => {
+    // mock 색상명과 API Hex 색상을 같은 해시태그 아이콘으로 매핑
     switch (color) {
       case 'red':
+      case DASHBOARD_COLOR_HEX_MAP['var(--color-profile-rose)']:
         return tagRed;
       case 'orange':
+      case DASHBOARD_COLOR_HEX_MAP['var(--color-profile-orange)']:
         return tagOrange;
       case 'yellow':
+      case DASHBOARD_COLOR_HEX_MAP['var(--color-profile-yellow)']:
         return tagYellow;
       case 'blue':
+      case DASHBOARD_COLOR_HEX_MAP['var(--color-profile-cobalt)']:
         return tagBlue;
       case 'green':
+      case DASHBOARD_COLOR_HEX_MAP['var(--color-profile-green)']:
         return tagGreen;
       default:
         return tagRed;

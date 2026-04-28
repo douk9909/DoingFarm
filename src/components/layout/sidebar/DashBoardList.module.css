@@ -72,6 +72,13 @@
   height: 18px;
 }
 
+.statusText {
+  margin: 12px 14px;
+  color: var(--color-gray-600);
+  font: var(--text-sm-medium);
+  line-height: 1.5;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .add > button:hover {
     background: var(--sidebar-add-button-hover-bg);
