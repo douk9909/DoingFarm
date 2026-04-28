@@ -11,9 +11,9 @@ import Modal from '@/components/common/modal/Modal';
 
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import CrownIcon from '@/assets/icons/CrownIcon';
 
 import styles from '../edit.module.css';
-import CrownIcon from '@/assets/icons/CrownIcon';
 
 interface MembersListProps {
   dashboardId: number;

@@ -1,36 +1,45 @@
+'use client';
+
+import Link from 'next/link';
+import { use } from 'react';
+import { useFetch } from '@/hooks/queries/useFetch';
+import { Dashboard } from '@/types/dashboard';
+import { dashboardApi } from '@/lib/api/dashboard';
+
 import EditForm from './components/EditForm';
 import MembersList from './components/MembersList';
 import InvitationsList from './components/InvitationsList';
 
-import styles from './edit.module.css';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './components/DeleteDashboardButton';
-import { dashboardApi } from '@/lib/api/dashboard';
-import { Dashboard } from '@/types/dashboard';
-import Link from 'next/link';
+
+import styles from './edit.module.css';
 
 interface DashboardEditPageProps {
-  params: {
+  params: Promise<{
     dashboardId: string;
-  };
+  }>;
 }
 
-export default async function DashboardEditPage({ params }: DashboardEditPageProps) {
-  const dashboardId = Number(params.dashboardId);
+export default function DashboardEditPage({ params }: DashboardEditPageProps) {
+  const resolvedParams = use(params);
+  const dashboardId = Number(resolvedParams.dashboardId);
 
-  let dashboardData: Dashboard | null = null;
+  const {
+    data: dashboardData,
+    isLoading,
+    error,
+  } = useFetch<Dashboard>(() => dashboardApi.getOne(dashboardId));
 
-  try {
-    const response = await dashboardApi.getOne(dashboardId);
-    dashboardData = response.data;
-  } catch (error) {
-    // Todo: 토스트 띄우기로 에러처리
-    console.error('대시보드 정보를 불러오는 중 오류 발생:', error);
+  if (isNaN(dashboardId)) {
+    return <div className={styles.container}>유효하지 않은 접근입니다.</div>;
   }
 
-  // Todo: 데이터 로드 에러 로직 처리
-  if (!dashboardData) {
-    return <div>데이터를 불러오지 못했습니다.</div>;
+  if (isLoading) {
+    return <div className={styles.container}>로딩 중...</div>;
+  }
+  if (error || !dashboardData) {
+    return <div className={styles.container}>대시보드를 불러오는 중 오류가 발생했습니다.</div>;
   }
 
   return (

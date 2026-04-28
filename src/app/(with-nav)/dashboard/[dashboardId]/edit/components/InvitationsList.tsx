@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { usePagination } from '@/hooks/queries/usePagination';
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
@@ -9,7 +10,7 @@ import styles from '../edit.module.css';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 interface InvitationsListProps {
-  dashboardId: string;
+  dashboardId: number;
 }
 
 export default function InvitationsList({ dashboardId }: InvitationsListProps) {
@@ -22,6 +23,13 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
 
   const [invitations, setInvitations] = useState(mockData);
   // Todo: 페이지네이션 추가
+
+  const { page, size, goToNext, goToPrev } = usePagination({
+    initialSize: 5,
+    isResponsive: false,
+  });
+
+  const totalPages = Math.ceil(membersTotalCount / size);
 
   const handleDeleteMember = (id: number, email: string) => {
     if (confirm(`${email} 님에게 보낸 초대를 취소하시겠습니까?`)) {
@@ -40,6 +48,25 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           <UserPlusIcon size={20} color="var(--color-gray-900)" />
           <span>초대하기</span>
         </Button>
+        <div className={styles.pageWrapper}>
+          <span className={styles.pageInfo}>
+            {totalPages || 1} 페이지 중 {page}
+          </span>
+          <div className={styles.pageButton}>
+            <button onClick={goToPrev} disabled={page === 1}>
+              <ArrowLeftIcon
+                size={20}
+                color={page === 1 ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+              />
+            </button>
+            <button onClick={goToNext} disabled={page >= totalPages}>
+              <ArrowRightIcon
+                size={20}
+                color={page >= totalPages ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+              />
+            </button>
+          </div>
+        </div>
       </div>
       <div className={styles.sectionContent}>
         <p className={styles.subTitle}>이메일</p>
