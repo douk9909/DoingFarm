@@ -6,6 +6,7 @@ import HashTagIcon from '@/assets/icons/HashTagIcon';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface DashBoardHeaderProps {
   dashboardId: number;
@@ -17,11 +18,13 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
     dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
   );
 
+  useEffect(() => {
+    if (error) {
+      router.push('/not-found');
+    }
+  }, [error, router]);
+
   if (isLoading) return <div>로딩 중...</div>;
-  if (error) {
-    router.push('/not-found');
-    return null;
-  }
 
   return (
     <header className={styles.header}>
