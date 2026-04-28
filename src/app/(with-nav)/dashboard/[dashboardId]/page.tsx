@@ -25,7 +25,7 @@ export default async function DashboardDetailPage({ params }: DashboardDetailPag
 
       <div className={styles.content}>
         {/* Todo - api 연동 후 변경 */}
-        <DashBoardHeader title="포트폴리오" color="red" />
+        <DashBoardHeader dashboardId={id} />
         <ColumnList dashboardId={id} />
       </div>
     </section>
