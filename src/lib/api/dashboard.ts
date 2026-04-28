@@ -1,12 +1,21 @@
 import { apiClient } from './client';
 import type { Dashboard } from '@/types/dashboard';
 
-export interface GetDashboardsParams {
-  navigationMethod: 'infiniteScroll' | 'pagination';
+interface GetDashboardsInfiniteScrollParams {
+  navigationMethod: 'infiniteScroll';
   cursorId?: number;
+  size?: number;
+}
+
+interface GetDashboardsPaginationParams {
+  navigationMethod: 'pagination';
   page?: number;
   size?: number;
 }
+
+export type GetDashboardsParams =
+  | GetDashboardsInfiniteScrollParams
+  | GetDashboardsPaginationParams;
 
 export interface GetDashboardsResponse {
   cursorId: number;
