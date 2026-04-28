@@ -63,7 +63,7 @@
 }
 
 .footerTextLink:hover {
-  color: #ffffff;
+  color: var(--color-white);
   opacity: 1;
 }
 

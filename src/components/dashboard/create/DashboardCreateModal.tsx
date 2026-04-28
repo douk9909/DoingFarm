@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
-import { Input } from '@/components/common/input/index';
+import { Input } from '@/components/common/input';
 import { DASHBOARD_COLORS } from '@/lib/constants/color';
 import characterImg from '@/assets/character/carrot1.svg';
 import styles from './DashboardCreateModal.module.css';
