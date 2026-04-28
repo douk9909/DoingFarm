@@ -2,6 +2,7 @@
 
 import { useEffect, useId } from 'react';
 import CloseIcon from '@/assets/icons/CloseIcon';
+import { cn } from '@/lib/utils/cn';
 import styles from './Modal.module.css';
 
 interface ModalProps {
@@ -9,9 +10,16 @@ interface ModalProps {
   children: React.ReactNode;
   onClose?: () => void;
   closeLabel?: string;
+  contentClassName?: string;
 }
 
-export default function Modal({ title, children, onClose, closeLabel = '모달 닫기' }: ModalProps) {
+export default function Modal({
+  title,
+  children,
+  onClose,
+  closeLabel = '모달 닫기',
+  contentClassName,
+}: ModalProps) {
   const titleId = useId();
 
   useEffect(() => {
@@ -19,7 +27,7 @@ export default function Modal({ title, children, onClose, closeLabel = '모달 �
       return;
     }
 
-    // ESC 키로 모달을 빠르게 닫을 수 있게 처리
+    // ESC로 모달을 닫을 수 있게 처리
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -36,7 +44,7 @@ export default function Modal({ title, children, onClose, closeLabel = '모달 �
   return (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
-        className={styles.content}
+        className={cn(styles.content, contentClassName)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
