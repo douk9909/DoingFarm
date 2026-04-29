@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import Image, { type StaticImageData } from 'next/image';
-=======
 'use client';
 
->>>>>>> 95f60feadae4c03ff027d3ed3d9e5dad54b55c85
 import styles from './Column.module.css';
 import Card, { type CardTag } from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
@@ -12,25 +8,10 @@ import SeedTodo from '@/assets/character/seed_todo.svg';
 import PumpkinIcon from '@/assets/character/pumkin.svg';
 import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
-<<<<<<< HEAD
-
-export interface CardData {
-  id: number;
-  title: string;
-  tags?: Array<string | CardTag>;
-  dueDate: string;
-  assignee: {
-    nickname: string;
-    profileImage: string | null;
-  };
-  src?: string | null;
-}
-=======
 import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import { useFetch } from '@/hooks/queries/useFetch';
->>>>>>> 95f60feadae4c03ff027d3ed3d9e5dad54b55c85
 
 export interface ColumnData {
   id: number;
@@ -41,7 +22,7 @@ interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
 }
 
-const getColumnIcon = (title: string): StaticImageData => {
+const getColumnIcon = (title: string) => {
   switch (title) {
     case 'To do':
       return SeedTodo;
@@ -54,10 +35,7 @@ const getColumnIcon = (title: string): StaticImageData => {
   }
 };
 
-<<<<<<< HEAD
-export default function Column({ title, cards, totalCount, onAddCard }: ColumnProps) {
-=======
-export default function Column({ id, title }: ColumnProps) {
+export default function Column({ id, title, onAddCard }: ColumnProps) {
   const { data, isLoading, error } = useFetch(() =>
     cardApi.getList({ columnId: id }).then((res) => ({ data: res.data })),
   );
@@ -65,7 +43,6 @@ export default function Column({ id, title }: ColumnProps) {
   if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error}</div>;
 
->>>>>>> 95f60feadae4c03ff027d3ed3d9e5dad54b55c85
   return (
     <div className={styles.column}>
       <div className={styles.header}>

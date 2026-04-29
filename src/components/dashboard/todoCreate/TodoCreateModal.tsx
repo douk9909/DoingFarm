@@ -57,7 +57,7 @@ export default function TodoCreateModal({
   const [columnId, setColumnId] = useState(initialColumnId);
   const [assigneeId, setAssigneeId] = useState('');
   const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<CardTag[]>([]);
+  const [tags, setTags] = useState<TodoFormCard['tags']>([]);
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
