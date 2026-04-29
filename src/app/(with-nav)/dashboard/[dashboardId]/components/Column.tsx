@@ -20,9 +20,9 @@ interface ColumnProps {
 
 const getColumnIcon = (title: string) => {
   switch (title) {
-    case 'To-do':
+    case 'To do':
       return SeedTodo;
-    case 'On Progress':
+    case 'On progress':
       return SeedOnProgress;
     case 'Done':
       return CarrotDone;
