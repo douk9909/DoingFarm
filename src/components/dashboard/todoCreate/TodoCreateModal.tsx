@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
@@ -14,6 +14,7 @@ import type {
   TodoColumnOption,
   TodoFormCard,
 } from '@/components/dashboard/todoForm/types';
+import { useTodoImagePreview } from '@/components/dashboard/todoForm/useTodoImagePreview';
 import ArrowDownIcon from '@/assets/icons/ArrowDownIcon';
 import ImageIcon from '@/assets/icons/ImageIcon';
 import styles from './TodoCreateModal.module.css';
@@ -42,9 +43,7 @@ export default function TodoCreateModal({
   const [tagInput, setTagInput] = useState('');
   const [tags, setTags] = useState<TodoFormCard['tags']>([]);
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const imagePreviewUrlRef = useRef('');
+  const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
 
@@ -58,14 +57,6 @@ export default function TodoCreateModal({
   );
   const trimmedTagInput = tagInput.trim();
 
-  useEffect(() => {
-    return () => {
-      if (imagePreviewUrlRef.current) {
-        URL.revokeObjectURL(imagePreviewUrlRef.current);
-      }
-    };
-  }, []);
-
   // 필수값이 모두 들어왔을 때만 생성 버튼 활성화
   const isSubmitDisabled =
     title.trim().length === 0 ||
@@ -78,25 +69,7 @@ export default function TodoCreateModal({
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // 파일은 한 개만 카드 미리보기로 사용
     const file = event.target.files?.[0] ?? null;
-    const nextPreviewUrl = file ? URL.createObjectURL(file) : '';
-
-    if (imagePreviewUrlRef.current) {
-      URL.revokeObjectURL(imagePreviewUrlRef.current);
-    }
-
-    imagePreviewUrlRef.current = nextPreviewUrl;
-    setImageFile(file);
-    setImagePreviewUrl(nextPreviewUrl);
-  };
-
-  const handleRemoveImage = () => {
-    if (imagePreviewUrlRef.current) {
-      URL.revokeObjectURL(imagePreviewUrlRef.current);
-    }
-
-    imagePreviewUrlRef.current = '';
-    setImageFile(null);
-    setImagePreviewUrl('');
+    updateImage(file);
   };
 
   const handleAddTag = (label: string) => {
@@ -342,7 +315,7 @@ export default function TodoCreateModal({
                 type="button"
                 className={styles.removeImageButton}
                 aria-label="이미지 삭제"
-                onClick={handleRemoveImage}
+                onClick={removeImage}
               >
                 ×
               </button>
