@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './DashBoardItem.module.css';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
-import pinIcon from '@/assets/icon/icon_pin.svg';
 import crownIcon from '@/assets/icon/ic_crown.svg';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
@@ -33,7 +32,6 @@ export default function DashBoardItem({ id, title, color, createdByMe }: DashBoa
       <div>
         <HashTagIcon className={styles.hashTag} size={24} color={hashTagColor} aria-hidden />
         <p className={styles.title}>{title}</p>
-        <Image className={styles.pin} src={pinIcon} alt="" width={24} height={24} />
       </div>
 
       {createdByMe && (
