@@ -17,7 +17,7 @@ interface CardProps {
   dueDate: string;
   assignee: {
     nickname: string;
-    profileImage: string | null;
+    profileImageUrl: string | null;
   };
   src?: string | null;
 }
@@ -54,7 +54,7 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
         <p className={styles.cardDate}>{formatDate(dueDate)}</p>
         <div className={styles.cardAuthor}>
           <Avatar
-            src={assignee.profileImage}
+            src={assignee.profileImageUrl}
             alt={assignee.nickname}
             name={assignee.nickname}
             className={styles.cardAuthorAvatar}
