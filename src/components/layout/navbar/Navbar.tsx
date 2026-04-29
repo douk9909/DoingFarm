@@ -1,14 +1,17 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import Avatar from '@/components/common/avatar/Avatar';
+import { usePathname } from 'next/navigation';
+
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
+import Avatar from '@/components/common/avatar/Avatar';
+
 import characterImg from '@/assets/character/carrot1.svg';
-import sideMenuIcon from '@/assets/icon/ic_sidemenu.svg';
-import settingIcon from '@/assets/icon/ic_setting.svg';
-import userPlusIcon from '@/assets/icon/ic_user-plus.svg';
+import SidebarIcon from '@/assets/icons/SidebarIcon';
+import SettingIcon from '@/assets/icons/SettingIcon';
+import UserPlusIcon from '@/assets/icons/UserPlusIcon';
+
 import styles from './Navbar.module.css';
 
 const MAX_VISIBLE_USERS = 5;
@@ -58,7 +61,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
           )}
           onClick={onOpenMobileSidebar}
         >
-          <Image src={sideMenuIcon} alt="" className={styles.onlyMobileIcon} />
+          <SidebarIcon size={24} className={styles.buttonIcon} />
         </button>
       </div>
 
@@ -84,7 +87,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
                 type="button"
                 className={cn(styles.button, styles.textButton, styles.manageButton)}
               >
-                <Image src={settingIcon} alt="설정 아이콘" className={styles.buttonIcon} />
+                <SettingIcon size={20} className={styles.buttonIcon} />
                 <span>관리</span>
               </button>
 
@@ -92,11 +95,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
                 type="button"
                 className={cn(styles.button, styles.textButton, styles.inviteButton)}
               >
-                <Image
-                  src={userPlusIcon}
-                  alt="초대 아이콘"
-                  className={cn(styles.buttonIcon, styles.iconStyle)}
-                />
+                <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
                 <span>초대</span>
               </button>
             </div>
