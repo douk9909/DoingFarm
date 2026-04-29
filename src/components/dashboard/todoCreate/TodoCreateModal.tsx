@@ -9,13 +9,15 @@ import {
   getRandomTodoTagColor,
   getTodoAssigneeInitial,
 } from '@/components/dashboard/todoForm/constants';
+import TodoFormDropdown, {
+  TodoDropdownAvatar,
+} from '@/components/dashboard/todoForm/TodoFormDropdown';
 import type {
   TodoAssigneeOption,
   TodoColumnOption,
   TodoFormCard,
 } from '@/components/dashboard/todoForm/types';
 import { useTodoImagePreview } from '@/components/dashboard/todoForm/useTodoImagePreview';
-import ArrowDownIcon from '@/assets/icons/ArrowDownIcon';
 import ImageIcon from '@/assets/icons/ImageIcon';
 import styles from './TodoCreateModal.module.css';
 
@@ -55,6 +57,9 @@ export default function TodoCreateModal({
     () => assignees.find((assignee) => String(assignee.id) === assigneeId),
     [assigneeId, assignees],
   );
+  const selectedAssigneeIndex = selectedAssignee
+    ? assignees.findIndex((assignee) => assignee.id === selectedAssignee.id)
+    : -1;
   const trimmedTagInput = tagInput.trim();
 
   // 필수값이 모두 들어왔을 때만 생성 버튼 활성화
@@ -144,113 +149,65 @@ export default function TodoCreateModal({
         </label>
 
         <div className={styles.selectRow}>
-          <div className={styles.field}>
-            <span className={styles.label}>컬럼</span>
-            <div className={styles.dropdown}>
-              <button
-                type="button"
-                className={styles.dropdownButton}
-                aria-expanded={isColumnOpen}
-                onClick={() => {
-                  setIsColumnOpen((isOpen) => !isOpen);
-                  setIsAssigneeOpen(false);
-                }}
-              >
-                <span>{selectedColumn?.title ?? '컬럼 선택'}</span>
-                <ArrowDownIcon
-                  size={16}
-                  color="var(--color-gray-600)"
-                  className={isColumnOpen ? styles.arrowOpen : undefined}
-                />
-              </button>
+          <TodoFormDropdown
+            label="컬럼"
+            isOpen={isColumnOpen}
+            options={columns}
+            placeholder="컬럼 선택"
+            selectedContent={selectedColumn?.title}
+            getOptionKey={(column) => column.id}
+            onToggle={() => {
+              setIsColumnOpen((isOpen) => !isOpen);
+              setIsAssigneeOpen(false);
+            }}
+            onSelect={(column) => {
+              setColumnId(column.id);
+              setIsColumnOpen(false);
+            }}
+            renderOption={(column) => column.title}
+          />
 
-              {isColumnOpen ? (
-                <div className={styles.dropdownMenu}>
-                  {columns.map((column) => (
-                    <button
-                      key={column.id}
-                      type="button"
-                      className={styles.dropdownOption}
-                      onClick={() => {
-                        setColumnId(column.id);
-                        setIsColumnOpen(false);
-                      }}
-                    >
-                      {column.title}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          </div>
-
-          <div className={styles.field}>
-            <span className={styles.label}>담당자</span>
-            <div className={styles.dropdown}>
-              <button
-                type="button"
-                className={styles.dropdownButton}
-                aria-expanded={isAssigneeOpen}
-                onClick={() => {
-                  setIsAssigneeOpen((isOpen) => !isOpen);
-                  setIsColumnOpen(false);
-                }}
-              >
-                <span className={styles.selectedAssignee}>
-                  {selectedAssignee ? (
-                    <>
-                      <span
-                        className={styles.avatar}
-                        style={{
-                          backgroundColor:
-                            TODO_ASSIGNEE_COLORS[
-                              assignees.findIndex((assignee) => assignee.id === selectedAssignee.id) %
-                                TODO_ASSIGNEE_COLORS.length
-                            ],
-                        }}
-                      >
-                        {getTodoAssigneeInitial(selectedAssignee.nickname)}
-                      </span>
-                      {selectedAssignee.nickname}
-                    </>
-                  ) : (
-                    '담당자 선택'
-                  )}
-                </span>
-                <ArrowDownIcon
-                  size={16}
-                  color="var(--color-gray-600)"
-                  className={isAssigneeOpen ? styles.arrowOpen : undefined}
-                />
-              </button>
-
-              {isAssigneeOpen ? (
-                <div className={`${styles.dropdownMenu} ${styles.assigneeMenu}`}>
-                  {assignees.map((assignee, index) => (
-                    <button
-                      key={assignee.id}
-                      type="button"
-                      className={styles.dropdownOption}
-                      onClick={() => {
-                        setAssigneeId(String(assignee.id));
-                        setIsAssigneeOpen(false);
-                      }}
-                    >
-                      <span
-                        className={styles.avatar}
-                        style={{
-                          backgroundColor: TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length],
-                        }}
-                      >
-                        {getTodoAssigneeInitial(assignee.nickname)}
-                      </span>
-                      {assignee.nickname}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
-            </div>
-          </div>
+          <TodoFormDropdown
+            label="담당자"
+            isOpen={isAssigneeOpen}
+            options={assignees}
+            placeholder="담당자 선택"
+            selectedContent={
+              selectedAssignee ? (
+                <>
+                  <TodoDropdownAvatar
+                    color={
+                      TODO_ASSIGNEE_COLORS[
+                        selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length
+                      ]
+                    }
+                  >
+                    {getTodoAssigneeInitial(selectedAssignee.nickname)}
+                  </TodoDropdownAvatar>
+                  {selectedAssignee.nickname}
+                </>
+              ) : undefined
+            }
+            getOptionKey={(assignee) => assignee.id}
+            onToggle={() => {
+              setIsAssigneeOpen((isOpen) => !isOpen);
+              setIsColumnOpen(false);
+            }}
+            onSelect={(assignee) => {
+              setAssigneeId(String(assignee.id));
+              setIsAssigneeOpen(false);
+            }}
+            renderOption={(assignee, index) => (
+              <>
+                <TodoDropdownAvatar
+                  color={TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length]}
+                >
+                  {getTodoAssigneeInitial(assignee.nickname)}
+                </TodoDropdownAvatar>
+                {assignee.nickname}
+              </>
+            )}
+          />
         </div>
 
         <label className={styles.field}>
