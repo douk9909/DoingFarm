@@ -11,9 +11,8 @@ import { dashboardApi } from '@/lib/api/dashboard';
 import EditForm from './_components/EditForm';
 import MembersList from './_components/MembersList';
 import InvitationsList from './_components/InvitationsList';
-
-import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import DeleteDashboardButton from './_components/DeleteDashboardButton';
+import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 
 import styles from './edit.module.css';
 
@@ -26,7 +25,6 @@ interface DashboardEditPageProps {
 export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const { dashboardId } = use(params);
   const id = Number(dashboardId);
-
   const router = useRouter();
 
   const {
@@ -35,7 +33,10 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
     error,
   } = useFetch<Dashboard>(() => dashboardApi.getOne(id).then((res) => ({ data: res.data })));
 
-  const [dashboardTitle, setDashboardTitle] = useState<string | null>(null);
+  const [updatedDashboardTitle, setUpdatedDashboardTitle] = useState<string | null>(null);
+  const [updatedDashboardColor, setUpdatedDashboardColor] = useState<string | null>(null);
+  const dashboardTitle = updatedDashboardTitle ?? dashboardData?.title ?? '';
+  const dashboardColor = updatedDashboardColor ?? dashboardData?.color ?? '';
 
   // Todo: 로딩 컴포넌트 추가
   if (isLoading) return <div>로딩 중...</div>;
@@ -52,21 +53,18 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
         <span>돌아가기</span>
       </Link>
       <div className={styles.contentWrapper}>
-        {/* 대시보드 이름 변경 */}
         {dashboardData && (
           <EditForm
             dashboardId={id}
-            initialTitle={dashboardData.title}
-            initialColor={dashboardData.color}
-            onTitleUpdate={(newName) => setDashboardTitle(newName)}
-            currentDisplayTitle={dashboardTitle ?? dashboardData.title}
+            initialTitle={dashboardTitle}
+            initialColor={dashboardColor}
+            currentDisplayTitle={dashboardTitle}
+            onTitleUpdate={setUpdatedDashboardTitle}
+            onColorUpdate={setUpdatedDashboardColor}
           />
         )}
-        {/* 대시보드 구성원 변경 */}
         <MembersList dashboardId={id} />
-        {/* 대시보드 초대 내역 */}
         <InvitationsList dashboardId={id} />
-        {/* 대시보드 삭제 버튼 */}
         <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
