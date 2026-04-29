@@ -4,6 +4,7 @@ import { useMemo, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
+import { Input } from '@/components/common/input';
 import {
   TODO_ASSIGNEE_COLORS,
   getRandomTodoTagColor,
@@ -12,6 +13,7 @@ import {
 import TodoFormDropdown, {
   TodoDropdownAvatar,
 } from '@/components/dashboard/todoForm/TodoFormDropdown';
+import TodoTagInput from '@/components/dashboard/todoForm/TodoTagInput';
 import type {
   TodoAssigneeOption,
   TodoColumnOption,
@@ -60,7 +62,6 @@ export default function TodoCreateModal({
   const selectedAssigneeIndex = selectedAssignee
     ? assignees.findIndex((assignee) => assignee.id === selectedAssignee.id)
     : -1;
-  const trimmedTagInput = tagInput.trim();
 
   // 필수값이 모두 들어왔을 때만 생성 버튼 활성화
   const isSubmitDisabled =
@@ -94,13 +95,6 @@ export default function TodoCreateModal({
     setTagInput('');
   };
 
-  const handleTagKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleAddTag(tagInput);
-    }
-  };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -128,25 +122,22 @@ export default function TodoCreateModal({
       contentClassName={styles.todoModal}
     >
       <form className={styles.form} onSubmit={handleSubmit}>
-        <label className={styles.field}>
-          <span className={styles.requiredLabel}>제목</span>
-          <input
-            className={styles.textInput}
-            value={title}
-            placeholder="제목을 입력해주세요"
-            onChange={(event) => setTitle(event.target.value)}
-          />
-        </label>
+        <Input.Text
+          label="제목*"
+          value={title}
+          placeholder="제목을 입력해주세요"
+          className={styles.formInput}
+          onChange={(event) => setTitle(event.target.value)}
+        />
 
-        <label className={styles.field}>
-          <span className={styles.requiredLabel}>설명</span>
-          <textarea
-            className={styles.textarea}
-            value={description}
-            placeholder="설명을 입력해주세요"
-            onChange={(event) => setDescription(event.target.value)}
-          />
-        </label>
+        <Input.TextArea
+          label="설명*"
+          value={description}
+          placeholder="설명을 입력해주세요"
+          rows={4}
+          className={styles.formTextarea}
+          onChange={(event) => setDescription(event.target.value)}
+        />
 
         <div className={styles.selectRow}>
           <TodoFormDropdown
@@ -229,39 +220,12 @@ export default function TodoCreateModal({
           </span>
         </label>
 
-        <div className={styles.field}>
-          <span className={styles.label}>태그</span>
-          <input
-            className={styles.textInput}
-            value={tagInput}
-            placeholder="태그를 입력해주세요"
-            onChange={(event) => setTagInput(event.target.value)}
-            onKeyDown={handleTagKeyDown}
-          />
-
-          {(trimmedTagInput || tags.length > 0) && (
-            <div className={styles.tagPanel}>
-              {trimmedTagInput ? <span className={styles.tagHint}>옵션 선택 또는 생성</span> : null}
-              <div className={styles.tagList}>
-                {trimmedTagInput ? (
-                  <button
-                    type="button"
-                    className={styles.tagChip}
-                    style={{ backgroundColor: 'var(--color-profile-cobalt)' }}
-                    onClick={() => handleAddTag(tagInput)}
-                  >
-                    생성&nbsp;&nbsp; {trimmedTagInput}
-                  </button>
-                ) : null}
-                {tags.map((tag) => (
-                  <span key={tag.label} className={styles.tagChip} style={{ backgroundColor: tag.color }}>
-                    {tag.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <TodoTagInput
+          value={tagInput}
+          tags={tags}
+          onChange={setTagInput}
+          onAddTag={handleAddTag}
+        />
 
         <div className={styles.field}>
           <span className={styles.label}>이미지</span>

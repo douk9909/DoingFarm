@@ -31,8 +31,6 @@
   color: var(--color-primary-500);
 }
 
-.textInput,
-.textarea,
 .dateInput {
   width: 100%;
   border: 1px solid var(--color-gray-300);
@@ -42,30 +40,29 @@
   font: var(--text-sm-medium);
 }
 
-.textInput,
 .dateInput {
   min-height: 38px;
   padding: 0 14px;
   outline: none;
 }
 
-.textarea {
-  min-height: 96px;
-  padding: 14px;
-  outline: none;
-  resize: none;
-}
-
-.textInput:focus,
-.textarea:focus,
 .dateInput:focus {
   border-color: var(--color-blue-300);
 }
 
-.textInput::placeholder,
-.textarea::placeholder,
 .dateInput::placeholder {
   color: var(--color-gray-600);
+}
+
+.formInput {
+  min-height: 38px;
+  font: var(--text-sm-medium);
+}
+
+.formTextarea {
+  min-height: 96px;
+  padding: 14px 0;
+  font: var(--text-sm-medium);
 }
 
 .selectRow {
@@ -194,39 +191,6 @@
   background-color: var(--color-blue-300) !important;
   color: var(--color-black-100) !important;
   font: var(--text-sm-semibold);
-}
-
-.tagPanel {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: 54px;
-  padding: 10px 12px;
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--radius-sm);
-  background-color: var(--color-black-200);
-}
-
-.tagHint {
-  color: var(--color-gray-700);
-  font: var(--text-xs-semibold);
-}
-
-.tagList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.tagChip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 22px;
-  max-width: 100%;
-  padding: 0 8px;
-  border-radius: var(--radius-sm);
-  color: var(--color-white);
-  font: var(--text-xs-semibold);
 }
 
 .imageUpload {
