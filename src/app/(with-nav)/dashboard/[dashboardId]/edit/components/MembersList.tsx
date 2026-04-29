@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { Member, memberApi } from '@/lib/api/member';
 import { usePagination } from '@/hooks/queries/usePagination';
 import { cn } from '@/lib/utils/cn';
@@ -24,6 +24,8 @@ export default function MembersList({ dashboardId }: MembersListProps) {
   const [membersTotalCount, setMembersTotalCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetMember, setTargetMember] = useState<Member | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const isFetching = useRef(false);
 
   const { page, size, goToNext, goToPrev } = usePagination({
     initialSize: 4,
@@ -32,14 +34,22 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
   // 멤버 불러오기
   const fetchMembers = useCallback(async () => {
+    if (isFetching.current) return;
+
     try {
+      isFetching.current = true;
+      setIsLoading(true);
+
       const response = await memberApi.getList({ dashboardId, page, size });
       const { members, totalCount } = response.data;
-
       setMembers(members);
       setMembersTotalCount(totalCount);
     } catch (error) {
+      // Todo: 토스트 띄우기로 오류알림
       console.error('로드 실패:', error);
+    } finally {
+      setIsLoading(false);
+      isFetching.current = false;
     }
   }, [dashboardId, page, size]);
 
@@ -57,12 +67,15 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
   // 모달에서 삭제 확정 시 멤버 삭제
   const handleDeleteMember = async () => {
-    if (!targetMember) return;
+    if (!targetMember || isFetching.current) return;
 
     const previousMembers = [...members];
     const previousTotalCount = membersTotalCount;
 
     try {
+      setIsLoading(true);
+      isFetching.current = true;
+
       setMembers((prev) => prev.filter((member) => member.id !== targetMember.id));
       setMembersTotalCount((prev) => prev - 1);
 
@@ -86,6 +99,8 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
       alert('변경에 실패했습니다. 다시 시도해주세요.');
     } finally {
+      setIsLoading(false);
+      isFetching.current = false;
       setIsModalOpen(false);
       setTargetMember(null);
     }
@@ -133,7 +148,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
                 variant="secondary"
                 onClick={() => handleDeleteClick(member)}
                 className={styles.buttonStyle}
-                disabled={member.isOwner}
+                disabled={member.isOwner || isLoading}
               >
                 삭제
               </Button>
