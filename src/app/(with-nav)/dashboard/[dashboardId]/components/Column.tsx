@@ -32,7 +32,7 @@ const getColumnIcon = (title: string) => {
 };
 
 export default function Column({ id, title }: ColumnProps) {
-  const { items, totalCount, isLoading, error, loaderRef, scrollContainerRef } =
+  const { items, totalCount, isLoading, error, loaderRef, lastItemRef, scrollContainerRef } =
     useInfiniteScroll<CardType>({
       fetcher: (cursorId) =>
         cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
@@ -41,6 +41,7 @@ export default function Column({ id, title }: ColumnProps) {
           nextCursorId: res.data.cursorId,
         })),
     });
+
   if (error) return <div>에러: {error}</div>;
 
   return (
@@ -57,19 +58,28 @@ export default function Column({ id, title }: ColumnProps) {
       </div>
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
-        {items.map((card: CardType) => (
-          <Card
+        {items.map((card: CardType, index) => (
+          // 래퍼 div로 마지막 카드 감지 (모바일/태블릿용)
+          // Card는 공통 컴포넌트라 forwardRef 없이 래퍼 div로 ref 전달
+          <div
             key={card.id}
-            id={card.id}
-            title={card.title}
-            tags={card.tags}
-            dueDate={card.dueDate}
-            assignee={card.assignee}
-            src={card.imageUrl}
-          />
+            ref={index === items.length - 1 ? lastItemRef : null}
+            className={styles.cardWrapper}
+          >
+            <Card
+              id={card.id}
+              title={card.title}
+              tags={card.tags}
+              dueDate={card.dueDate}
+              assignee={card.assignee}
+              src={card.imageUrl}
+            />
+          </div>
         ))}
-        <div ref={loaderRef} style={{ height: '10px', flexShrink: 0 }} />
+        {/* PC 전용 loader */}
+        <div ref={loaderRef} className={styles.loader} />
       </div>
+
       <button aria-label="카드 추가" className={styles.addCardButton}>
         <div className={styles.iconWrapper}>
           <PlusIcon size={16} color={'var(--color-gray-900)'} />
