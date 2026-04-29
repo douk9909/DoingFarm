@@ -26,7 +26,6 @@ interface DashboardEditPageProps {
 export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const { dashboardId } = use(params);
   const id = Number(dashboardId);
-  const [dashboardTitle, setDashboardTitle] = useState('');
 
   const router = useRouter();
 
@@ -36,9 +35,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
     error,
   } = useFetch<Dashboard>(() => dashboardApi.getOne(id).then((res) => ({ data: res.data })));
 
-  useEffect(() => {
-    if (dashboardData) setDashboardTitle(dashboardData.title);
-  }, [dashboardData]);
+  const [dashboardTitle, setDashboardTitle] = useState<string | null>(null);
 
   // Todo: 로딩 컴포넌트 추가
   if (isLoading) return <div>로딩 중...</div>;
@@ -62,7 +59,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
             initialTitle={dashboardData.title}
             initialColor={dashboardData.color}
             onTitleUpdate={(newName) => setDashboardTitle(newName)}
-            currentDisplayTitle={dashboardTitle}
+            currentDisplayTitle={dashboardTitle ?? dashboardData.title}
           />
         )}
         {/* 대시보드 구성원 변경 */}
