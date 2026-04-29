@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { cn } from '@/lib/utils/cn';
@@ -83,13 +84,13 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
             <div className={styles.line}></div>
 
             <div className={styles.buttonContainer}>
-              <button
-                type="button"
+              <Link
+                href={`${pathname}/edit`}
                 className={cn(styles.button, styles.textButton, styles.manageButton)}
               >
                 <SettingIcon size={20} className={styles.buttonIcon} />
                 <span>관리</span>
-              </button>
+              </Link>
 
               <button
                 type="button"
