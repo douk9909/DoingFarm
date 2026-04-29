@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { memberApi } from '@/lib/api/member';
+import { useFetch } from '@/hooks/queries/useFetch';
+
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
 import Avatar from '@/components/common/avatar/Avatar';
@@ -24,22 +27,18 @@ interface NavbarProps {
 
 export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSidebar }: NavbarProps) {
   const pathname = usePathname();
+  const dashboardId = Number(pathname.split('/')[2]);
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
-  // Mock 유저
-  const users = [
-    { id: 1, nickname: '김순미', profileImage: null },
-    { id: 2, nickname: '김선달', profileImage: null },
-    { id: 3, nickname: '박민영', profileImage: null },
-    { id: 4, nickname: '김서이', profileImage: null },
-    { id: 5, nickname: '박지연', profileImage: null },
-    { id: 6, nickname: '손유림', profileImage: null },
-    { id: 7, nickname: '최민규', profileImage: null },
-    { id: 8, nickname: '정하민', profileImage: null },
-  ];
+  const { data: membersData } = useFetch(() =>
+    memberApi
+      .getList(dashboardId, { page: 1, size: MAX_VISIBLE_USERS })
+      .then((res) => ({ data: res.data })),
+  );
 
-  const displayUsers = users.slice(0, MAX_VISIBLE_USERS);
-  const extraCount = users.length - MAX_VISIBLE_USERS;
+  const displayMembers = membersData?.members || [];
+  const totalCount = membersData?.totalCount || 0;
+  const extraCount = totalCount - MAX_VISIBLE_USERS;
 
   return (
     <header className={styles.container}>
@@ -70,12 +69,12 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
         {!isMyDashboard && (
           <>
             <div className={styles.userList}>
-              {displayUsers.map((user) => (
+              {displayMembers?.map((member) => (
                 <Avatar
-                  key={user.id}
-                  src={user.profileImage}
-                  name={user.nickname}
-                  alt={user.nickname}
+                  key={member.userId}
+                  src={member.profileImageUrl}
+                  name={member.nickname}
+                  alt={member.nickname}
                   className={styles.profile}
                 />
               ))}
