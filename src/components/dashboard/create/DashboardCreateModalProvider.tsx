@@ -18,6 +18,7 @@ interface DashboardCreateModalProviderProps {
 
 export function DashboardCreateModalProvider({ children }: DashboardCreateModalProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  // 생성 성공 시 version을 올려 사이드바 목록 갱신
   const [dashboardListVersion, setDashboardListVersion] = useState(0);
 
   const openDashboardCreateModal = useCallback(() => {

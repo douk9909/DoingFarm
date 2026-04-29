@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { dashboardApi } from '@/lib/api/dashboard';
 import type { Dashboard } from '@/types/dashboard';
 
@@ -17,35 +17,53 @@ export const useDashboards = (refreshKey = 0): UseDashboardsReturn => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const refetchDashboards = useCallback(async () => {
+  const refetchDashboards = useCallback(async (signal?: AbortSignal) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const res = await dashboardApi.getList({
-        // 사이드바에서는 첫 페이지 목록만 사용
-        navigationMethod: 'pagination',
-        page: 1,
-        size: 50,
-      });
+      const res = await dashboardApi.getList(
+        {
+          // 사이드바에서는 첫 페이지 목록만 사용
+          navigationMethod: 'pagination',
+          page: 1,
+          size: 50,
+        },
+        signal,
+      );
+
+      if (signal?.aborted) {
+        return;
+      }
 
       setDashboards(res.data.dashboards);
     } catch (err) {
+      if (signal?.aborted) {
+        return;
+      }
+
       setError((err as Error).message);
     } finally {
-      setIsLoading(false);
+      if (!signal?.aborted) {
+        setIsLoading(false);
+      }
     }
   }, []);
 
-  const refetchDashboardsRef = useRef(refetchDashboards);
   useEffect(() => {
-    refetchDashboardsRef.current = refetchDashboards;
-  }, [refetchDashboards]);
+    const controller = new AbortController();
 
-  useEffect(() => {
-    // 생성 성공 후 refreshKey가 증가하면 최신 목록으로 갱신
-    refetchDashboardsRef.current();
-  }, [refreshKey]);
+    const fetchDashboards = async () => {
+      // 생성 성공 후 refreshKey가 증가하면 최신 목록으로 갱신
+      await refetchDashboards(controller.signal);
+    };
+
+    fetchDashboards();
+
+    return () => {
+      controller.abort();
+    };
+  }, [refetchDashboards, refreshKey]);
 
   return { dashboards, isLoading, error, refetchDashboards };
 };

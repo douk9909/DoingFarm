@@ -20,9 +20,11 @@ export default function DashboardCreateModal({ onClose, onCreated }: DashboardCr
   const [title, setTitle] = useState('');
   const [color, setColor] = useState<DashboardColor>(DASHBOARD_COLORS[0]);
   const { createDashboard, isPending, error } = useCreateDashboard();
+  // 공백만 입력한 이름은 생성할 수 없게 처리
   const isSubmitDisabled = title.trim().length === 0 || isPending;
 
   const handleSelectColor = (nextColor: string) => {
+    // 공통 ColorPicker 값 중 대시보드 팔레트에 있는 색상만 저장
     if (DASHBOARD_COLORS.includes(nextColor as DashboardColor)) {
       setColor(nextColor as DashboardColor);
     }
@@ -37,7 +39,7 @@ export default function DashboardCreateModal({ onClose, onCreated }: DashboardCr
     });
 
     if (createdDashboard) {
-      // 생성 후 사이드바 목록을 다시 불러오도록 알림
+      // 생성 성공 후 목록 반영은 사이드바 API 연결에서 처리
       onCreated();
       onClose();
     }
