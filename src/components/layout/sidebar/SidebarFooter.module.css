@@ -1,17 +1,12 @@
 /* 모바일 */
 .footer {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 60px;
   padding: 12px 20px;
   border-top: 2px solid #2c2b30;
-}
-
-.footer button {
-  appearance: none;
-  background-color: var(--color-black-100);
-  border: none;
 }
 
 .nameWrapper {
@@ -29,15 +24,41 @@
   border-radius: 100px;
   background-color: var(--color-profile-green);
   font: var(--text-xs-semibold);
+  color: var(--color-white);
+  flex-shrink: 0;
+}
+
+.profileImg {
+  width: 26px;
+  height: 26px;
+  border-radius: 100px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 
 .userName {
   font: var(--text-md-medium);
+  color: var(--color-gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100px;
 }
 
-.settingIcon {
-  width: 20px;
-  height: 20px;
+.settingButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.settingButton:hover {
+  background-color: var(--color-black-300);
 }
 
 /* PC */
@@ -51,7 +72,13 @@
     height: 30px;
   }
 
+  .profileImg {
+    width: 30px;
+    height: 30px;
+  }
+
   .userName {
     font: var(--text-lg-16-medium);
+    max-width: 140px;
   }
 }
