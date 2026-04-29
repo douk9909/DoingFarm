@@ -2,16 +2,16 @@
 
 import { Input } from '@/components/common/input';
 import type { TodoFormCard } from './types';
-import styles from './TodoTagInput.module.css';
+import styles from './TodoTagField.module.css';
 
-interface TodoTagInputProps {
+interface TodoTagFieldProps {
   value: string;
   tags: TodoFormCard['tags'];
   onChange: (value: string) => void;
   onAddTag: (value: string) => void;
 }
 
-export default function TodoTagInput({ value, tags, onChange, onAddTag }: TodoTagInputProps) {
+export default function TodoTagField({ value, tags, onChange, onAddTag }: TodoTagFieldProps) {
   const trimmedValue = value.trim();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {

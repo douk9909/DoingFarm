@@ -13,7 +13,7 @@ import {
 import TodoFormDropdown, {
   TodoDropdownAvatar,
 } from '@/components/dashboard/todoForm/TodoFormDropdown';
-import TodoTagInput from '@/components/dashboard/todoForm/TodoTagInput';
+import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
 import type {
   TodoAssigneeOption,
   TodoColumnOption,
@@ -220,7 +220,7 @@ export default function TodoCreateModal({
           </span>
         </label>
 
-        <TodoTagInput
+        <TodoTagField
           value={tagInput}
           tags={tags}
           onChange={setTagInput}
