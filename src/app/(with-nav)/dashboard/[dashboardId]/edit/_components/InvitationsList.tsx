@@ -11,54 +11,38 @@ import styles from '../edit.module.css';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
+import { useMemberList } from '@/hooks/queries/useMemberList';
 
 interface InvitationsListProps {
   dashboardId: number;
 }
 
 export default function InvitationsList({ dashboardId }: InvitationsListProps) {
-  const [invitations, setInvitations] = useState<DashboardInvitation[]>([]);
-  const [invitationsTotalCount, setInvitationsTotalCount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const isFetching = useRef(false);
-
-  const { page, size, goToNext, goToPrev } = usePagination({
-    initialSize: 5,
-    isResponsive: false,
+  const {
+    items: invitations,
+    setItems: setInvitations,
+    totalCount,
+    setTotalCount,
+    page,
+    goToNext,
+    goToPrev,
+    isLoading,
+    fetchData,
+    totalPages,
+  } = useMemberList<DashboardInvitation>({
+    dashboardId,
+    fetchApi: dashboardApi.getInvitations,
+    resourceName: 'invitations',
   });
-
-  const fetchInvitations = useCallback(async () => {
-    if (isFetching.current) return;
-
-    try {
-      isFetching.current = true;
-
-      const response = await dashboardApi.getInvitations(dashboardId, { page, size });
-      const { invitations, totalCount } = response.data;
-      setInvitations(invitations);
-      setInvitationsTotalCount(totalCount);
-    } catch (error) {
-      console.error('로드 실패:', error);
-    } finally {
-      isFetching.current = false;
-    }
-  }, [dashboardId, page, size]);
-
-  useEffect(() => {
-    fetchInvitations();
-  }, [fetchInvitations]);
-
-  const totalPages = Math.ceil(invitationsTotalCount / size);
 
   const handleDeleteMember = async (dashboardId: number, invitationId: number, email: string) => {
     const previousInvitations = [...invitations];
-    const previousTotalCount = invitationsTotalCount;
+    const previousTotalCount = totalCount;
 
     if (confirm(`${email} 님에게 보낸 초대를 취소하시겠습니까?`)) {
       try {
         setInvitations((prev) => prev.filter((invitation) => invitation.id !== invitationId));
-        setInvitationsTotalCount((prev) => prev - 1);
+        setTotalCount((prev) => prev - 1);
 
         await dashboardApi.cancelInvitation(dashboardId, invitationId);
 
@@ -69,12 +53,10 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
         console.error('구성원 삭제 중 오류 발생:', error);
 
         setInvitations(previousInvitations);
-        setInvitationsTotalCount(previousTotalCount);
+        setTotalCount(previousTotalCount);
 
         alert('변경에 실패했습니다. 다시 시도해주세요.');
       } finally {
-        setIsLoading(false);
-        isFetching.current = false;
       }
     }
   };

@@ -8,12 +8,12 @@ import { useFetch } from '@/hooks/queries/useFetch';
 import { Dashboard } from '@/types/dashboard';
 import { dashboardApi } from '@/lib/api/dashboard';
 
-import EditForm from './components/EditForm';
-import MembersList from './components/MembersList';
-import InvitationsList from './components/InvitationsList';
+import EditForm from './_components/EditForm';
+import MembersList from './_components/MembersList';
+import InvitationsList from './_components/InvitationsList';
 
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
-import DeleteDashboardButton from './components/DeleteDashboardButton';
+import DeleteDashboardButton from './_components/DeleteDashboardButton';
 
 import styles from './edit.module.css';
 

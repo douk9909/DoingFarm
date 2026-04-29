@@ -24,7 +24,8 @@ export interface GetMembersResponse {
 
 export const memberApi = {
   /* 대시보드 멤버 조회 */
-  getList: (params: GetMembersRequest) => apiClient.get<GetMembersResponse>('/members', { params }),
+  getList: (dashboardId: number, params?: { page?: number; size?: number }) =>
+    apiClient.get<GetMembersResponse>('/members', { params: { ...params, dashboardId } }),
   /* 멤버 삭제 */
   deleteMember: (memberId: number) => apiClient.delete(`/members/${memberId}`),
 };
