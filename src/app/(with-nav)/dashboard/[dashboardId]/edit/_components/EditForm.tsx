@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { useDashboard } from '@/contexts/DashboardContext';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
 
@@ -42,6 +43,7 @@ export default function EditForm({
   const [color, setColor] = useState(transformedColor);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { updateDashboard } = useDashboard();
   const isFetching = useRef(false);
 
   const isChanged = title !== initialTitle || color !== transformedColor;
@@ -62,6 +64,8 @@ export default function EditForm({
       const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
       await dashboardApi.update(dashboardId, { title, color: hexColor });
 
+      updateDashboard(title, color);
+
       // Todo: 토스트 띄우기로 변경 완료 알림
       alert('변경되었습니다');
     } catch (error) {
@@ -73,11 +77,6 @@ export default function EditForm({
       isFetching.current = false;
     }
   };
-
-  useEffect(() => {
-    setTitle(initialTitle);
-    setColor(transformedColor);
-  }, [initialTitle, transformedColor]);
 
   return (
     <BaseSectionLayout title={currentDisplayTitle}>
