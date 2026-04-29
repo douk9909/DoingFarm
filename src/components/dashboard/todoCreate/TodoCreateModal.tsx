@@ -1,26 +1,19 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import DatePicker from 'react-datepicker';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
 import { Input } from '@/components/common/input';
-import {
-  TODO_ASSIGNEE_COLORS,
-  getRandomTodoTagColor,
-  getTodoAssigneeInitial,
-} from '@/components/dashboard/todoForm/constants';
+import TodoDateField from '@/components/dashboard/todoForm/TodoDateField';
 import TodoFormDropdown, {
   TodoDropdownAvatar,
 } from '@/components/dashboard/todoForm/TodoFormDropdown';
 import TodoImageField from '@/components/dashboard/todoForm/TodoImageField';
 import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
-import type {
-  TodoAssigneeOption,
-  TodoColumnOption,
-  TodoFormCard,
-} from '@/components/dashboard/todoForm/types';
-import { useTodoImagePreview } from '@/components/dashboard/todoForm/useTodoImagePreview';
+import { useTodoImagePreview } from '@/hooks/ui/useTodoImagePreview';
+import { useTodoTags } from '@/hooks/ui/useTodoTags';
+import { TODO_ASSIGNEE_COLORS, getTodoAssigneeInitial } from '@/lib/constants/todo';
+import type { TodoAssigneeOption, TodoColumnOption, TodoFormCard } from '@/types/todo';
 import styles from './TodoCreateModal.module.css';
 
 export type CreatedTodoCard = TodoFormCard;
@@ -44,9 +37,8 @@ export default function TodoCreateModal({
   const [description, setDescription] = useState('');
   const [columnId, setColumnId] = useState(initialColumnId);
   const [assigneeId, setAssigneeId] = useState('');
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<TodoFormCard['tags']>([]);
   const [dueDate, setDueDate] = useState<Date | null>(null);
+  const { tagInput, tags, setTagInput, addTag } = useTodoTags();
   const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
@@ -70,32 +62,17 @@ export default function TodoCreateModal({
     assigneeId.length === 0 ||
     tags.length === 0 ||
     !dueDate ||
-    !imageFile;
-
-  const handleAddTag = (label: string) => {
-    const nextLabel = label.trim();
-
-    if (nextLabel.length === 0) {
-      return;
-    }
-
-    setTags((prevTags) => {
-      if (prevTags.some((tag) => tag.label === nextLabel)) {
-        return prevTags;
-      }
-
-      return [...prevTags, { label: nextLabel, color: getRandomTodoTagColor() }];
-    });
-    setTagInput('');
-  };
+    !imageFile ||
+    !imagePreviewUrl;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isSubmitDisabled || !dueDate || !imageFile || !selectedAssignee) {
+    if (isSubmitDisabled || !dueDate || !imagePreviewUrl || !selectedAssignee) {
       return;
     }
 
+    // 카드 렌더링에 필요한 값만 정리해서 상위로 전달
     onCreate(columnId, {
       title: title.trim(),
       tags,
@@ -104,7 +81,7 @@ export default function TodoCreateModal({
         nickname: selectedAssignee.nickname,
         profileImage: null,
       },
-      src: URL.createObjectURL(imageFile),
+      src: imagePreviewUrl,
     });
   };
 
@@ -141,6 +118,7 @@ export default function TodoCreateModal({
             placeholder="컬럼 선택"
             selectedContent={selectedColumn?.title}
             getOptionKey={(column) => column.id}
+            isOptionSelected={(column) => column.id === columnId}
             onToggle={() => {
               setIsColumnOpen((isOpen) => !isOpen);
               setIsAssigneeOpen(false);
@@ -174,6 +152,7 @@ export default function TodoCreateModal({
               ) : undefined
             }
             getOptionKey={(assignee) => assignee.id}
+            isOptionSelected={(assignee) => String(assignee.id) === assigneeId}
             onToggle={() => {
               setIsAssigneeOpen((isOpen) => !isOpen);
               setIsColumnOpen(false);
@@ -195,31 +174,9 @@ export default function TodoCreateModal({
           />
         </div>
 
-        <label className={styles.field}>
-          <span className={styles.label}>마감일</span>
-          <span className={styles.dateField}>
-            <DatePicker
-              selected={dueDate}
-              onChange={(date: Date | null) => setDueDate(date)}
-              showTimeSelect
-              timeIntervals={30}
-              dateFormat="yyyy. MM. dd HH:mm"
-              minDate={new Date()}
-              placeholderText="2024. 07. 31 14:30"
-              className={styles.dateInput}
-              wrapperClassName={styles.datePickerWrapper}
-              calendarClassName={styles.todoCalendar}
-              popperClassName={styles.todoDatePickerPopper}
-            />
-          </span>
-        </label>
+        <TodoDateField value={dueDate} onChange={setDueDate} />
 
-        <TodoTagField
-          value={tagInput}
-          tags={tags}
-          onChange={setTagInput}
-          onAddTag={handleAddTag}
-        />
+        <TodoTagField value={tagInput} tags={tags} onChange={setTagInput} onAddTag={addTag} />
 
         <TodoImageField
           imagePreviewUrl={imagePreviewUrl}

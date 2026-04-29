@@ -12,6 +12,7 @@ interface TodoFormDropdownProps<T> {
   placeholder: string;
   selectedContent?: ReactNode;
   getOptionKey: (option: T) => string | number;
+  isOptionSelected?: (option: T) => boolean;
   onToggle: () => void;
   onSelect: (option: T) => void;
   renderOption?: (option: T, index: number) => ReactNode;
@@ -37,6 +38,7 @@ export default function TodoFormDropdown<T>({
   placeholder,
   selectedContent,
   getOptionKey,
+  isOptionSelected,
   onToggle,
   onSelect,
   renderOption,
@@ -48,7 +50,9 @@ export default function TodoFormDropdown<T>({
         <button
           type="button"
           className={styles.dropdownButton}
+          aria-haspopup="listbox"
           aria-expanded={isOpen}
+          aria-label={`${label} 선택`}
           onClick={onToggle}
         >
           <span className={styles.selectedContent}>{selectedContent ?? placeholder}</span>
@@ -60,12 +64,14 @@ export default function TodoFormDropdown<T>({
         </button>
 
         {isOpen ? (
-          <div className={styles.dropdownMenu}>
+          <div className={styles.dropdownMenu} role="listbox" aria-label={`${label} 목록`}>
             {options.map((option, index) => (
               <button
                 key={getOptionKey(option)}
                 type="button"
                 className={styles.dropdownOption}
+                role="option"
+                aria-selected={isOptionSelected?.(option) ?? false}
                 onClick={() => onSelect(option)}
               >
                 {renderOption ? renderOption(option, index) : String(getOptionKey(option))}

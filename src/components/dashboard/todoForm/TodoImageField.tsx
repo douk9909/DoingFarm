@@ -24,7 +24,7 @@ export default function TodoImageField({
       <span className={styles.label}>이미지</span>
       {imagePreviewUrl ? (
         <div className={styles.imagePreview}>
-          <img src={imagePreviewUrl} alt="" />
+          <img src={imagePreviewUrl} alt="첨부 이미지 미리보기" />
           <button
             type="button"
             className={styles.removeImageButton}
