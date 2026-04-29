@@ -18,12 +18,9 @@ interface NavbarProps {
   onOpenMobileSidebar?: () => void;
 }
 
-export default function Navbar({
-  isMobileSidebarOpen = false,
-  onOpenMobileSidebar,
-}: NavbarProps) {
+export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSidebar }: NavbarProps) {
   const pathname = usePathname();
-  const isMyDashboard = pathname === PATH.MY_DASHBOARD;
+  const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
   // Mock 유저
   const users = [
@@ -81,20 +78,30 @@ export default function Navbar({
               {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
             </div>
             <div className={styles.line}></div>
+
+            <div className={styles.buttonContainer}>
+              <button
+                type="button"
+                className={cn(styles.button, styles.textButton, styles.manageButton)}
+              >
+                <Image src={settingIcon} alt="설정 아이콘" className={styles.buttonIcon} />
+                <span>관리</span>
+              </button>
+
+              <button
+                type="button"
+                className={cn(styles.button, styles.textButton, styles.inviteButton)}
+              >
+                <Image
+                  src={userPlusIcon}
+                  alt="초대 아이콘"
+                  className={cn(styles.buttonIcon, styles.iconStyle)}
+                />
+                <span>초대</span>
+              </button>
+            </div>
           </>
         )}
-
-        <div className={styles.buttonContainer}>
-          <button type="button" className={cn(styles.button, styles.textButton, styles.manageButton)}>
-            <Image src={settingIcon} alt="설정 아이콘" className={styles.buttonIcon} />
-            <span>관리</span>
-          </button>
-
-          <button type="button" className={cn(styles.button, styles.textButton, styles.inviteButton)}>
-            <Image src={userPlusIcon} alt="초대 아이콘" className={cn(styles.buttonIcon, styles.iconStyle)} />
-            <span>초대</span>
-          </button>
-        </div>
       </div>
     </header>
   );
