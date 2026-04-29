@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Navbar from '@/components/layout/navbar/Navbar';
 import Sidebar from '@/components/layout/sidebar/Sidebar';
+import { DashboardCreateModalProvider } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import styles from '../layout.module.css';
 import {
   SIDEBAR_VIEWPORT_COOKIE_NAME,
@@ -23,10 +24,7 @@ function setSidebarCookie(name: string, value: string) {
 }
 
 // With-nav 클라이언트 셸
-export function WithNavLayoutClient({
-  children,
-  initialSidebarWidth,
-}: WithNavLayoutClientProps) {
+export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavLayoutClientProps) {
   // 초기 폭
   const [sidebarWidth, setSidebarWidth] = useState<number | null>(initialSidebarWidth);
   const [viewportMode, setViewportMode] = useState<ViewportMode>('mobile');
@@ -124,40 +122,42 @@ export function WithNavLayoutClient({
   }, [isSidebarResizing]);
 
   return (
-    <div
-      className={styles.shell}
-      style={
-        sidebarWidth === null || viewportMode === 'mobile'
-          ? undefined
-          : {
-              gridTemplateColumns: `${sidebarWidth}px 8px minmax(0, 1fr)`,
-            }
-      }
-    >
-      <Sidebar
-        isMobileOpen={isMobileSidebarOpen}
-        onCloseMobile={() => setIsMobileSidebarOpen(false)}
-      />
+    <DashboardCreateModalProvider>
       <div
-        className={styles.resizeHandle}
-        role="presentation"
-        onMouseDown={() => setIsSidebarResizing(true)}
-      />
-      <div className={styles.contentArea}>
-        <Navbar
-          isMobileSidebarOpen={isMobileSidebarOpen}
-          onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+        className={styles.shell}
+        style={
+          sidebarWidth === null || viewportMode === 'mobile'
+            ? undefined
+            : {
+                gridTemplateColumns: `${sidebarWidth}px 8px minmax(0, 1fr)`,
+              }
+        }
+      >
+        <Sidebar
+          isMobileOpen={isMobileSidebarOpen}
+          onCloseMobile={() => setIsMobileSidebarOpen(false)}
         />
-        <main className={styles.main}>{children}</main>
+        <div
+          className={styles.resizeHandle}
+          role="presentation"
+          onMouseDown={() => setIsSidebarResizing(true)}
+        />
+        <div className={styles.contentArea}>
+          <Navbar
+            isMobileSidebarOpen={isMobileSidebarOpen}
+            onOpenMobileSidebar={() => setIsMobileSidebarOpen(true)}
+          />
+          <main className={styles.main}>{children}</main>
+        </div>
+        <button
+          type="button"
+          aria-label="사이드바 닫기"
+          className={`${styles.mobileOverlay} ${
+            isMobileSidebarOpen ? styles.mobileOverlayVisible : ''
+          }`}
+          onClick={() => setIsMobileSidebarOpen(false)}
+        />
       </div>
-      <button
-        type="button"
-        aria-label="사이드바 닫기"
-        className={`${styles.mobileOverlay} ${
-          isMobileSidebarOpen ? styles.mobileOverlayVisible : ''
-        }`}
-        onClick={() => setIsMobileSidebarOpen(false)}
-      />
-    </div>
+    </DashboardCreateModalProvider>
   );
 }
