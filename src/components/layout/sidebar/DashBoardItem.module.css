@@ -42,16 +42,6 @@
     transform 0.2s ease;
 }
 
-.pin {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  opacity: 0.7;
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
 .crown {
   width: 20px;
   height: 20px;
@@ -91,11 +81,6 @@
     transform: translateX(1px);
   }
 
-  .menu:hover .pin {
-    opacity: 1;
-    transform: translateY(-1px);
-  }
-
   .menu:hover .crown {
     transform: translateY(-1px) scale(1.04);
     filter: drop-shadow(0 4px 10px rgba(255, 203, 70, 0.22));
@@ -115,11 +100,6 @@
 
   .title {
     font: var(--text-2lg-bold);
-  }
-
-  .pin {
-    width: 24px;
-    height: 24px;
   }
 
   .crown {

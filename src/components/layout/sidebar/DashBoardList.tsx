@@ -7,26 +7,21 @@ import plusIcon from '@/assets/icon/ic_plus2.svg';
 import homeIcon from '@/assets/icon/ic_home.svg';
 import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
-
-// api 연동 후 삭제
-const mockDashBoards = [
-  { id: 1, title: '포트폴리오', color: 'red', createdByMe: true },
-  { id: 2, title: '코드잇', color: 'green', createdByMe: true },
-  { id: 3, title: '3분기 계획', color: 'orange', createdByMe: true },
-  { id: 4, title: '회의록', color: 'yellow', createdByMe: false },
-  { id: 5, title: '중요 문서', color: 'blue', createdByMe: false },
-];
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
+import { useDashboards } from '@/hooks/queries/useDashboards';
 
 export default function DashBoardList() {
   const pathName = usePathname();
   const isHomeActive = pathName === PATH.MY_DASHBOARD;
+  const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
+  // 생성 모달에서 version을 올리면 목록을 다시 불러옴
+  const { dashboards, isLoading, error } = useDashboards(dashboardListVersion);
 
   return (
     <div className={styles.sideMenu}>
       <section className={styles.add}>
         <span>대시보드 추가</span>
-        {/* todo: 클릭 후 대시보드 생성 모달 */}
-        <button>
+        <button type="button" onClick={openDashboardCreateModal}>
           <Image className={styles.plus} src={plusIcon} alt="추가" width={12.5} height={12.5} />
         </button>
       </section>
@@ -39,7 +34,12 @@ export default function DashBoardList() {
       </section>
 
       <section className={styles.menus}>
-        {mockDashBoards.map((dashboard) => (
+        {isLoading ? <p className={styles.statusText}>대시보드를 불러오는 중</p> : null}
+        {error ? <p className={styles.statusText}>{error}</p> : null}
+        {!isLoading && !error && dashboards.length === 0 ? (
+          <p className={styles.statusText}>대시보드가 없습니다</p>
+        ) : null}
+        {dashboards.map((dashboard) => (
           <DashBoardItem
             key={dashboard.id}
             id={dashboard.id}

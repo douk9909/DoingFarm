@@ -1,4 +1,4 @@
-/* 모바일  */
+/* 모바일 */
 .sideMenu {
   display: flex;
   flex-direction: column;
@@ -14,7 +14,7 @@
 
 .add > span {
   font: var(--text-lg-14-bold);
-  color: #a39fb2;
+  color: var(--color-gray-500);
 }
 
 .add > button {
@@ -70,6 +70,13 @@
 .homeImg {
   width: 18px;
   height: 18px;
+}
+
+.statusText {
+  margin: 12px 14px;
+  color: var(--color-gray-600);
+  font: var(--text-sm-medium);
+  line-height: 1.5;
 }
 
 @media (hover: hover) and (pointer: fine) {
