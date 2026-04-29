@@ -97,6 +97,8 @@
     overflow-y: auto;
     scroll-snap-type: unset;
     padding-right: 0;
+    max-height: calc(100vh - 200px);
+    align-items: stretch; /* ✅ 추가 */
   }
 
   .cardList > * {

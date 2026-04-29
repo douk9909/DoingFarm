@@ -11,7 +11,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
-import { useFetch } from '@/hooks/queries/useFetch';
+import { useInfiniteScroll } from '@/app/(with-nav)/dashboard/[dashboardId]/components/useInfiniteScroll';
 
 interface ColumnProps {
   id: number;
@@ -32,11 +32,15 @@ const getColumnIcon = (title: string) => {
 };
 
 export default function Column({ id, title }: ColumnProps) {
-  const { data, isLoading, error } = useFetch(() =>
-    cardApi.getList({ columnId: id }).then((res) => ({ data: res.data })),
-  );
-
-  if (isLoading) return <div>로딩 중...</div>;
+  const { items, totalCount, isLoading, error, loaderRef, scrollContainerRef } =
+    useInfiniteScroll<CardType>({
+      fetcher: (cursorId) =>
+        cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
+          data: res.data.cards,
+          totalCount: res.data.totalCount,
+          nextCursorId: res.data.cursorId,
+        })),
+    });
   if (error) return <div>에러: {error}</div>;
 
   return (
@@ -45,15 +49,15 @@ export default function Column({ id, title }: ColumnProps) {
         <div className={styles.titleWrapper}>
           <Image src={getColumnIcon(title)} alt="콜럼 아이콘" width={17} height={24} />
           <h2 className={styles.title}>{title}</h2>
-          <span className={styles.count}>{data?.totalCount}</span>
+          <span className={styles.count}>{totalCount}</span>
         </div>
         <button aria-label="컬럼 수정">
           <SettingIcon size={20} />
         </button>
       </div>
 
-      <div className={`${styles.cardList} custom-scrollbar`}>
-        {data?.cards.map((card: CardType) => (
+      <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
+        {items.map((card: CardType) => (
           <Card
             key={card.id}
             id={card.id}
@@ -64,6 +68,7 @@ export default function Column({ id, title }: ColumnProps) {
             src={card.imageUrl}
           />
         ))}
+        <div ref={loaderRef} style={{ height: '10px', flexShrink: 0 }} />
       </div>
       <button aria-label="카드 추가" className={styles.addCardButton}>
         <div className={styles.iconWrapper}>
