@@ -4,31 +4,20 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
-import type { CardTag } from '@/components/common/card/Card';
+import type {
+  TodoAssigneeOption,
+  TodoColumnOption,
+  TodoFormCard,
+} from '@/components/dashboard/todoForm/types';
 import ArrowDownIcon from '@/assets/icons/ArrowDownIcon';
 import ImageIcon from '@/assets/icons/ImageIcon';
 import styles from './TodoCreateModal.module.css';
 
-export interface CreatedTodoCard {
-  title: string;
-  tags: CardTag[];
-  dueDate: string;
-  assignee: {
-    nickname: string;
-    profileImage: string | null;
-  };
-  src: string;
-}
+export type CreatedTodoCard = TodoFormCard;
 
 interface TodoCreateModalProps {
-  columns: Array<{
-    id: number;
-    title: string;
-  }>;
-  assignees: Array<{
-    id: number;
-    nickname: string;
-  }>;
+  columns: TodoColumnOption[];
+  assignees: TodoAssigneeOption[];
   initialColumnId: number;
   onClose: () => void;
   onCreate: (columnId: number, card: CreatedTodoCard) => void;
@@ -319,6 +308,8 @@ export default function TodoCreateModal({
               placeholderText="2024. 07. 31 14:30"
               className={styles.dateInput}
               wrapperClassName={styles.datePickerWrapper}
+              calendarClassName={styles.todoCalendar}
+              popperClassName={styles.todoDatePickerPopper}
             />
           </span>
         </label>
