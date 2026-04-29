@@ -4,6 +4,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
+import {
+  TODO_ASSIGNEE_COLORS,
+  getRandomTodoTagColor,
+  getTodoAssigneeInitial,
+} from '@/components/dashboard/todoForm/constants';
 import type {
   TodoAssigneeOption,
   TodoColumnOption,
@@ -22,28 +27,6 @@ interface TodoCreateModalProps {
   onClose: () => void;
   onCreate: (columnId: number, card: CreatedTodoCard) => void;
 }
-
-const TAG_COLORS = [
-  'var(--color-profile-green)',
-  'var(--color-profile-violet)',
-  'var(--color-profile-cyan)',
-  'var(--color-profile-rose)',
-  'var(--color-profile-cobalt)',
-  'var(--color-profile-yellow)',
-  'var(--color-profile-orange)',
-];
-
-const ASSIGNEE_COLORS = [
-  'var(--color-profile-green)',
-  'var(--color-profile-cobalt)',
-  'var(--color-profile-orange)',
-  'var(--color-profile-cyan)',
-  'var(--color-profile-violet)',
-];
-
-const getRandomTagColor = () => TAG_COLORS[Math.floor(Math.random() * TAG_COLORS.length)];
-
-const getInitial = (nickname: string) => nickname.trim().charAt(0);
 
 export default function TodoCreateModal({
   columns,
@@ -128,7 +111,7 @@ export default function TodoCreateModal({
         return prevTags;
       }
 
-      return [...prevTags, { label: nextLabel, color: getRandomTagColor() }];
+      return [...prevTags, { label: nextLabel, color: getRandomTodoTagColor() }];
     });
     setTagInput('');
   };
@@ -247,13 +230,13 @@ export default function TodoCreateModal({
                         className={styles.avatar}
                         style={{
                           backgroundColor:
-                            ASSIGNEE_COLORS[
+                            TODO_ASSIGNEE_COLORS[
                               assignees.findIndex((assignee) => assignee.id === selectedAssignee.id) %
-                                ASSIGNEE_COLORS.length
+                                TODO_ASSIGNEE_COLORS.length
                             ],
                         }}
                       >
-                        {getInitial(selectedAssignee.nickname)}
+                        {getTodoAssigneeInitial(selectedAssignee.nickname)}
                       </span>
                       {selectedAssignee.nickname}
                     </>
@@ -282,9 +265,11 @@ export default function TodoCreateModal({
                     >
                       <span
                         className={styles.avatar}
-                        style={{ backgroundColor: ASSIGNEE_COLORS[index % ASSIGNEE_COLORS.length] }}
+                        style={{
+                          backgroundColor: TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length],
+                        }}
                       >
-                        {getInitial(assignee.nickname)}
+                        {getTodoAssigneeInitial(assignee.nickname)}
                       </span>
                       {assignee.nickname}
                     </button>
