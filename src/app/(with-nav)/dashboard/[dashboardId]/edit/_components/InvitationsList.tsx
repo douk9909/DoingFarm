@@ -12,6 +12,8 @@ import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import { useMemberList } from '@/hooks/queries/useMemberList';
+import BaseSectionLayout from './BaseSectionLayout';
+import PaginationControl from './PaginationControl';
 
 interface InvitationsListProps {
   dashboardId: number;
@@ -61,36 +63,18 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     }
   };
   return (
-    <div className={styles.section}>
-      <div className={styles.sectionHeader}>
-        <div className={styles.sectionTitleWrapper}>
-          <h2 className={styles.title}>초대 내역</h2>
-          <Button size="sm" className={styles.inviteButton}>
-            <UserPlusIcon size={18} color="var(--color-gray-900)" />
-            <span>초대</span>
-          </Button>
-        </div>
-
-        <div className={styles.pageWrapper}>
-          <span className={styles.pageInfo}>
-            {totalPages || 1} 페이지 중 {page}
-          </span>
-          <div className={styles.pageButton}>
-            <button onClick={goToPrev} disabled={page === 1}>
-              <ArrowLeftIcon
-                size={20}
-                color={page === 1 ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
-              />
-            </button>
-            <button onClick={goToNext} disabled={page >= totalPages}>
-              <ArrowRightIcon
-                size={20}
-                color={page >= totalPages ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
-              />
-            </button>
-          </div>
-        </div>
-      </div>
+    <BaseSectionLayout
+      title="초대 내역"
+      headerButton
+      pagination={
+        <PaginationControl
+          page={page}
+          totalPages={totalPages}
+          goToNext={goToNext}
+          goToPrev={goToPrev}
+        />
+      }
+    >
       <div className={styles.sectionContent}>
         <p className={styles.subTitle}>이메일</p>
         <ul className={styles.list}>
@@ -117,6 +101,37 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           ))}
         </ul>
       </div>
-    </div>
+    </BaseSectionLayout>
+
+    // < className={styles.section}>
+    //   <div className={styles.sectionHeader}>
+    //     <div className={styles.sectionTitleWrapper}>
+    //       <h2 className={styles.title}>초대 내역</h2>
+    //       <Button size="sm" className={styles.inviteButton}>
+    //         <UserPlusIcon size={18} color="var(--color-gray-900)" />
+    //         <span>초대</span>
+    //       </Button>
+    //     </div>
+
+    //     <div className={styles.pageWrapper}>
+    //       <span className={styles.pageInfo}>
+    //         {totalPages || 1} 페이지 중 {page}
+    //       </span>
+    //       <div className={styles.pageButton}>
+    //         <button onClick={goToPrev} disabled={page === 1}>
+    //           <ArrowLeftIcon
+    //             size={20}
+    //             color={page === 1 ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+    //           />
+    //         </button>
+    //         <button onClick={goToNext} disabled={page >= totalPages}>
+    //           <ArrowRightIcon
+    //             size={20}
+    //             color={page >= totalPages ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
+    //           />
+    //         </button>
+    //       </div>
+    //     </div>
+    //   </div>
   );
 }

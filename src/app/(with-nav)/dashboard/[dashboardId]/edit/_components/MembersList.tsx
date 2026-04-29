@@ -123,34 +123,6 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       </div>
     </BaseSectionLayout>
 
-    // <div className={styles.section}>
-    //   <div className={styles.sectionHeader}>
-    //     <div className={styles.headerWrapper}>
-    //       <h2 className={styles.title}>구성원</h2>
-    //       <span className={styles.memberNum}>{totalCount}</span>
-    //     </div>
-
-    //     <div className={styles.pageWrapper}>
-    //       <span className={styles.pageInfo}>
-    //         {totalPages || 1} 페이지 중 {page}
-    //       </span>
-    //       <div className={styles.pageButton}>
-    //         <button onClick={goToPrev} disabled={page === 1}>
-    //           <ArrowLeftIcon
-    //             size={20}
-    //             color={page === 1 ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
-    //           />
-    //         </button>
-    //         <button onClick={goToNext} disabled={page >= totalPages}>
-    //           <ArrowRightIcon
-    //             size={20}
-    //             color={page >= totalPages ? 'var(--color-gray-200)' : 'var(--color-gray-800)'}
-    //           />
-    //         </button>
-    //       </div>
-    //     </div>
-    //   </div>
-
     // {isModalOpen && targetMember && (
     //   <Modal>
     //     <div className={styles.modalProfileWrapper}>

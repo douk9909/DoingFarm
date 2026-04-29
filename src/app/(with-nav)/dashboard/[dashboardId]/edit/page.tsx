@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -26,6 +26,8 @@ interface DashboardEditPageProps {
 export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const { dashboardId } = use(params);
   const id = Number(dashboardId);
+  const [dashboardTitle, setDashboardTitle] = useState('');
+
   const router = useRouter();
 
   const {
@@ -33,6 +35,10 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
     isLoading,
     error,
   } = useFetch<Dashboard>(() => dashboardApi.getOne(id).then((res) => ({ data: res.data })));
+
+  useEffect(() => {
+    if (dashboardData) setDashboardTitle(dashboardData.title);
+  }, [dashboardData]);
 
   // Todo: 로딩 컴포넌트 추가
   if (isLoading) return <div>로딩 중...</div>;
@@ -55,6 +61,8 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
             dashboardId={id}
             initialTitle={dashboardData.title}
             initialColor={dashboardData.color}
+            onTitleUpdate={(newName) => setDashboardTitle(newName)}
+            currentDisplayTitle={dashboardTitle}
           />
         )}
         {/* 대시보드 구성원 변경 */}
