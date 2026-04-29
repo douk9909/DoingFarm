@@ -13,6 +13,7 @@ import {
 import TodoFormDropdown, {
   TodoDropdownAvatar,
 } from '@/components/dashboard/todoForm/TodoFormDropdown';
+import TodoImageField from '@/components/dashboard/todoForm/TodoImageField';
 import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
 import type {
   TodoAssigneeOption,
@@ -20,7 +21,6 @@ import type {
   TodoFormCard,
 } from '@/components/dashboard/todoForm/types';
 import { useTodoImagePreview } from '@/components/dashboard/todoForm/useTodoImagePreview';
-import ImageIcon from '@/assets/icons/ImageIcon';
 import styles from './TodoCreateModal.module.css';
 
 export type CreatedTodoCard = TodoFormCard;
@@ -71,12 +71,6 @@ export default function TodoCreateModal({
     tags.length === 0 ||
     !dueDate ||
     !imageFile;
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // 파일은 한 개만 카드 미리보기로 사용
-    const file = event.target.files?.[0] ?? null;
-    updateImage(file);
-  };
 
   const handleAddTag = (label: string) => {
     const nextLabel = label.trim();
@@ -227,33 +221,11 @@ export default function TodoCreateModal({
           onAddTag={handleAddTag}
         />
 
-        <div className={styles.field}>
-          <span className={styles.label}>이미지</span>
-          {imagePreviewUrl ? (
-            <div className={styles.imagePreview}>
-              <img src={imagePreviewUrl} alt="" />
-              <button
-                type="button"
-                className={styles.removeImageButton}
-                aria-label="이미지 삭제"
-                onClick={removeImage}
-              >
-                ×
-              </button>
-            </div>
-          ) : (
-            <label className={styles.imageUpload}>
-              <input
-                type="file"
-                accept="image/*"
-                className={styles.fileInput}
-                onChange={handleImageChange}
-              />
-              <ImageIcon size={24} color="var(--color-gray-600)" />
-              <span>+ image upload</span>
-            </label>
-          )}
-        </div>
+        <TodoImageField
+          imagePreviewUrl={imagePreviewUrl}
+          onChangeImage={updateImage}
+          onRemoveImage={removeImage}
+        />
 
         <div className={styles.actions}>
           <Button
