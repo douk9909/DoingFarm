@@ -70,7 +70,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
         {/* 대시보드 초대 내역 */}
         <InvitationsList dashboardId={id} />
         {/* 대시보드 삭제 버튼 */}
-        {/* <DeleteDashboardButton dashboardId={id} /> */}
+        <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
   );
