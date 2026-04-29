@@ -1,7 +1,5 @@
-'use client';
-
 import Link from 'next/link';
-import { use } from 'react';
+import { notFound } from 'next/navigation';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { Dashboard } from '@/types/dashboard';
 import { dashboardApi } from '@/lib/api/dashboard';
@@ -21,25 +19,24 @@ interface DashboardEditPageProps {
   }>;
 }
 
-export default function DashboardEditPage({ params }: DashboardEditPageProps) {
-  const resolvedParams = use(params);
-  const dashboardId = Number(resolvedParams.dashboardId);
+export default async function DashboardEditPage({ params }: DashboardEditPageProps) {
+  const { dashboardId } = await params;
+  const id = Number(dashboardId);
 
-  const {
-    data: dashboardData,
-    isLoading,
-    error,
-  } = useFetch<Dashboard>(() => dashboardApi.getOne(dashboardId));
-
-  if (isNaN(dashboardId)) {
-    return <div className={styles.container}>유효하지 않은 접근입니다.</div>;
+  if (isNaN(id)) {
+    return notFound();
   }
 
-  if (isLoading) {
-    return <div className={styles.container}>로딩 중...</div>;
-  }
-  if (error || !dashboardData) {
-    return <div className={styles.container}>대시보드를 불러오는 중 오류가 발생했습니다.</div>;
+  let dashboardData: Dashboard | null = null;
+  try {
+    const response = await dashboardApi.getOne(id);
+    dashboardData = response.data;
+
+    if (!dashboardData) {
+      return notFound();
+    }
+  } catch (error) {
+    return notFound();
   }
 
   return (
@@ -52,17 +49,17 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
         {/* 대시보드 이름 변경 */}
         {dashboardData && (
           <EditForm
-            dashboardId={dashboardId}
+            dashboardId={id}
             initialTitle={dashboardData.title}
             initialColor={dashboardData.color}
           />
         )}
         {/* 대시보드 구성원 변경 */}
-        <MembersList dashboardId={dashboardId} />
+        <MembersList dashboardId={id} />
         {/* 대시보드 초대 내역 */}
-        <InvitationsList dashboardId={dashboardId} />
+        <InvitationsList dashboardId={id} />
         {/* 대시보드 삭제 버튼 */}
-        <DeleteDashboardButton dashboardId={dashboardId} />
+        <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
   );
