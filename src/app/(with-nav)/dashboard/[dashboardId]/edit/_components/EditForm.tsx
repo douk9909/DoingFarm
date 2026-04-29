@@ -12,11 +12,14 @@ import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
+import BaseSectionLayout from './BaseSectionLayout';
 
 interface EditFormProps {
   dashboardId: number;
   initialTitle: string;
   initialColor: string;
+  onTitleUpdate: (newName: string) => void;
+  currentDisplayTitle: string;
 }
 
 // HEX 코드로부터 CSS 토큰을 찾음
@@ -26,12 +29,17 @@ const findVarByHex = (hex: string) => {
   );
 };
 
-export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
+export default function EditForm({
+  dashboardId,
+  initialTitle,
+  initialColor,
+  onTitleUpdate,
+  currentDisplayTitle,
+}: EditFormProps) {
   const transformedColor = findVarByHex(initialColor) || initialColor;
 
   const [title, setTitle] = useState(initialTitle);
   const [color, setColor] = useState(transformedColor);
-  const [displayTitle, setDisplayTitle] = useState(initialTitle);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -53,7 +61,7 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
       await dashboardApi.update(dashboardId, { title, color: hexColor });
 
       router.refresh();
-      setDisplayTitle(title);
+      onTitleUpdate(title);
 
       // Todo: 토스트 띄우기로 변경 완료 알림
       alert('변경되었습니다');
@@ -68,24 +76,27 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
   };
 
   return (
-    <form className={cn(styles.section, styles.editTitleForm)} onSubmit={handleSubmit}>
-      <h2 className={styles.title}>{displayTitle}</h2>
-      <Input.Text
-        type="text"
-        label="대시보드 이름"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className={styles.inputTitle}
-      />
-      <ColorPicker selectedColor={color} onSelect={(newColor) => setColor(newColor)} />
-      <Button
-        type="submit"
-        disabled={!isChanged || isLoading || !title.trim()}
-        fullWidth
-        className={styles.editButton}
-      >
-        {isLoading ? '변경 중...' : '변경'}
-      </Button>
-    </form>
+    <BaseSectionLayout title={currentDisplayTitle}>
+      <div className={styles.sectionContent}>
+        <form className={styles.editTitleForm} onSubmit={handleSubmit}>
+          <Input.Text
+            type="text"
+            label="대시보드 이름"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className={styles.inputTitle}
+          />
+          <ColorPicker selectedColor={color} onSelect={(newColor) => setColor(newColor)} />
+          <Button
+            type="submit"
+            disabled={!isChanged || isLoading || !title.trim()}
+            fullWidth
+            className={styles.editButton}
+          >
+            {isLoading ? '변경 중...' : '변경'}
+          </Button>
+        </form>
+      </div>
+    </BaseSectionLayout>
   );
 }
