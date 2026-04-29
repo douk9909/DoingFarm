@@ -1,9 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
-import { cn } from '@/lib/utils/cn';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
 
@@ -18,8 +16,9 @@ interface EditFormProps {
   dashboardId: number;
   initialTitle: string;
   initialColor: string;
-  onTitleUpdate: (newName: string) => void;
   currentDisplayTitle: string;
+  onTitleUpdate: (newName: string) => void;
+  onColorUpdate: (newColor: string) => void;
 }
 
 // HEX 코드로부터 CSS 토큰을 찾음
@@ -33,8 +32,9 @@ export default function EditForm({
   dashboardId,
   initialTitle,
   initialColor,
-  onTitleUpdate,
   currentDisplayTitle,
+  onTitleUpdate,
+  onColorUpdate,
 }: EditFormProps) {
   const transformedColor = findVarByHex(initialColor) || initialColor;
 
@@ -42,7 +42,6 @@ export default function EditForm({
   const [color, setColor] = useState(transformedColor);
   const [isLoading, setIsLoading] = useState(false);
 
-  const router = useRouter();
   const isFetching = useRef(false);
 
   const isChanged = title !== initialTitle || color !== transformedColor;
@@ -52,6 +51,9 @@ export default function EditForm({
 
     if (isFetching.current || isLoading || !isChanged || !title.trim()) return;
 
+    onTitleUpdate(title);
+    onColorUpdate(color);
+
     try {
       setIsLoading(true);
       isFetching.current = true;
@@ -59,9 +61,6 @@ export default function EditForm({
       // 서버로 보낼 때 색상 이름을 HEX 코드로 변환
       const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
       await dashboardApi.update(dashboardId, { title, color: hexColor });
-
-      router.refresh();
-      onTitleUpdate(title);
 
       // Todo: 토스트 띄우기로 변경 완료 알림
       alert('변경되었습니다');
@@ -74,6 +73,11 @@ export default function EditForm({
       isFetching.current = false;
     }
   };
+
+  useEffect(() => {
+    setTitle(initialTitle);
+    setColor(transformedColor);
+  }, [initialTitle, transformedColor]);
 
   return (
     <BaseSectionLayout title={currentDisplayTitle}>
