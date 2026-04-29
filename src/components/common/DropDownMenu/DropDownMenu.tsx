@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 
 import { cn } from '@/lib/utils/cn';
 
-import styles from './DropdownMenu.module.css';
+import styles from './DropDownMenu.module.css';
 
 interface MenuItem {
   id: string;
