@@ -59,8 +59,8 @@ export interface UpdateDashboardRequest {
 }
 
 export const dashboardApi = {
-  getList: (params: GetDashboardsParams) =>
-    apiClient.get<GetDashboardsResponse>('/dashboards', { params }),
+  getList: (params: GetDashboardsParams, signal?: AbortSignal) =>
+    apiClient.get<GetDashboardsResponse>('/dashboards', { params, signal }),
 
   create: (data: CreateDashboardRequest) => apiClient.post<Dashboard>('/dashboards', data),
 
