@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { usePagination } from '@/hooks/queries/usePagination';
-import type { DashboardInviter } from '@/lib/api/dashboard';
+import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
@@ -17,23 +17,66 @@ interface InvitationsListProps {
 }
 
 export default function InvitationsList({ dashboardId }: InvitationsListProps) {
-  const [invitations, setInvitations] = useState<DashboardInviter[]>([]);
+  const [invitations, setInvitations] = useState<DashboardInvitation[]>([]);
+  const [invitationsTotalCount, setInvitationsTotalCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const isFetching = useRef(false);
 
   const { page, size, goToNext, goToPrev } = usePagination({
     initialSize: 5,
     isResponsive: false,
   });
 
-  const totalPages = Math.ceil(invitations.length / size);
+  const fetchInvitations = useCallback(async () => {
+    if (isFetching.current) return;
 
-  const handleDeleteMember = (id: number, email: string) => {
-    if (confirm(`${email} 님에게 보낸 초대를 취소하시겠습니까?`)) {
-      setInvitations((prev) => prev.filter((invitation) => invitation.id !== id));
-      // Todo: API 연결
+    try {
+      isFetching.current = true;
+
+      const response = await dashboardApi.getInvitations(dashboardId, { page, size });
+      const { invitations, totalCount } = response.data;
+      setInvitations(invitations);
+      setInvitationsTotalCount(totalCount);
+    } catch (error) {
+      console.error('로드 실패:', error);
+    } finally {
+      isFetching.current = false;
     }
+  }, [dashboardId, page, size]);
 
-    // Todo: 토스트 띄우기
-    alert('삭제되었습니다');
+  useEffect(() => {
+    fetchInvitations();
+  }, [fetchInvitations]);
+
+  const totalPages = Math.ceil(invitationsTotalCount / size);
+
+  const handleDeleteMember = async (dashboardId: number, invitationId: number, email: string) => {
+    const previousInvitations = [...invitations];
+    const previousTotalCount = invitationsTotalCount;
+
+    if (confirm(`${email} 님에게 보낸 초대를 취소하시겠습니까?`)) {
+      try {
+        setInvitations((prev) => prev.filter((invitation) => invitation.id !== invitationId));
+        setInvitationsTotalCount((prev) => prev - 1);
+
+        await dashboardApi.cancelInvitation(dashboardId, invitationId);
+
+        // Todo: 토스트 띄우기
+        alert('삭제되었습니다');
+      } catch (error) {
+        // Todo: 토스트 띄우기로 오류알림
+        console.error('구성원 삭제 중 오류 발생:', error);
+
+        setInvitations(previousInvitations);
+        setInvitationsTotalCount(previousTotalCount);
+
+        alert('변경에 실패했습니다. 다시 시도해주세요.');
+      } finally {
+        setIsLoading(false);
+        isFetching.current = false;
+      }
+    }
   };
   return (
     <div className={styles.section}>
@@ -72,12 +115,18 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           {invitations.map((invitation) => (
             <li key={invitation.id} className={styles.item}>
               <div className={styles.profileWrapper}>
-                <Avatar name={invitation.email} />
-                <span className={styles.profileName}> {invitation.email}</span>
+                <Avatar name={invitation.invitee.email} />
+                <span className={styles.profileName}> {invitation.invitee.email}</span>
               </div>
               <Button
                 variant="secondary"
-                onClick={() => handleDeleteMember(invitation.id, invitation.email)}
+                onClick={() =>
+                  handleDeleteMember(
+                    invitation.dashboard.id,
+                    invitation.id,
+                    invitation.invitee.email,
+                  )
+                }
                 className={styles.buttonStyle}
               >
                 삭제
