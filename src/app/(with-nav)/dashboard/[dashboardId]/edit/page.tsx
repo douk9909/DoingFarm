@@ -58,7 +58,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
           />
         )}
         {/* 대시보드 구성원 변경 */}
-        {/* <MembersList dashboardId={id} /> */}
+        <MembersList dashboardId={id} />
         {/* 대시보드 초대 내역 */}
         {/* <InvitationsList dashboardId={id} /> */}
         {/* 대시보드 삭제 버튼 */}
