@@ -27,26 +27,22 @@ const findVarByHex = (hex: string) => {
 };
 
 export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
+  const transformedColor = findVarByHex(initialColor) || initialColor;
+
   const [title, setTitle] = useState(initialTitle);
-  const [color, setColor] = useState(findVarByHex(initialColor) || initialColor);
+  const [color, setColor] = useState(transformedColor);
   const [displayTitle, setDisplayTitle] = useState(initialTitle);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const isFetching = useRef(false);
 
-  const isChanged = title !== initialTitle || color !== findVarByHex(initialColor);
+  const isChanged = title !== initialTitle || color !== transformedColor;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (isFetching.current) return;
-    if (!isChanged || isLoading) return;
-
-    if (!title.trim()) {
-      alert('대시보드 이름을 입력해주세요.');
-      return;
-    }
+    if (isFetching.current || isLoading || !isChanged || !title.trim()) return;
 
     try {
       setIsLoading(true);
@@ -54,14 +50,12 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
 
       // 서버로 보낼 때 색상 이름을 HEX 코드로 변환
       const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
-
       await dashboardApi.update(dashboardId, { title, color: hexColor });
-      router.refresh();
 
+      router.refresh();
       setDisplayTitle(title);
 
       // Todo: 토스트 띄우기로 변경 완료 알림
-      console.log('수정 데이터:', { dashboardId, title, color: hexColor });
       alert('변경되었습니다');
     } catch (error) {
       // Todo: 토스트 띄우기로 오류알림
