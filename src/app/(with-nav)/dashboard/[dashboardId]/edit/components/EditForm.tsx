@@ -3,13 +3,15 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
+import { cn } from '@/lib/utils/cn';
+import { dashboardApi } from '@/lib/api/dashboard';
+import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
+
+import ColorPicker from '@/components/common/colorPicker/colorPicker';
 import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
-import { cn } from '@/lib/utils/cn';
 
 import styles from '../edit.module.css';
-import ColorPicker from '@/components/common/colorPicker/colorPicker';
-import { dashboardApi } from '@/lib/api/dashboard';
 
 interface EditFormProps {
   dashboardId: number;
@@ -17,16 +19,23 @@ interface EditFormProps {
   initialColor: string;
 }
 
+// HEX 코드로부터 CSS 토큰을 찾음
+const findVarByHex = (hex: string) => {
+  return Object.keys(DASHBOARD_COLOR_HEX_MAP).find(
+    (key) => DASHBOARD_COLOR_HEX_MAP[key as DashboardColor] === hex.toLowerCase(),
+  );
+};
+
 export default function EditForm({ dashboardId, initialTitle, initialColor }: EditFormProps) {
   const [title, setTitle] = useState(initialTitle);
-  const [color, setColor] = useState(initialColor);
+  const [color, setColor] = useState(findVarByHex(initialColor) || initialColor);
   const [displayTitle, setDisplayTitle] = useState(initialTitle);
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
   const isFetching = useRef(false);
 
-  const isChanged = title !== initialTitle || color !== initialColor;
+  const isChanged = title !== initialTitle || color !== findVarByHex(initialColor);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,13 +52,16 @@ export default function EditForm({ dashboardId, initialTitle, initialColor }: Ed
       setIsLoading(true);
       isFetching.current = true;
 
-      await dashboardApi.update(dashboardId, { title, color });
+      // 서버로 보낼 때 색상 이름을 HEX 코드로 변환
+      const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
+
+      await dashboardApi.update(dashboardId, { title, color: hexColor });
       router.refresh();
 
       setDisplayTitle(title);
 
       // Todo: 토스트 띄우기로 변경 완료 알림
-      console.log('수정 데이터:', { dashboardId, title, color });
+      console.log('수정 데이터:', { dashboardId, title, color: hexColor });
       alert('변경되었습니다');
     } catch (error) {
       // Todo: 토스트 띄우기로 오류알림

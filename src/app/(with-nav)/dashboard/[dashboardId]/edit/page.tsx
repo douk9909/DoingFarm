@@ -1,5 +1,9 @@
+'use client';
+
+import { use } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+
 import { useFetch } from '@/hooks/queries/useFetch';
 import { Dashboard } from '@/types/dashboard';
 import { dashboardApi } from '@/lib/api/dashboard';
@@ -19,24 +23,23 @@ interface DashboardEditPageProps {
   }>;
 }
 
-export default async function DashboardEditPage({ params }: DashboardEditPageProps) {
-  const { dashboardId } = await params;
+export default function DashboardEditPage({ params }: DashboardEditPageProps) {
+  const { dashboardId } = use(params);
   const id = Number(dashboardId);
+  const router = useRouter();
 
-  if (isNaN(id)) {
-    return notFound();
-  }
+  const {
+    data: dashboardData,
+    isLoading,
+    error,
+  } = useFetch<Dashboard>(() => dashboardApi.getOne(id).then((res) => ({ data: res.data })));
 
-  let dashboardData: Dashboard | null = null;
-  try {
-    const response = await dashboardApi.getOne(id);
-    dashboardData = response.data;
+  // Todo: 로딩 컴포넌트 추가
+  if (isLoading) return <div>로딩 중...</div>;
 
-    if (!dashboardData) {
-      return notFound();
-    }
-  } catch (error) {
-    return notFound();
+  if (error || !dashboardData) {
+    router.push('/not-found');
+    return null;
   }
 
   return (
@@ -55,11 +58,11 @@ export default async function DashboardEditPage({ params }: DashboardEditPagePro
           />
         )}
         {/* 대시보드 구성원 변경 */}
-        <MembersList dashboardId={id} />
+        {/* <MembersList dashboardId={id} /> */}
         {/* 대시보드 초대 내역 */}
-        <InvitationsList dashboardId={id} />
+        {/* <InvitationsList dashboardId={id} /> */}
         {/* 대시보드 삭제 버튼 */}
-        <DeleteDashboardButton dashboardId={id} />
+        {/* <DeleteDashboardButton dashboardId={id} /> */}
       </div>
     </section>
   );
