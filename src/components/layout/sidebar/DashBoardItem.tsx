@@ -1,14 +1,10 @@
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
-import styles from './DashBoardItem.module.css';
-import tagRed from '@/assets/hashTags/red.svg';
-import tagOrange from '@/assets/hashTags/orange.svg';
-import tagYellow from '@/assets/hashTags/yellow.svg';
-import tagBlue from '@/assets/hashTags/blue.svg';
-import tagGreen from '@/assets/hashTags/green.svg';
-import pinIcon from '@/assets/icon/icon_pin.svg';
-import crownIcon from '@/assets/icon/ic_crown.svg';
 import Link from 'next/link';
+import styles from './DashBoardItem.module.css';
+import HashTagIcon from '@/assets/icons/HashTagIcon';
+import crownIcon from '@/assets/icon/ic_crown.svg';
+import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
 interface DashBoardItemProps {
   id: number;
@@ -17,33 +13,25 @@ interface DashBoardItemProps {
   createdByMe: boolean;
 }
 
+const LEGACY_COLOR_MAP: Record<string, string> = {
+  red: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-rose)'],
+  orange: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-orange)'],
+  yellow: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-yellow)'],
+  blue: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-cobalt)'],
+  green: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-green)'],
+  purple: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-violet)'],
+};
+
 export default function DashBoardItem({ id, title, color, createdByMe }: DashBoardItemProps) {
   const pathName = usePathname();
   const isActive = pathName === `/dashboard/${id}`;
-
-  const getTagIcon = (color: string) => {
-    switch (color) {
-      case 'red':
-        return tagRed;
-      case 'orange':
-        return tagOrange;
-      case 'yellow':
-        return tagYellow;
-      case 'blue':
-        return tagBlue;
-      case 'green':
-        return tagGreen;
-      default:
-        return tagRed;
-    }
-  };
+  const hashTagColor = LEGACY_COLOR_MAP[color] ?? color;
 
   return (
     <Link href={`/dashboard/${id}`} className={`${styles.menu} ${isActive ? styles.active : ''}`}>
       <div>
-        <Image className={styles.hashTag} src={getTagIcon(color)} alt="" width={24} height={24} />
+        <HashTagIcon className={styles.hashTag} size={24} color={hashTagColor} aria-hidden />
         <p className={styles.title}>{title}</p>
-        <Image className={styles.pin} src={pinIcon} alt="" width={24} height={24} />
       </div>
 
       {createdByMe && (

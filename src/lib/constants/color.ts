@@ -8,3 +8,13 @@ export const DASHBOARD_COLORS = [
 ] as const;
 
 export type DashboardColor = (typeof DASHBOARD_COLORS)[number];
+
+// 화면에서는 CSS 토큰을 쓰고 API 요청에는 Hex 값을 사용
+export const DASHBOARD_COLOR_HEX_MAP: Record<DashboardColor, string> = {
+  'var(--color-profile-rose)': '#ae2e24',
+  'var(--color-profile-orange)': '#e56c00',
+  'var(--color-profile-yellow)': '#bd8c00',
+  'var(--color-profile-green)': '#206e4e',
+  'var(--color-profile-cobalt)': '#1458bc',
+  'var(--color-profile-violet)': '#593ea5',
+};

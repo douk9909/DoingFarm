@@ -1,10 +1,12 @@
 'use client';
 
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import DashboardCreateModal from './DashboardCreateModal';
 
 interface DashboardCreateModalContextValue {
   openDashboardCreateModal: () => void;
+  dashboardListVersion: number;
+  notifyDashboardCreated: () => void;
 }
 
 // 사이드바와 빈 대시보드 화면에서 같은 생성 모달 공유
@@ -16,18 +18,39 @@ interface DashboardCreateModalProviderProps {
 
 export function DashboardCreateModalProvider({ children }: DashboardCreateModalProviderProps) {
   const [isOpen, setIsOpen] = useState(false);
+  // 생성 성공 시 version을 올려 사이드바 목록 갱신
+  const [dashboardListVersion, setDashboardListVersion] = useState(0);
+
+  const openDashboardCreateModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const closeDashboardCreateModal = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const notifyDashboardCreated = useCallback(() => {
+    setDashboardListVersion((version) => version + 1);
+  }, []);
 
   const value = useMemo(
     () => ({
-      openDashboardCreateModal: () => setIsOpen(true),
+      openDashboardCreateModal,
+      dashboardListVersion,
+      notifyDashboardCreated,
     }),
-    [],
+    [dashboardListVersion, notifyDashboardCreated, openDashboardCreateModal],
   );
 
   return (
     <DashboardCreateModalContext.Provider value={value}>
       {children}
-      {isOpen ? <DashboardCreateModal onClose={() => setIsOpen(false)} /> : null}
+      {isOpen ? (
+        <DashboardCreateModal
+          onClose={closeDashboardCreateModal}
+          onCreated={notifyDashboardCreated}
+        />
+      ) : null}
     </DashboardCreateModalContext.Provider>
   );
 }

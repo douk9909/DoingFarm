@@ -1,12 +1,21 @@
 import { apiClient } from './client';
 import type { Dashboard } from '@/types/dashboard';
 
-export interface GetDashboardsParams {
-  navigationMethod: 'infiniteScroll' | 'pagination';
+interface GetDashboardsInfiniteScrollParams {
+  navigationMethod: 'infiniteScroll';
   cursorId?: number;
+  size?: number;
+}
+
+interface GetDashboardsPaginationParams {
+  navigationMethod: 'pagination';
   page?: number;
   size?: number;
 }
+
+export type GetDashboardsParams =
+  | GetDashboardsInfiniteScrollParams
+  | GetDashboardsPaginationParams;
 
 export interface GetDashboardsResponse {
   cursorId: number;
@@ -50,8 +59,8 @@ export interface UpdateDashboardRequest {
 }
 
 export const dashboardApi = {
-  getList: (params: GetDashboardsParams) =>
-    apiClient.get<GetDashboardsResponse>('/dashboards', { params }),
+  getList: (params: GetDashboardsParams, signal?: AbortSignal) =>
+    apiClient.get<GetDashboardsResponse>('/dashboards', { params, signal }),
 
   create: (data: CreateDashboardRequest) => apiClient.post<Dashboard>('/dashboards', data),
 
