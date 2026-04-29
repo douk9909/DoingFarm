@@ -59,8 +59,7 @@ export default function Column({ id, title }: ColumnProps) {
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
         {items.map((card: CardType, index) => (
-          // 래퍼 div로 마지막 카드 감지 (모바일/태블릿용)
-          // Card는 공통 컴포넌트라 forwardRef 없이 래퍼 div로 ref 전달
+          // wrapper div로 마지막 카드 감지 (모바일/태블릿용)
           <div
             key={card.id}
             ref={index === items.length - 1 ? lastItemRef : null}
