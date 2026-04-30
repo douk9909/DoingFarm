@@ -13,7 +13,6 @@
   gap: 0;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  min-height: 200px;
   justify-content: flex-start;
   align-items: stretch;
 }
@@ -66,12 +65,6 @@
   padding: 3px;
 }
 
-.loader {
-  display: none;
-  height: 5px;
-  flex-shrink: 0;
-}
-
 @media (min-width: 768px) {
   .column {
     width: 80%;
@@ -118,13 +111,5 @@
     min-width: unset;
     flex-shrink: 1;
     scroll-snap-align: unset;
-  }
-
-  .loader {
-    display: block;
-    height: 10px;
-    min-width: unset;
-    width: 100%;
-    flex-shrink: 0;
   }
 }

@@ -3,12 +3,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 interface UseInfiniteScrollProps<T> {
   fetcher: (cursorId?: number) => Promise<{
     data: T[];
-    totalCount: number;
+    totalCount?: number;
     nextCursorId: number | null;
   }>;
 }
-
-const isDesktop = () => typeof window !== 'undefined' && window.innerWidth >= 1200;
 
 export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
   const [items, setItems] = useState<T[]>([]);
@@ -19,9 +17,8 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
 
   const cursorIdRef = useRef<number | undefined>(undefined);
   const isFetchingRef = useRef(false);
-  const loaderRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const mobileObserverRef = useRef<IntersectionObserver | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   const fetchData = async () => {
     if (isFetchingRef.current) return;
@@ -31,7 +28,7 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     try {
       const result = await fetcher(cursorIdRef.current);
       setItems((prev) => [...prev, ...result.data]);
-      setTotalCount(result.totalCount);
+      setTotalCount(result.totalCount ?? 0);
       cursorIdRef.current = result.nextCursorId ?? undefined;
       setHasMore(result.nextCursorId !== null);
     } catch (err) {
@@ -47,13 +44,12 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     fetchData();
   }, []);
 
-  // 모바일/태블릿: 마지막 카드가 보일 때 fetch
+  // 마지막 아이템이 보일 때 fetch (PC/모바일 공통)
   const lastItemRef = useCallback(
     (node: HTMLDivElement | null) => {
-      if (isDesktop()) return;
-      if (mobileObserverRef.current) mobileObserverRef.current.disconnect();
+      if (observerRef.current) observerRef.current.disconnect();
 
-      mobileObserverRef.current = new IntersectionObserver(
+      observerRef.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
             fetchData();
@@ -62,34 +58,16 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
         { root: scrollContainerRef.current, threshold: 0.5 },
       );
 
-      if (node) mobileObserverRef.current.observe(node);
+      if (node) observerRef.current.observe(node);
     },
     [hasMore],
   );
-
-  // PC: loader div가 보일 때 fetch
-  useEffect(() => {
-    if (!isDesktop() || isLoading) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
-          fetchData();
-        }
-      },
-      { root: scrollContainerRef.current, threshold: 0.1 },
-    );
-
-    if (loaderRef.current) observer.observe(loaderRef.current);
-    return () => observer.disconnect();
-  }, [hasMore, isLoading]);
 
   return {
     items,
     isLoading,
     error,
     hasMore,
-    loaderRef,
     lastItemRef,
     totalCount,
     scrollContainerRef,

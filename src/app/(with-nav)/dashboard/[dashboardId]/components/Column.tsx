@@ -11,7 +11,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
-import { useInfiniteScroll } from '@/app/(with-nav)/dashboard/[dashboardId]/components/useInfiniteScroll';
+import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
 interface ColumnProps {
   id: number;
@@ -32,15 +32,16 @@ const getColumnIcon = (title: string) => {
 };
 
 export default function Column({ id, title }: ColumnProps) {
-  const { items, totalCount, isLoading, error, loaderRef, lastItemRef, scrollContainerRef } =
-    useInfiniteScroll<CardType>({
+  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
+    {
       fetcher: (cursorId) =>
         cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
           data: res.data.cards,
           totalCount: res.data.totalCount,
           nextCursorId: res.data.cursorId,
         })),
-    });
+    },
+  );
 
   if (error) return <div>에러: {error}</div>;
 
@@ -59,7 +60,7 @@ export default function Column({ id, title }: ColumnProps) {
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
         {items.map((card: CardType, index) => (
-          // wrapper div로 마지막 카드 감지 (모바일/태블릿용)
+          // wrapper div로 마지막 카드 감지
           <div
             key={card.id}
             ref={index === items.length - 1 ? lastItemRef : null}
@@ -75,8 +76,6 @@ export default function Column({ id, title }: ColumnProps) {
             />
           </div>
         ))}
-        {/* PC 전용 loader */}
-        <div ref={loaderRef} className={styles.loader} />
       </div>
 
       <button aria-label="카드 추가" className={styles.addCardButton}>
