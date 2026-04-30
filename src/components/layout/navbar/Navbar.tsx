@@ -12,7 +12,7 @@ import { useFetch } from '@/hooks/queries/useFetch';
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
 import Avatar from '@/components/common/avatar/Avatar';
-import DashboardInviteModal from '@/components/dashboard/invite/InvitationModal';
+import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 
 import characterImg from '@/assets/character/carrot1.svg';
 import SidebarIcon from '@/assets/icons/SidebarIcon';
@@ -70,6 +70,19 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
     refetchMembers();
     refetchDashboard();
   }, [isDashboardDetail]);
+
+  useEffect(() => {
+    const handler = async () => {
+      await refetchMembers();
+      await refetchDashboard();
+    };
+
+    window.addEventListener('invitationUpdated', handler);
+
+    return () => {
+      window.removeEventListener('invitationUpdated', handler);
+    };
+  }, []);
 
   return (
     <>
@@ -139,12 +152,12 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
         </div>
       </header>
       {isInviteModalOpen && (
-        <DashboardInviteModal
+        <InvitationModal
           dashboardId={dashboardId}
-          isOpen={isInviteModalOpen}
           onClose={() => setIsInviteModalOpen(false)}
-          onInvite={(email) => {
-            console.log('초대된 이메일:', email);
+          onInvite={async () => {
+            await refetchMembers();
+            await refetchDashboard();
           }}
         />
       )}

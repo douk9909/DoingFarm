@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 import { useMemberList } from '@/hooks/queries/useMemberList';
 import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
@@ -8,13 +8,13 @@ import { useDashboardCreateModal } from '@/components/dashboard/create/Dashboard
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
+import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from '../edit.module.css';
-import DashboardInviteModal from '@/components/dashboard/invite/InvitationModal';
 
 interface InvitationsListProps {
   dashboardId: number;
@@ -64,6 +64,18 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
       },
     });
   };
+
+  useEffect(() => {
+    const handler = async () => {
+      await fetchData();
+    };
+
+    window.addEventListener('invitationUpdated', handler);
+
+    return () => {
+      window.removeEventListener('invitationUpdated', handler);
+    };
+  }, []);
 
   return (
     <>
@@ -119,12 +131,11 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
         />
       )}
       {isInviteModalOpen && (
-        <DashboardInviteModal
+        <InvitationModal
           dashboardId={dashboardId}
-          isOpen={isInviteModalOpen}
           onClose={() => setIsInviteModalOpen(false)}
-          onInvite={(email) => {
-            console.log('초대된 이메일:', email);
+          onInvite={async () => {
+            await fetchData();
           }}
         />
       )}
