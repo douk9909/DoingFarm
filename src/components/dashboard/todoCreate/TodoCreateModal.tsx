@@ -39,7 +39,7 @@ export default function TodoCreateModal({
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const { tagInput, tags, setTagInput, addTag } = useTodoTags();
-  const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
+  const { imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
 
@@ -61,14 +61,12 @@ export default function TodoCreateModal({
     description.trim().length === 0 ||
     assigneeId === null ||
     tags.length === 0 ||
-    !dueDate ||
-    !imageFile ||
-    !imagePreviewUrl;
+    !dueDate;
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isSubmitDisabled || !dueDate || !imagePreviewUrl || !selectedAssignee) {
+    if (isSubmitDisabled || !dueDate || !selectedAssignee) {
       return;
     }
 
@@ -94,7 +92,11 @@ export default function TodoCreateModal({
     >
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input.Text
-          label="제목*"
+          label={
+            <>
+              제목<span className={styles.requiredMark}> *</span>
+            </>
+          }
           value={title}
           placeholder="제목을 입력해주세요"
           className={styles.formInput}
@@ -102,7 +104,11 @@ export default function TodoCreateModal({
         />
 
         <Input.TextArea
-          label="설명*"
+          label={
+            <>
+              설명<span className={styles.requiredMark}> *</span>
+            </>
+          }
           value={description}
           placeholder="설명을 입력해주세요"
           rows={4}
@@ -141,9 +147,7 @@ export default function TodoCreateModal({
                 <>
                   <TodoDropdownAvatar
                     color={
-                      TODO_ASSIGNEE_COLORS[
-                        selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length
-                      ]
+                      TODO_ASSIGNEE_COLORS[selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length]
                     }
                   >
                     {getTodoAssigneeInitial(selectedAssignee.nickname)}

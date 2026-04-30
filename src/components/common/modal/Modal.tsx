@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useId } from 'react';
+import { useEffect, useId, useState } from 'react';
+import { createPortal } from 'react-dom';
 import CloseIcon from '@/assets/icons/CloseIcon';
 import { cn } from '@/lib/utils/cn';
 import styles from './Modal.module.css';
@@ -21,6 +22,11 @@ export default function Modal({
   contentClassName,
 }: ModalProps) {
   const titleId = useId();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!onClose) {
@@ -41,7 +47,7 @@ export default function Modal({
     };
   }, [onClose]);
 
-  return (
+  const modal = (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
         className={cn(styles.content, contentClassName)}
@@ -71,4 +77,10 @@ export default function Modal({
       </div>
     </div>
   );
+
+  if (!isMounted) {
+    return null;
+  }
+
+  return createPortal(modal, document.body);
 }
