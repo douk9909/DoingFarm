@@ -53,9 +53,6 @@ export default function EditForm({
 
     if (isFetching.current || isLoading || !isChanged || !title.trim()) return;
 
-    onTitleUpdate(title);
-    onColorUpdate(color);
-
     try {
       setIsLoading(true);
       isFetching.current = true;
@@ -64,6 +61,8 @@ export default function EditForm({
       const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
       await dashboardApi.update(dashboardId, { title, color: hexColor });
 
+      onTitleUpdate(title);
+      onColorUpdate(color);
       notifyDashboardCreated();
 
       // Todo: 토스트 띄우기로 변경 완료 알림
