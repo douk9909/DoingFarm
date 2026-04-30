@@ -24,16 +24,16 @@
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
 }
 
-.sm {
+.contentSm {
   max-width: 360px;
 }
 
-.md {
+.contentMd {
   max-width: 480px;
 }
 
-.lg {
-  max-width: 720px;
+.contentLg {
+  max-width: 874px;
 }
 
 .header {

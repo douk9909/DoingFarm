@@ -6,7 +6,7 @@ import CloseIcon from '@/assets/icons/CloseIcon';
 import { cn } from '@/lib/utils/cn';
 import styles from './Modal.module.css';
 
-type ModalSize = 'sm' | 'md' | 'lg';
+type ModalSize = 'contentSm' | 'contentMd' | 'contentLg';
 
 interface ModalProps {
   title?: string;
@@ -14,7 +14,7 @@ interface ModalProps {
   onClose?: () => void;
   closeLabel?: string;
   contentClassName?: string;
-  size?: ModalSize; // ✅ 추가
+  size?: ModalSize;
 }
 
 export default function Modal({
@@ -23,7 +23,7 @@ export default function Modal({
   onClose,
   closeLabel = '모달 닫기',
   contentClassName,
-  size = 'md', 
+  size = 'contentMd',
 }: ModalProps) {
   const titleId = useId();
 
@@ -46,11 +46,7 @@ export default function Modal({
   const modal = (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
-        className={cn(
-          styles.content,
-          styles[size],
-          contentClassName
-        )}
+        className={cn(styles.content, styles[size], contentClassName)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
