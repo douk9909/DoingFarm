@@ -17,6 +17,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from './Navbar.module.css';
+import { dashboardApi } from '@/lib/api/dashboard';
 
 const MAX_VISIBLE_USERS = 5;
 
@@ -34,6 +35,10 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
     memberApi
       .getList(dashboardId, { page: 1, size: MAX_VISIBLE_USERS })
       .then((res) => ({ data: res.data })),
+  );
+
+  const { data: dashboardData } = useFetch(() =>
+    dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
   );
 
   const displayMembers = membersData?.members || [];
@@ -83,13 +88,15 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
             <div className={styles.line}></div>
 
             <div className={styles.buttonContainer}>
-              <Link
-                href={`${pathname}/edit`}
-                className={cn(styles.button, styles.textButton, styles.manageButton)}
-              >
-                <SettingIcon size={20} className={styles.buttonIcon} />
-                <span>관리</span>
-              </Link>
+              {dashboardData?.createdByMe && (
+                <Link
+                  href={`${pathname}/edit`}
+                  className={cn(styles.button, styles.textButton, styles.manageButton)}
+                >
+                  <SettingIcon size={20} className={styles.buttonIcon} />
+                  <span>관리</span>
+                </Link>
+              )}
 
               <button
                 type="button"
