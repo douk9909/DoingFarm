@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import CloseIcon from '@/assets/icons/CloseIcon';
 import { cn } from '@/lib/utils/cn';
 import styles from './Modal.module.css';
+
+type ModalSize = 'sm' | 'md' | 'lg';
 
 interface ModalProps {
   title?: string;
@@ -12,6 +14,7 @@ interface ModalProps {
   onClose?: () => void;
   closeLabel?: string;
   contentClassName?: string;
+  size?: ModalSize; // ✅ 추가
 }
 
 export default function Modal({
@@ -20,20 +23,13 @@ export default function Modal({
   onClose,
   closeLabel = '모달 닫기',
   contentClassName,
+  size = 'md', 
 }: ModalProps) {
   const titleId = useId();
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    if (!onClose) return;
 
-  useEffect(() => {
-    if (!onClose) {
-      return;
-    }
-
-    // ESC로 모달을 닫을 수 있게 처리
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -50,7 +46,11 @@ export default function Modal({
   const modal = (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
-        className={cn(styles.content, contentClassName)}
+        className={cn(
+          styles.content,
+          styles[size],
+          contentClassName
+        )}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
@@ -62,6 +62,7 @@ export default function Modal({
               {title}
             </h2>
           ) : null}
+
           {onClose ? (
             <button
               type="button"
@@ -73,12 +74,13 @@ export default function Modal({
             </button>
           ) : null}
         </div>
+
         {children}
       </div>
     </div>
   );
 
-  if (!isMounted) {
+  if (typeof document === 'undefined') {
     return null;
   }
 

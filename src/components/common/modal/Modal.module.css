@@ -13,7 +13,7 @@
 .content {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 480px; /* 기본 md */
   max-height: calc(100dvh - 48px);
   overflow-y: auto;
   background-color: var(--color-black-300);
@@ -22,6 +22,18 @@
   padding: 24px;
   color: var(--color-white);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+.sm {
+  max-width: 360px;
+}
+
+.md {
+  max-width: 480px;
+}
+
+.lg {
+  max-width: 720px;
 }
 
 .header {
