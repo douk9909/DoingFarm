@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { DashboardProvider } from '@/contexts/DashboardContext';
 import { WithNavLayoutClient } from './_components/WithNavLayoutClient';
 import {
   SIDEBAR_VIEWPORT_COOKIE_NAME,
@@ -25,12 +26,14 @@ export default async function WithNavLayout({ children }: WithNavLayoutProps) {
   const initialSidebarWidth =
     savedViewportMode === 'mobile'
       ? null
-      : savedSidebarWidth ?? getDefaultSidebarWidth(savedViewportMode);
+      : (savedSidebarWidth ?? getDefaultSidebarWidth(savedViewportMode));
 
   // 클라이언트 셸 연결
   return (
-    <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>
-      {children}
-    </WithNavLayoutClient>
+    <DashboardProvider>
+      <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>
+        {children}
+      </WithNavLayoutClient>
+    </DashboardProvider>
   );
 }
