@@ -40,7 +40,7 @@ export default function TodoTagField({ value, tags, onChange, onAddTag }: TodoTa
               <button
                 type="button"
                 className={styles.tagChip}
-                style={{ backgroundColor: 'var(--color-gray-900)' }}
+                style={{ backgroundColor: 'var(--color-black-200)' }}
                 onClick={() => onAddTag(value)}
               >
                 생성&nbsp;&nbsp; {trimmedValue}
