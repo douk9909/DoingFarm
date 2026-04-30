@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -28,22 +29,45 @@ interface NavbarProps {
 
 export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSidebar }: NavbarProps) {
   const pathname = usePathname();
-  const dashboardId = Number(pathname.split('/')[2]);
+  const segments = pathname.split('/');
+
+  const dashboardId = Number(segments[2]);
+
+  const isDashboardDetail = segments[1] === 'dashboard' && !isNaN(dashboardId);
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
-  const { data: membersData } = useFetch(() =>
-    memberApi
-      .getList(dashboardId, { page: 1, size: MAX_VISIBLE_USERS })
-      .then((res) => ({ data: res.data })),
-  );
+  const { data: membersData, refetch: refetchMembers } = useFetch(() => {
+    if (!isDashboardDetail) {
+      return Promise.resolve({
+        data: { members: [], totalCount: 0 },
+      });
+    }
 
-  const { data: dashboardData } = useFetch(() =>
-    dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
-  );
+    return memberApi
+      .getList(dashboardId, { page: 1, size: MAX_VISIBLE_USERS })
+      .then((res) => ({ data: res.data }));
+  });
+
+  const { data: dashboardData, refetch: refetchDashboard } = useFetch(() => {
+    if (!isDashboardDetail) {
+      return Promise.resolve({
+        data: null,
+      });
+    }
+
+    return dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data }));
+  });
 
   const displayMembers = membersData?.members || [];
   const totalCount = membersData?.totalCount || 0;
   const extraCount = totalCount - MAX_VISIBLE_USERS;
+
+  useEffect(() => {
+    if (!isDashboardDetail) return;
+
+    refetchMembers();
+    refetchDashboard();
+  }, [isDashboardDetail]);
 
   return (
     <header className={styles.container}>
@@ -90,7 +114,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
             <div className={styles.buttonContainer}>
               {dashboardData?.createdByMe && (
                 <Link
-                  href={`${pathname}/edit`}
+                  href={`/dashboard/${dashboardId}/edit`}
                   className={cn(styles.button, styles.textButton, styles.manageButton)}
                 >
                   <SettingIcon size={20} className={styles.buttonIcon} />
