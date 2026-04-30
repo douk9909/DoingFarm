@@ -10,6 +10,7 @@ import Avatar from '@/components/common/avatar/Avatar';
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
+import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from '../edit.module.css';
 
@@ -61,7 +62,12 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     <>
       <BaseSectionLayout
         title="초대 내역"
-        headerButton
+        headerButton={
+          <Button className={styles.inviteButton}>
+            <UserPlusIcon size={18} color="var(--color-gray-900)" />
+            <span>초대</span>
+          </Button>
+        }
         pagination={
           <PaginationControl
             page={page}
