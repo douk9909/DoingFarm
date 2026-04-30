@@ -9,8 +9,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 10px 16px 10px 10px;
-  background:
-    linear-gradient(180deg, rgba(29, 29, 35, 0.98), rgba(21, 21, 27, 0.96));
+  background: linear-gradient(180deg, rgba(29, 29, 35, 0.98), rgba(21, 21, 27, 0.96));
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow:
     0 10px 22px rgba(0, 0, 0, 0.14),
@@ -112,20 +111,9 @@
   color: var(--color-white);
 }
 
-.onlyMobileIcon {
-  width: 18px;
-  height: 18px;
-}
-
 .textButton {
   gap: 9px;
   font: var(--text-lg-16-medium);
-}
-
-.manageButton {
-}
-
-.inviteButton {
 }
 
 @media (hover: hover) and (pointer: fine) {
