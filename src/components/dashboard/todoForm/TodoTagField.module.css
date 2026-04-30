@@ -34,6 +34,7 @@
 .tagChip {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   min-height: 24px;
   max-width: 100%;
   padding: 4px 8px;
@@ -42,4 +43,15 @@
   font: var(--text-xs-semibold);
   line-height: 1.35;
   overflow-wrap: anywhere;
+}
+
+.removeButton {
+  border: none;
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
 }

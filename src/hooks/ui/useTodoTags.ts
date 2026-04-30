@@ -23,7 +23,12 @@ export function useTodoTags(initialTags: TodoFormCard['tags'] = []) {
 
       return [...prevTags, { label: nextLabel, color: getRandomTodoTagColor() }];
     });
+
     setTagInput('');
+  };
+
+  const removeTag = (label: string) => {
+    setTags((prevTags) => prevTags.filter((tag) => tag.label !== label));
   };
 
   return {
@@ -31,5 +36,6 @@ export function useTodoTags(initialTags: TodoFormCard['tags'] = []) {
     tags,
     setTagInput,
     addTag,
+    removeTag,
   };
 }

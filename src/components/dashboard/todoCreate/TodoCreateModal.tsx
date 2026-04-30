@@ -38,7 +38,7 @@ export default function TodoCreateModal({
   const [columnId, setColumnId] = useState(initialColumnId);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  const { tagInput, tags, setTagInput, addTag } = useTodoTags();
+  const { tagInput, tags, setTagInput, addTag, removeTag } = useTodoTags();
   const { imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
@@ -184,7 +184,13 @@ export default function TodoCreateModal({
 
         <TodoDateField value={dueDate} onChange={setDueDate} />
 
-        <TodoTagField value={tagInput} tags={tags} onChange={setTagInput} onAddTag={addTag} />
+        <TodoTagField
+          value={tagInput}
+          tags={tags}
+          onChange={setTagInput}
+          onAddTag={addTag}
+          onRemoveTag={removeTag}
+        />
 
         <TodoImageField
           imagePreviewUrl={imagePreviewUrl}
