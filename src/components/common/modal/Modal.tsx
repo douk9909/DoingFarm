@@ -1,25 +1,35 @@
 'use client';
 
 import { useEffect, useId } from 'react';
+import { createPortal } from 'react-dom';
 import CloseIcon from '@/assets/icons/CloseIcon';
+import { cn } from '@/lib/utils/cn';
 import styles from './Modal.module.css';
+
+type ModalSize = 'contentSm' | 'contentMd' | 'contentLg';
 
 interface ModalProps {
   title?: string;
   children: React.ReactNode;
   onClose?: () => void;
   closeLabel?: string;
+  contentClassName?: string;
+  size?: ModalSize;
 }
 
-export default function Modal({ title, children, onClose, closeLabel = '모달 닫기' }: ModalProps) {
+export default function Modal({
+  title,
+  children,
+  onClose,
+  closeLabel = '모달 닫기',
+  contentClassName,
+  size = 'contentMd',
+}: ModalProps) {
   const titleId = useId();
 
   useEffect(() => {
-    if (!onClose) {
-      return;
-    }
+    if (!onClose) return;
 
-    // ESC 키로 모달을 빠르게 닫을 수 있게 처리
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
@@ -33,10 +43,10 @@ export default function Modal({ title, children, onClose, closeLabel = '모달 �
     };
   }, [onClose]);
 
-  return (
+  const modal = (
     <div className={styles.overlay} onMouseDown={onClose}>
       <div
-        className={styles.content}
+        className={cn(styles.content, styles[size], contentClassName)}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
@@ -48,6 +58,7 @@ export default function Modal({ title, children, onClose, closeLabel = '모달 �
               {title}
             </h2>
           ) : null}
+
           {onClose ? (
             <button
               type="button"
@@ -59,8 +70,15 @@ export default function Modal({ title, children, onClose, closeLabel = '모달 �
             </button>
           ) : null}
         </div>
+
         {children}
       </div>
     </div>
   );
+
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return createPortal(modal, document.body);
 }

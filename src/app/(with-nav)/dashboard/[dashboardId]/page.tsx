@@ -24,8 +24,8 @@ export default async function DashboardDetailPage({ params }: DashboardDetailPag
       </div>
 
       <div className={styles.content}>
-        <DashBoardHeader key={id} dashboardId={id} />
-        <ColumnList key={id} dashboardId={id} />
+        <DashBoardHeader dashboardId={id} />
+        <ColumnList dashboardId={id} />
       </div>
     </section>
   );

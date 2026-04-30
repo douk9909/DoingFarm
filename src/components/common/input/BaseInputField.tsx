@@ -4,7 +4,7 @@ import styles from './TextInput.module.css';
 
 export interface BaseInputFieldProps {
   id?: string;
-  label?: string;
+  label?: ReactNode;
   status?: 'default' | 'error';
   isDisabled?: boolean;
   errorMsg?: string;

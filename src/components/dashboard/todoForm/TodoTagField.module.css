@@ -1,0 +1,57 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tagInput {
+  min-height: 38px;
+  font: var(--text-sm-medium);
+}
+
+.tagPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 54px;
+  padding: 10px 12px;
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-black-200);
+}
+
+.tagHint {
+  color: var(--color-gray-700);
+  font: var(--text-xs-semibold);
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  font: var(--text-xs-semibold);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.removeButton {
+  border: none;
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
+}

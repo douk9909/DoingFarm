@@ -76,6 +76,6 @@
 
 @media (min-width: 1200px) {
   .shell {
-    grid-template-columns: 600px 8px minmax(0, 1fr);
+    grid-template-columns: 360px 8px minmax(0, 1fr);
   }
 }
