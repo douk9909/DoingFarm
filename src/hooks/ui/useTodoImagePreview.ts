@@ -1,16 +1,21 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export function useTodoImagePreview() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
-  const readerIdRef = useRef(0);
+  const objectUrlRef = useRef('');
+
+  const revokePreviewUrl = useCallback(() => {
+    if (!objectUrlRef.current) return;
+
+    URL.revokeObjectURL(objectUrlRef.current);
+    objectUrlRef.current = '';
+  }, []);
 
   const updateImage = (file: File | null) => {
-    readerIdRef.current += 1;
-    const readerId = readerIdRef.current;
-
+    revokePreviewUrl();
     setImageFile(file);
 
     if (!file) {
@@ -18,21 +23,20 @@ export function useTodoImagePreview() {
       return;
     }
 
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      if (readerId === readerIdRef.current && typeof reader.result === 'string') {
-        // 카드 미리보기에서 바로 쓸 수 있게 data URL로 저장
-        setImagePreviewUrl(reader.result);
-      }
-    };
-
-    reader.readAsDataURL(file);
+    const objectUrl = URL.createObjectURL(file);
+    objectUrlRef.current = objectUrl;
+    setImagePreviewUrl(objectUrl);
   };
 
   const removeImage = () => {
     updateImage(null);
   };
+
+  useEffect(() => {
+    return () => {
+      revokePreviewUrl();
+    };
+  }, [revokePreviewUrl]);
 
   return {
     imageFile,
