@@ -36,7 +36,7 @@ export default function TodoCreateModal({
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [columnId, setColumnId] = useState(initialColumnId);
-  const [assigneeId, setAssigneeId] = useState('');
+  const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(null);
   const { tagInput, tags, setTagInput, addTag } = useTodoTags();
   const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
@@ -48,7 +48,7 @@ export default function TodoCreateModal({
     [columnId, columns],
   );
   const selectedAssignee = useMemo(
-    () => assignees.find((assignee) => String(assignee.id) === assigneeId),
+    () => assignees.find((assignee) => assignee.id === assigneeId),
     [assigneeId, assignees],
   );
   const selectedAssigneeIndex = selectedAssignee
@@ -59,7 +59,7 @@ export default function TodoCreateModal({
   const isSubmitDisabled =
     title.trim().length === 0 ||
     description.trim().length === 0 ||
-    assigneeId.length === 0 ||
+    assigneeId === null ||
     tags.length === 0 ||
     !dueDate ||
     !imageFile ||
@@ -123,6 +123,7 @@ export default function TodoCreateModal({
               setIsColumnOpen((isOpen) => !isOpen);
               setIsAssigneeOpen(false);
             }}
+            onClose={() => setIsColumnOpen(false)}
             onSelect={(column) => {
               setColumnId(column.id);
               setIsColumnOpen(false);
@@ -152,13 +153,14 @@ export default function TodoCreateModal({
               ) : undefined
             }
             getOptionKey={(assignee) => assignee.id}
-            isOptionSelected={(assignee) => String(assignee.id) === assigneeId}
+            isOptionSelected={(assignee) => assignee.id === assigneeId}
             onToggle={() => {
               setIsAssigneeOpen((isOpen) => !isOpen);
               setIsColumnOpen(false);
             }}
+            onClose={() => setIsAssigneeOpen(false)}
             onSelect={(assignee) => {
-              setAssigneeId(String(assignee.id));
+              setAssigneeId(assignee.id);
               setIsAssigneeOpen(false);
             }}
             renderOption={(assignee, index) => (

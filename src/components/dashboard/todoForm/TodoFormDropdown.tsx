@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import ArrowDownIcon from '@/assets/icons/ArrowDownIcon';
 import { cn } from '@/lib/utils/cn';
 import styles from './TodoFormDropdown.module.css';
@@ -14,6 +14,7 @@ interface TodoFormDropdownProps<T> {
   getOptionKey: (option: T) => string | number;
   isOptionSelected?: (option: T) => boolean;
   onToggle: () => void;
+  onClose: () => void;
   onSelect: (option: T) => void;
   renderOption?: (option: T, index: number) => ReactNode;
 }
@@ -40,13 +41,37 @@ export default function TodoFormDropdown<T>({
   getOptionKey,
   isOptionSelected,
   onToggle,
+  onClose,
   onSelect,
   renderOption,
 }: TodoFormDropdownProps<T>) {
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('mousedown', handlePointerDown);
+    document.addEventListener('touchstart', handlePointerDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handlePointerDown);
+      document.removeEventListener('touchstart', handlePointerDown);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <div className={styles.field}>
       <span className={styles.label}>{label}</span>
-      <div className={styles.dropdown}>
+      <div className={styles.dropdown} ref={dropdownRef}>
         <button
           type="button"
           className={styles.dropdownButton}
