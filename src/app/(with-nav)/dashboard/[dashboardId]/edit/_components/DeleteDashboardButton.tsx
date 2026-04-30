@@ -3,42 +3,54 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import styles from '../edit.module.css';
 import { dashboardApi } from '@/lib/api/dashboard';
+import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
+import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
+
+import styles from '../edit.module.css';
 
 interface DeleteDashboardProps {
   dashboardId: number;
 }
 
 export default function DeleteDashboardButton({ dashboardId }: DeleteDashboardProps) {
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { isPending, handleDelete } = useGenericDelete();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const router = useRouter();
 
   const handleDeleteDashboard = async () => {
-    if (isDeleting) return;
+    if (isPending) return;
 
-    if (!confirm('대시보드를 삭제하시겠습니까? 모든 데이터가 영구적으로 사라집니다.')) return;
-
-    try {
-      setIsDeleting(true);
-      await dashboardApi.delete(dashboardId);
-
-      // Todo: 토스트로 삭제 알림
-      alert('대시보드가 삭제되었습니다.');
-      router.push('/mydashboard');
-      router.refresh();
-    } catch (error) {
-      // Todo: 토스트로 오류 알림
-      alert('대시보드 삭제에 실패했습니다. 다시 시도해주세요.');
-      console.error('대시보드 삭제 중 오류 발생:', error);
-    } finally {
-      setIsDeleting(false);
-    }
+    await handleDelete({
+      deleteAction: () => dashboardApi.delete(dashboardId),
+      successMessage: '대시보드가 삭제되었습니다.',
+      onSuccess: () => {
+        router.push('/mydashboard');
+        setIsModalOpen(false);
+      },
+    });
   };
 
   return (
-    <button onClick={handleDeleteDashboard} className={styles.deleteButton} disabled={isDeleting}>
-      <span>{isDeleting ? '삭제 중...' : '대시보드 삭제'}</span>
-    </button>
+    <>
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className={styles.deleteButton}
+        disabled={isPending}
+      >
+        <span>{isPending ? '삭제 중...' : '대시보드 삭제'}</span>
+      </button>
+      {isModalOpen && (
+        <ConfirmModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onConfirm={handleDeleteDashboard}
+          title="대시보드를 삭제하시겠습니까?"
+          message="대시보드의 모든 데이터가 삭제됩니다."
+          isLoading={isPending}
+        />
+      )}
+    </>
   );
 }
