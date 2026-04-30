@@ -1,4 +1,8 @@
 /*모달*/
+.characterWrapper {
+  position: relative;
+  overflow: visible;
+}
 
 .characterImage {
   position: absolute;
@@ -42,7 +46,7 @@
 }
 
 .modalDeleteButton {
-  background-color: var(--color-danger);
+  background-color: var(--color-danger) !important;
   color: var(--color-white);
 }
 .modalDeleteButton:hover:not(:disabled) {

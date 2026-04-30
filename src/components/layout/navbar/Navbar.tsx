@@ -30,14 +30,15 @@ interface NavbarProps {
 
 export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSidebar }: NavbarProps) {
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
   const pathname = usePathname();
   const segments = pathname.split('/');
-
   const dashboardId = Number(segments[2]);
 
   const isDashboardDetail = segments[1] === 'dashboard' && !isNaN(dashboardId);
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
+  // 멤버 정보 가져오기
   const { data: membersData, refetch: refetchMembers } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
@@ -50,6 +51,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
       .then((res) => ({ data: res.data }));
   });
 
+  // 대시보드 정보 가져오기
   const { data: dashboardData, refetch: refetchDashboard } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
@@ -69,7 +71,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
 
     refetchMembers();
     refetchDashboard();
-  }, [isDashboardDetail]);
+  }, [isDashboardDetail, dashboardId]);
 
   useEffect(() => {
     const handler = async () => {

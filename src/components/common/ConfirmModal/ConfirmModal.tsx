@@ -31,7 +31,7 @@ export default function ConfirmModal({
   if (!isOpen) return null;
 
   return (
-    <Modal>
+    <Modal contentClassName={styles.characterWrapper}>
       <Image
         src={characterImg}
         alt="캐릭터 이미지"
