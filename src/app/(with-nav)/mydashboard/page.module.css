@@ -102,12 +102,44 @@
   align-items: center;
 }
 
-.sectionTitle {
-  margin: 0 0 var(--dashboard-section-title-margin-bottom);
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto var(--dashboard-section-title-margin-bottom);
+  gap: 12px;
+}
+
+.sectionTitle {
+  margin: 0;
   color: rgba(255, 255, 255, 0.96);
   font: var(--text-lg-16-bold);
   text-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  color: var(--color-gray-800);
+  font: var(--text-xs-semibold);
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: var(--color-gray-700);
+}
+
+.pageButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
 }
 
 .panel {
@@ -159,27 +191,55 @@
   font: var(--text-sm-medium);
 }
 
-.dashboardListPanel {
+.dashboardCardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
   width: min(100%, var(--dashboard-content-max-width));
   margin: 0 auto;
-  padding: 16px;
-  border: 1px solid var(--dashboard-panel-border);
-  border-radius: var(--dashboard-panel-radius);
-  background: var(--dashboard-panel-bg);
 }
 
-.dashboardPreviewList {
-  display: grid;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.dashboardPreviewItem {
-  padding: 12px 14px;
+.createDashboardCard,
+.dashboardCard {
+  display: inline-flex;
+  align-items: center;
+  min-height: 54px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: var(--radius-sm);
-  background-color: var(--color-black-200);
+  background-color: rgba(31, 32, 38, 0.96);
   color: var(--color-gray-800);
   font: var(--text-sm-semibold);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.createDashboardCard {
+  justify-content: center;
+  gap: 8px;
+  border-style: dashed;
+}
+
+.dashboardCard {
+  gap: 8px;
+}
+
+.dashboardColor {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.dashboardTitle {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboardCrown {
+  flex: 0 0 auto;
 }
 
 .createButton {
@@ -261,6 +321,18 @@
     font: var(--text-xl-bold);
   }
 
+  .dashboardCardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    min-height: 60px;
+    padding: 0 18px;
+    font: var(--text-md-semibold);
+  }
+
   .message {
     font: var(--text-sm-medium);
   }
@@ -287,5 +359,9 @@
 
   .message {
     font: var(--text-md-medium);
+  }
+
+  .dashboardCardGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

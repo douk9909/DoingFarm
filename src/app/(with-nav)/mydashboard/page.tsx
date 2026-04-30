@@ -6,7 +6,7 @@ import MyDashboardHomeClient from './_components/MyDashboardHomeClient';
 import { dashboardPageContent } from './_content/dashboardContent';
 import styles from './page.module.css';
 
-const DASHBOARD_PAGE_SIZE = 5;
+const DASHBOARD_PAGE_SIZE = 3;
 
 export default async function MyDashboardPage() {
   let initialDashboards: Dashboard[] = [];
@@ -51,6 +51,7 @@ export default async function MyDashboardPage() {
           <MyDashboardHomeClient
             initialDashboards={initialDashboards}
             dashboardTotalCount={dashboardTotalCount}
+            dashboardPageSize={DASHBOARD_PAGE_SIZE}
             initialError={initialError}
           />
         </div>
