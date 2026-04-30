@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 import { useMemberList } from '@/hooks/queries/useMemberList';
 import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
@@ -37,14 +38,18 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
   const [targetInvitation, setTargetInvitation] = useState<DashboardInvitation | null>(null);
 
   const { isPending, handleDelete } = useGenericDelete();
+  const { notifyDashboardCreated } = useDashboardCreateModal();
 
   const handleDeleteInvitation = async () => {
     if (!targetInvitation || isPending) return;
 
     await handleDelete({
       deleteAction: () => dashboardApi.cancelInvitation(dashboardId, targetInvitation.id),
+
       successMessage: '초대가 취소되었습니다.',
+
       onSuccess: async () => {
+        notifyDashboardCreated();
         setIsModalOpen(false);
         setTargetInvitation(null);
 
@@ -108,7 +113,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           onConfirm={handleDeleteInvitation}
           title="초대 취소"
           message={`${targetInvitation.invitee.email} 님의 초대를 취소하시겠습니까?`}
-          isLoading={isLoading}
+          isLoading={isPending}
         />
       )}
     </>

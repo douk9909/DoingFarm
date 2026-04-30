@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 
 import { dashboardApi } from '@/lib/api/dashboard';
 import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
+
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 
 import styles from '../edit.module.css';
@@ -15,6 +17,7 @@ interface DeleteDashboardProps {
 
 export default function DeleteDashboardButton({ dashboardId }: DeleteDashboardProps) {
   const { isPending, handleDelete } = useGenericDelete();
+  const { notifyDashboardCreated } = useDashboardCreateModal();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
@@ -24,8 +27,11 @@ export default function DeleteDashboardButton({ dashboardId }: DeleteDashboardPr
 
     await handleDelete({
       deleteAction: () => dashboardApi.delete(dashboardId),
+
       successMessage: '대시보드가 삭제되었습니다.',
+
       onSuccess: () => {
+        notifyDashboardCreated();
         router.push('/mydashboard');
         setIsModalOpen(false);
       },

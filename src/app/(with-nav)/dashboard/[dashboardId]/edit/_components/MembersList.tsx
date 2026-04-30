@@ -4,9 +4,11 @@ import { useMemberList } from '@/hooks/queries/useMemberList';
 import { useState } from 'react';
 import { Member, memberApi } from '@/lib/api/member';
 
+import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
+
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
-
 import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
@@ -14,7 +16,6 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import CrownIcon from '@/assets/icons/CrownIcon';
 
 import styles from '../edit.module.css';
-import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
 
 interface MembersListProps {
   dashboardId: number;
@@ -40,6 +41,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
   const [targetMember, setTargetMember] = useState<Member | null>(null);
 
   const { isPending, handleDelete } = useGenericDelete();
+  const { notifyDashboardCreated } = useDashboardCreateModal();
 
   // 삭제 버튼 클릭 시 모달 열기
   const handleDeleteClick = (member: Member) => {
@@ -52,8 +54,11 @@ export default function MembersList({ dashboardId }: MembersListProps) {
 
     await handleDelete({
       deleteAction: () => memberApi.deleteMember(targetMember.id),
+
       successMessage: '구성원이 삭제되었습니다.',
+
       onSuccess: async () => {
+        notifyDashboardCreated();
         setIsModalOpen(false);
         setTargetMember(null);
 
