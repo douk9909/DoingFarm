@@ -9,7 +9,6 @@ import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import { useDashboards } from '@/hooks/queries/useDashboards';
-import { useDashboard } from '@/contexts/DashboardContext';
 
 export default function DashBoardList() {
   const pathName = usePathname();
@@ -17,8 +16,6 @@ export default function DashBoardList() {
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
   // 생성 모달에서 version을 올리면 목록을 다시 불러옴
   const { dashboards, isLoading, error } = useDashboards(dashboardListVersion);
-
-  const { title, color } = useDashboard();
 
   return (
     <div className={styles.sideMenu}>
@@ -46,8 +43,8 @@ export default function DashBoardList() {
           <DashBoardItem
             key={dashboard.id}
             id={dashboard.id}
-            title={title || dashboard.title}
-            color={color || dashboard.color}
+            title={dashboard.title}
+            color={dashboard.color}
             createdByMe={dashboard.createdByMe}
           />
         ))}
