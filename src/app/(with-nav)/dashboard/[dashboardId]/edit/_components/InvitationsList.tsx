@@ -14,6 +14,7 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from '../edit.module.css';
+import DashboardInviteModal from '@/components/dashboard/invite/InvitationModal';
 
 interface InvitationsListProps {
   dashboardId: number;
@@ -34,6 +35,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     resourceName: 'invitations',
   });
 
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetInvitation, setTargetInvitation] = useState<DashboardInvitation | null>(null);
 
@@ -68,7 +70,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
       <BaseSectionLayout
         title="초대 내역"
         headerButton={
-          <Button className={styles.inviteButton}>
+          <Button className={styles.inviteButton} onClick={() => setIsInviteModalOpen(true)}>
             <UserPlusIcon size={18} color="var(--color-gray-900)" />
             <span>초대</span>
           </Button>
@@ -114,6 +116,16 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           title="초대 취소"
           message={`${targetInvitation.invitee.email} 님의 초대를 취소하시겠습니까?`}
           isLoading={isPending}
+        />
+      )}
+      {isInviteModalOpen && (
+        <DashboardInviteModal
+          dashboardId={dashboardId}
+          isOpen={isInviteModalOpen}
+          onClose={() => setIsInviteModalOpen(false)}
+          onInvite={(email) => {
+            console.log('초대된 이메일:', email);
+          }}
         />
       )}
     </>

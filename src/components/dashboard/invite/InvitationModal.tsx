@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { dashboardApi } from '@/lib/api/dashboard';
+import { useDashboardCreateModal } from '../create/DashboardCreateModalProvider';
 
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
@@ -9,8 +10,7 @@ import Button from '@/components/common/button/Button';
 import Input from '@/components/common/input';
 import Modal from '@/components/common/modal/Modal';
 
-import styles from './DashboardInviteModal.module.css';
-import { useDashboardCreateModal } from '../create/DashboardCreateModalProvider';
+import styles from './InvitationModal.module.css';
 
 interface DashboardInviteModalProps {
   dashboardId: number;
@@ -64,7 +64,7 @@ export default function DashboardInviteModal({
   };
 
   return (
-    <Modal title={'🔗 초대하기'} onClose={onClose}>
+    <Modal title={'🔗 초대하기'} onClose={onClose} contentClassName={styles.characterWrapper}>
       <Image
         src={characterImg}
         alt="캐릭터 이미지"
