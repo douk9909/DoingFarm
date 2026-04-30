@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import { dashboardApi } from '@/lib/api/dashboard';
 import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
 import Input from '@/components/common/input';
@@ -43,6 +44,7 @@ export default function EditForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const isFetching = useRef(false);
+  const { notifyDashboardCreated } = useDashboardCreateModal();
 
   const isChanged = title !== initialTitle || color !== transformedColor;
 
@@ -61,6 +63,8 @@ export default function EditForm({
       // 서버로 보낼 때 색상 이름을 HEX 코드로 변환
       const hexColor = DASHBOARD_COLOR_HEX_MAP[color as DashboardColor] || color;
       await dashboardApi.update(dashboardId, { title, color: hexColor });
+
+      notifyDashboardCreated();
 
       // Todo: 토스트 띄우기로 변경 완료 알림
       alert('변경되었습니다');

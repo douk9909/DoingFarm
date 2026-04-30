@@ -1,5 +1,4 @@
 import { cookies } from 'next/headers';
-import { DashboardProvider } from '@/contexts/DashboardContext';
 import { WithNavLayoutClient } from './_components/WithNavLayoutClient';
 import {
   SIDEBAR_VIEWPORT_COOKIE_NAME,
@@ -30,10 +29,6 @@ export default async function WithNavLayout({ children }: WithNavLayoutProps) {
 
   // 클라이언트 셸 연결
   return (
-    <DashboardProvider>
-      <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>
-        {children}
-      </WithNavLayoutClient>
-    </DashboardProvider>
+    <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>{children}</WithNavLayoutClient>
   );
 }
