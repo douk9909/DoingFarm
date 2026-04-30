@@ -152,6 +152,36 @@
   line-height: 1.5;
 }
 
+.statusText {
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+  color: var(--dashboard-text-muted);
+  font: var(--text-sm-medium);
+}
+
+.dashboardListPanel {
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+  padding: 16px;
+  border: 1px solid var(--dashboard-panel-border);
+  border-radius: var(--dashboard-panel-radius);
+  background: var(--dashboard-panel-bg);
+}
+
+.dashboardPreviewList {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dashboardPreviewItem {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-black-200);
+  color: var(--color-gray-800);
+  font: var(--text-sm-semibold);
+}
+
 .createButton {
   display: inline-flex;
   align-items: center;
