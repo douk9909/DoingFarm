@@ -20,7 +20,7 @@ export default function TodoDateField({ value, onChange }: TodoDateFieldProps) {
           timeIntervals={30}
           dateFormat="yyyy. MM. dd HH:mm"
           minDate={new Date()}
-          placeholderText="2024. 07. 31 14:30"
+          placeholderText="날짜를 선택해주세요"
           className={styles.dateInput}
           wrapperClassName={styles.datePickerWrapper}
           calendarClassName={styles.todoCalendar}
