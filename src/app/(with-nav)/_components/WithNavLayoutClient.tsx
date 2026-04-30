@@ -41,6 +41,7 @@ export function WithNavLayoutClient({ children, initialSidebarWidth }: WithNavLa
       setSidebarCookie(SIDEBAR_VIEWPORT_COOKIE_NAME, nextViewportMode);
 
       if (nextViewportMode === 'mobile') {
+        setIsMobileSidebarOpen(false);
         return;
       }
 

@@ -4,7 +4,7 @@ export const SIDEBAR_WIDTH_COOKIE_NAME = 'doingfarm-sidebar-width';
 export const SIDEBAR_VIEWPORT_COOKIE_NAME = 'doingfarm-sidebar-viewport';
 
 export const SIDEBAR_TABLET_WIDTH = 280;
-export const SIDEBAR_PC_WIDTH = 600;
+export const SIDEBAR_PC_WIDTH = 360;
 export const SIDEBAR_MIN_WIDTH = SIDEBAR_TABLET_WIDTH;
 export const SIDEBAR_MAX_WIDTH = SIDEBAR_PC_WIDTH;
 
