@@ -55,30 +55,3 @@
   min-height: 42px;
   font: var(--text-sm-semibold);
 }
-
-@media (min-width: 480px) {
-  .todoModal {
-    width: 100%;
-    max-height: calc(100dvh - 48px);
-    padding: 22px 20px 20px;
-    transform: translateY(34px);
-  }
-
-  .form {
-    gap: 14px;
-  }
-
-  .formTextarea {
-    min-height: 96px;
-    padding: 14px 0;
-  }
-
-  .selectRow {
-    gap: 14px;
-  }
-
-  .actions {
-    gap: 14px;
-    margin-top: 6px;
-  }
-}

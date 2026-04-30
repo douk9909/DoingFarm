@@ -92,6 +92,7 @@ export default function TodoCreateModal({
     >
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input.Text
+          required
           label={
             <>
               제목<span className={styles.requiredMark}> *</span>
@@ -104,6 +105,7 @@ export default function TodoCreateModal({
         />
 
         <Input.TextArea
+          required
           label={
             <>
               설명<span className={styles.requiredMark}> *</span>
