@@ -139,6 +139,7 @@
   text-align: center;
 }
 
+/* ===== 태블릿 ===== */
 @media (min-width: 768px) {
   .panel {
     padding: 18px;
@@ -149,8 +150,48 @@
   }
 }
 
+/* ===== PC ===== */
 @media (min-width: 1200px) {
   .panel {
     padding: 20px 24px;
   }
+}
+
+@media (max-width: 767px) {
+  .header {
+    display: none;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+    gap: 8px;
+    min-height: auto;
+    padding: 12px 10px;
+  }
+
+  .title {
+    font: var(--text-sm-semibold);
+  }
+
+  .inviter {
+    font: var(--text-xs-medium);
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .acceptButton,
+  .rejectButton {
+    min-height: 32px;
+    padding: 0 12px;
+  }
+}
+
+.acceptButton:disabled,
+.rejectButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

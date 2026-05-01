@@ -19,11 +19,15 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
     invitations,
     isLoading,
     isLoadingMore,
+    pendingInvitationId,
     error,
     hasNextPage,
     setSearchKeyword,
     loadMore,
+    acceptInvitation,
+    rejectInvitation,
   } = useReceivedInvitations();
+
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -82,23 +86,37 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
             </div>
 
             <ul className={styles.rows}>
-              {invitations.map((invitation) => (
-                <li key={invitation.id} className={styles.row}>
-                  <span className={styles.title}>{invitation.dashboard.title}</span>
-                  <span className={styles.inviter}>
-                    <Avatar name={invitation.inviter.nickname} className={styles.avatar} />
-                    {invitation.inviter.nickname}
-                  </span>
-                  <span className={styles.actions}>
-                    <button type="button" className={styles.rejectButton}>
-                      거절
-                    </button>
-                    <button type="button" className={styles.acceptButton}>
-                      수락
-                    </button>
-                  </span>
-                </li>
-              ))}
+              {invitations.map((invitation) => {
+                const isPending = pendingInvitationId === invitation.id;
+
+                return (
+                  <li key={invitation.id} className={styles.row}>
+                    <span className={styles.title}>{invitation.dashboard.title}</span>
+                    <span className={styles.inviter}>
+                      <Avatar name={invitation.inviter.nickname} className={styles.avatar} />
+                      {invitation.inviter.nickname}
+                    </span>
+                    <span className={styles.actions}>
+                      <button
+                        type="button"
+                        className={styles.rejectButton}
+                        onClick={() => rejectInvitation(invitation.id)}
+                        disabled={isPending}
+                      >
+                        {isPending ? '처리 중' : '거절'}
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.acceptButton}
+                        onClick={() => acceptInvitation(invitation.id)}
+                        disabled={isPending}
+                      >
+                        {isPending ? '처리 중' : '수락'}
+                      </button>
+                    </span>
+                  </li>
+                );
+              })}
             </ul>
 
             <div ref={sentinelRef} className={styles.sentinel}>
