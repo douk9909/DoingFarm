@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Avatar from '@/components/common/avatar/Avatar';
+import { useInvitationSearch } from '@/hooks/queries/useInvitationSearch';
 import { useReceivedInvitations } from '@/hooks/queries/useReceivedInvitations';
 import searchIcon from '@/assets/icon/ic_search.svg';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
@@ -14,19 +15,19 @@ interface InvitedDashboardListProps {
 }
 
 export default function InvitedDashboardList({ emptySection }: InvitedDashboardListProps) {
+  const { inputKeyword, searchKeyword, setInputKeyword, submitSearch } = useInvitationSearch();
+
   const {
-    searchKeyword,
     invitations,
     isLoading,
     isLoadingMore,
     pendingInvitationId,
     error,
     hasNextPage,
-    setSearchKeyword,
     loadMore,
     acceptInvitation,
     rejectInvitation,
-  } = useReceivedInvitations();
+  } = useReceivedInvitations(searchKeyword);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -63,9 +64,15 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
         <label className={styles.searchBox}>
           <Image src={searchIcon} alt="" width={18} height={18} />
           <input
-            value={searchKeyword}
+            value={inputKeyword}
             placeholder="검색"
-            onChange={(event) => setSearchKeyword(event.target.value)}
+            onChange={(event) => setInputKeyword(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                // Enter 입력 시 현재 input 값을 검색어로 확정해서 목록을 다시 불러옴
+                submitSearch();
+              }
+            }}
           />
         </label>
       </div>
@@ -76,7 +83,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
         {isLoading ? (
           <p className={styles.emptyText}>초대 목록을 불러오는 중...</p>
         ) : invitations.length === 0 ? (
-          <p className={styles.emptyText}>아직 초대받은 대시보드가 없어요</p>
+          <p className={styles.emptyText}>검색 결과가 없어요</p>
         ) : (
           <div className={styles.table}>
             <div className={styles.header}>

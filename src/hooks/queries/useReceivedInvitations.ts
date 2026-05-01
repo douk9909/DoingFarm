@@ -4,10 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 
 const INVITATION_PAGE_SIZE = 8;
-const SEARCH_DEBOUNCE_MS = 250;
 
-export function useReceivedInvitations() {
-  const [searchKeyword, setSearchKeyword] = useState('');
+export function useReceivedInvitations(searchKeyword = '') {
   const [invitations, setInvitations] = useState<DashboardInvitation[]>([]);
   const [cursorId, setCursorId] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -58,13 +56,11 @@ export function useReceivedInvitations() {
 
   useEffect(() => {
     const controller = new AbortController();
-    const timerId = window.setTimeout(() => {
-      // 검색어가 바뀌면 기존 목록 기준을 버리고 첫 페이지부터 다시 맞춤
-      void fetchFirstPageRef.current(searchKeyword, controller.signal);
-    }, SEARCH_DEBOUNCE_MS);
+
+    // 검색어가 확정되면 기존 목록 기준을 버리고 첫 페이지부터 다시 맞춤
+    void fetchFirstPageRef.current(searchKeyword, controller.signal);
 
     return () => {
-      window.clearTimeout(timerId);
       controller.abort();
     };
   }, [searchKeyword]);
@@ -104,7 +100,7 @@ export function useReceivedInvitations() {
       try {
         await dashboardApi.acceptInvitation(invitationId);
 
-        // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거함
+        // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
         removeInvitation(invitationId);
       } catch (acceptError) {
         setError(acceptError instanceof Error ? acceptError.message : '초대를 수락하지 못했어요');
@@ -125,7 +121,7 @@ export function useReceivedInvitations() {
       try {
         await dashboardApi.rejectInvitation(invitationId);
 
-        // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거함
+        // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거
         removeInvitation(invitationId);
       } catch (rejectError) {
         setError(rejectError instanceof Error ? rejectError.message : '초대를 거절하지 못했어요');
@@ -137,14 +133,12 @@ export function useReceivedInvitations() {
   );
 
   return {
-    searchKeyword,
     invitations,
     isLoading,
     isLoadingMore,
     pendingInvitationId,
     error,
     hasNextPage,
-    setSearchKeyword,
     loadMore,
     acceptInvitation,
     rejectInvitation,
