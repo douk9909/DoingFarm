@@ -4,10 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 import type { Dashboard } from '@/types/dashboard';
-import chevronLeftIcon from '@/assets/icon/ic_chevron_left.svg';
-import chevronRightIcon from '@/assets/icon/ic_chevorn_right.svg';
 import crownIcon from '@/assets/icon/ic_crown.svg';
 import plusIcon from '@/assets/icon/ic_plus3.svg';
+import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
+import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
 import EmptyDashboardPanel from './EmptyDashboardPanel';
 import styles from './MyDashboardList.module.css';
@@ -49,7 +49,6 @@ export default function MyDashboardList({
   onNextPage,
 }: MyDashboardListProps) {
   if (dashboards.length === 0) {
-    // 에러가 있어도 목록이 비어 있으면 기존 빈 상태 화면을 유지함
     return <EmptyDashboardPanel section={emptySection} />;
   }
 
@@ -63,6 +62,7 @@ export default function MyDashboardList({
             <span>
               {page} of {totalPages}
             </span>
+
             <button
               type="button"
               aria-label="이전 대시보드 페이지"
@@ -70,8 +70,9 @@ export default function MyDashboardList({
               disabled={page <= 1 || isLoading}
               onClick={onPrevPage}
             >
-              <Image src={chevronLeftIcon} alt="" width={16} height={16} />
+              <ArrowLeftIcon width={16} height={16} />
             </button>
+
             <button
               type="button"
               aria-label="다음 대시보드 페이지"
@@ -79,7 +80,7 @@ export default function MyDashboardList({
               disabled={page >= totalPages || isLoading}
               onClick={onNextPage}
             >
-              <Image src={chevronRightIcon} alt="" width={16} height={16} />
+              <ArrowRightIcon width={16} height={16} />
             </button>
           </div>
         ) : null}
@@ -99,12 +100,13 @@ export default function MyDashboardList({
             href={`/dashboard/${dashboard.id}`}
             className={styles.dashboardCard}
           >
-            {/* API에서 예전 색상 이름이 와도 같은 색상 토큰으로 맞춰서 보여줌 */}
             <span
               className={styles.dashboardColor}
               style={{ backgroundColor: LEGACY_COLOR_MAP[dashboard.color] ?? dashboard.color }}
             />
+
             <span className={styles.dashboardTitle}>{dashboard.title}</span>
+
             {dashboard.createdByMe ? (
               <Image
                 src={crownIcon}
@@ -114,7 +116,8 @@ export default function MyDashboardList({
                 className={styles.dashboardCrown}
               />
             ) : null}
-            <Image src={chevronRightIcon} alt="" width={16} height={16} />
+
+            <ArrowRightIcon width={16} height={16} />
           </Link>
         ))}
 

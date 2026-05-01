@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: center;
   width: min(100%, var(--dashboard-content-max-width));
-  margin: 0 auto;
   min-height: var(--dashboard-panel-min-height);
+  margin: 0 auto;
   padding: var(--dashboard-panel-padding);
   border: 1px solid var(--dashboard-panel-border);
   border-radius: var(--dashboard-panel-radius);

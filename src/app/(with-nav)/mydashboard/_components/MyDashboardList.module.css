@@ -31,7 +31,11 @@
   width: 30px;
   height: 30px;
   border-radius: 999px;
-  color: var(--color-gray-700);
+  color: var(--color-white);
+}
+
+.pageButton svg {
+  fill: currentColor;
 }
 
 .pageButton:disabled {
@@ -54,28 +58,52 @@
   margin: 0 auto;
 }
 
+/* 공통 카드 스타일 */
 .createDashboardCard,
 .dashboardCard {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  min-height: 54px;
-  padding: 0 16px;
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  border-radius: var(--radius-sm);
+
+  height: 80px;
+  padding: 0 20px;
+
+  border-radius: 20px;
   background-color: rgba(31, 32, 38, 0.96);
   color: var(--color-gray-800);
   font: var(--text-sm-semibold);
+
+  border: 1px solid rgba(255, 255, 255, 0.04);
+
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+
+  transition: all 0.2s ease;
+}
+
+.dashboardCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
 .createDashboardCard {
   justify-content: center;
   gap: 8px;
-  border-style: dashed;
+
+  border: 2px dashed rgba(255, 255, 255, 0.18); /* 점선 강조 */
+  background-color: rgba(31, 32, 38, 0.85);
+
+  transition: all 0.2s ease;
 }
 
-.dashboardCard {
-  gap: 8px;
+.createDashboardCard:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.35); /* 더 진하게 */
+  background-color: rgba(40, 41, 48, 0.95);
+}
+
+.dashboardCard svg {
+  flex: 0 0 auto;
+  fill: var(--color-white);
 }
 
 .dashboardColor {
@@ -109,14 +137,46 @@
 
   .createDashboardCard,
   .dashboardCard {
-    min-height: 60px;
+    height: 80px;
     padding: 0 18px;
     font: var(--text-md-semibold);
+  }
+}
+
+/* 태블릿에서는 2개만 보이게 */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .dashboardCardGrid > :nth-child(n + 3) {
+    display: none;
   }
 }
 
 @media (min-width: 1200px) {
   .dashboardCardGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    height: 80px;
+    padding: 0 24px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboardCardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .dashboardCardGrid > :nth-child(n + 3) {
+    display: none;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    height: 80px;
+    padding: 0 14px;
   }
 }
