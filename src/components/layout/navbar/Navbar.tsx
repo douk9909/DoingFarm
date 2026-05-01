@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 
 import { memberApi } from '@/lib/api/member';
 import { dashboardApi } from '@/lib/api/dashboard';
@@ -32,10 +32,10 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
 
   const pathname = usePathname();
-  const segments = pathname.split('/');
-  const dashboardId = Number(segments[2]);
+  const params = useParams();
+  const dashboardId = Number(params.dashboardId);
 
-  const isDashboardDetail = segments[1] === 'dashboard' && !isNaN(dashboardId);
+  const isDashboardDetail = !!params.dashboardId && !isNaN(dashboardId);
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
   // 멤버 정보 가져오기
@@ -113,7 +113,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
         </div>
 
         <div className={styles.rightContainer}>
-          {!isMyDashboard && (
+          {isDashboardDetail && !isMyDashboard && (
             <>
               <div className={styles.userList}>
                 {displayMembers?.map((member) => (
