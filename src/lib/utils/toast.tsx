@@ -3,20 +3,10 @@ import toast, { ToastOptions } from 'react-hot-toast';
 import ToastSuccessIcon from '@/assets/icons/ToastSuccessIcon';
 import ToastErrorIcon from '@/assets/icons/ToastErrorIcon';
 
-const baseStyle = {
-  borderRadius: '8px',
-  fontSize: '14px',
-  padding: '12px 16px',
-  display: 'flex',
-  alignItems: 'center',
-  gap: '8px',
-};
-
 const DEFAULT_OPTIONS: ToastOptions = {
   duration: 3000,
   id: 'unique-toast',
   className: 'custom-toast',
-  style: baseStyle,
 };
 
 type OpenToast = {
@@ -25,31 +15,26 @@ type OpenToast = {
   error: (message: string) => string;
 };
 
-export const showToast = ((message: string) => {
+export const showToast = ((message: string, options?: ToastOptions) => {
   return toast(message, {
     ...DEFAULT_OPTIONS,
     icon: null,
+    className: `toast ${options?.className || ''}`,
   });
 }) as OpenToast;
 
-showToast.success = (message: string) => {
+showToast.success = (message: string, options?: ToastOptions) => {
   return toast.success(message, {
     ...DEFAULT_OPTIONS,
-    icon: <ToastSuccessIcon />,
-    style: {
-      ...baseStyle,
-      background: 'rgba(60, 179, 113, 1)',
-    },
+    icon: <ToastSuccessIcon size={20} />,
+    className: `toast toast-success ${options?.className || ''}`,
   });
 };
 
-showToast.error = (message: string) => {
+showToast.error = (message: string, options?: ToastOptions) => {
   return toast.error(message, {
     ...DEFAULT_OPTIONS,
-    icon: <ToastErrorIcon />,
-    style: {
-      ...baseStyle,
-      background: 'rgba(255, 59, 48, 1)',
-    },
+    icon: <ToastErrorIcon size={20} />,
+    className: `toast toast-error ${options?.className || ''}`,
   });
 };

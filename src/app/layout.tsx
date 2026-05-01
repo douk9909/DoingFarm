@@ -16,8 +16,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko">
       <body>
-        {children}
         <Toaster position="bottom-center" />
+        {children}
       </body>
     </html>
   );
