@@ -3,40 +3,54 @@ import Input from '@/components/common/input';
 import { useState } from 'react';
 import { columnApi } from '@/lib/api/column';
 import Button from '@/components/common/button/Button';
-import styles from './AddColumnModal.module.css';
+import styles from './EditColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
 
-interface AddColumnModalProps {
+interface EditColumnModalProps {
   onClose: () => void;
-  dashboardId: number;
+  columnId: number;
+  currentTitle: string;
 }
 
-export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalProps) {
-  const [title, setTitle] = useState('');
+export default function EditColumnModal({ onClose, columnId, currentTitle }: EditColumnModalProps) {
+  const [title, setTitle] = useState(currentTitle);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const isDisabled = title.trim() === '';
 
-  const addColumn = async () => {
+  const changeTitle = async () => {
     setIsPending(true);
     try {
-      await columnApi.create({ title, dashboardId });
+      await columnApi.update(columnId, { title });
       onClose();
     } catch {
-      setError('컬럼 생성에 실패했습니다.');
+      setError('이름을 변경하는데 실패했습니다.');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const deleteColumn = async () => {
+    setIsPending(true);
+    try {
+      await columnApi.delete(columnId);
+      onClose();
+    } catch {
+      setError('컬럼 삭제에 실패했습니다');
     } finally {
       setIsPending(false);
     }
   };
 
   return (
-    <Modal contentClassName={styles.addColumnModal} title="새 컬럼 생성" onClose={onClose}>
+    <Modal contentClassName={styles.editColumnModal} title="컬럼 관리" onClose={onClose}>
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          addColumn();
+          changeTitle();
         }}
       >
         <Image
@@ -50,7 +64,6 @@ export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalP
           value={title}
           type="text"
           label="이름"
-          placeholder="컬럼 이름"
           onChange={(e) => {
             setTitle(e.target.value);
             if (error) setError('');
@@ -59,11 +72,16 @@ export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalP
           errorMsg={error}
         />
         <div className={styles.buttonWrapper}>
-          <Button type="button" onClick={onClose} className={styles.button} variant="secondary">
-            취소
+          <Button
+            type="button"
+            onClick={deleteColumn}
+            className={`${styles.button} ${styles.delete}`}
+            disabled={isPending}
+          >
+            삭제
           </Button>
           <Button disabled={isDisabled || isPending} type="submit" className={styles.button}>
-            생성
+            변경
           </Button>
         </div>
       </form>

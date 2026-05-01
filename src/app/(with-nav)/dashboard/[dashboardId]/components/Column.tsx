@@ -12,6 +12,8 @@ import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import { useFetch } from '@/hooks/queries/useFetch';
+import { useState } from 'react';
+import EditColumnModal from './EditColumnModal';
 
 export interface ColumnData {
   id: number;
@@ -36,6 +38,8 @@ const getColumnIcon = (title: string) => {
 };
 
 export default function Column({ id, title, onAddCard }: ColumnProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { data, isLoading, error } = useFetch(() =>
     cardApi.getList({ columnId: id }).then((res) => ({ data: res.data })),
   );
@@ -51,7 +55,7 @@ export default function Column({ id, title, onAddCard }: ColumnProps) {
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{data?.totalCount}</span>
         </div>
-        <button type="button" aria-label="컬럼 설정">
+        <button onClick={() => setIsModalOpen(true)} type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
         </button>
       </div>
@@ -79,6 +83,9 @@ export default function Column({ id, title, onAddCard }: ColumnProps) {
           <PlusIcon size={16} color="var(--color-gray-900)" />
         </div>
       </button>
+      {isModalOpen && (
+        <EditColumnModal columnId={id} currentTitle={title} onClose={() => setIsModalOpen(false)} />
+      )}
     </div>
   );
 }
