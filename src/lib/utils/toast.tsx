@@ -20,7 +20,7 @@ export const showToast = ((message: string, options?: ToastOptions) => {
     ...DEFAULT_OPTIONS,
     ...options,
     icon: null,
-    className: `toast ${options?.className || ''}`,
+    className: `custom-toast ${options?.className || ''}`,
   });
 }) as OpenToast;
 
@@ -29,7 +29,7 @@ showToast.success = (message: string, options?: ToastOptions) => {
     ...DEFAULT_OPTIONS,
     ...options,
     icon: <ToastSuccessIcon size={20} />,
-    className: `toast toast-success ${options?.className || ''}`,
+    className: `custom-toast toast-success ${options?.className || ''}`,
   });
 };
 
@@ -38,6 +38,6 @@ showToast.error = (message: string, options?: ToastOptions) => {
     ...DEFAULT_OPTIONS,
     ...options,
     icon: <ToastErrorIcon size={20} />,
-    className: `toast toast-error ${options?.className || ''}`,
+    className: `custom-toast toast-error ${options?.className || ''}`,
   });
 };
