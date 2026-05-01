@@ -15,8 +15,8 @@ export default function ToastErrorIcon({ size = 24, color, ...props }: ToastErro
       fill="none"
       {...props}
     >
-      <circle cx="12" cy="12" r="10" fill="none" stroke="#FFFFFF" stroke-width="2" />
-      <path d="M8 8L16 16M16 8L8 16" stroke="white" stroke-width="2.5" stroke-linecap="round" />
+      <circle cx="12" cy="12" r="10" fill="none" stroke="#FFFFFF" strokeWidth="2" />
+      <path d="M8 8L16 16M16 8L8 16" stroke="white" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }

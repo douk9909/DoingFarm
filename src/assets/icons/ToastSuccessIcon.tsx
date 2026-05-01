@@ -15,14 +15,14 @@ export default function ToastSuccessIcon({ size = 24, color, ...props }: ToastSu
       fill="none"
       {...props}
     >
-      <circle cx="12" cy="12" r="10" fill="none" stroke={color || 'white'} stroke-width="2" />
+      <circle cx="12" cy="12" r="10" fill="none" stroke={color || 'white'} strokeWidth="2" />
 
       <path
         d="M7.5 12.5L10.5 15.5L16.5 9"
         stroke={color || 'white'}
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
