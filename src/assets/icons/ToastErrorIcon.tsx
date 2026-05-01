@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface ToastErrorIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function SidebarIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function ToastErrorIcon({ size = 24, color, ...props }: ToastErrorIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
