@@ -92,7 +92,6 @@ export default function InvitationModal({ dashboardId, onClose, onInvite }: Invi
           <Button
             type="submit"
             variant="primary"
-            onClick={handleInvite}
             disabled={!inviteEmail || !!emailError || isPending}
             className={styles.modalButton}
           >
