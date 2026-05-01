@@ -10,9 +10,9 @@ const DEFAULT_OPTIONS: ToastOptions = {
 };
 
 type OpenToast = {
-  (message: string): string;
-  success: (message: string) => string;
-  error: (message: string) => string;
+  (message: string, options?: ToastOptions): string;
+  success: (message: string, options?: ToastOptions) => string;
+  error: (message: string, options?: ToastOptions) => string;
 };
 
 export const showToast = ((message: string, options?: ToastOptions) => {
