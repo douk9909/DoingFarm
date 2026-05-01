@@ -35,7 +35,9 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
         <h1 className={styles.title}>{data?.title}</h1>
       </div>
       <AddColumnButton onClick={() => setIsModalOpen(true)} />
-      {isModalOpen && <AddColumnModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
+      )}
     </header>
   );
 }
