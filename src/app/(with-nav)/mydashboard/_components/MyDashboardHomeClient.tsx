@@ -27,10 +27,11 @@ export default function MyDashboardHomeClient({
   const [dashboards, setDashboards] = useState(initialDashboards);
   const [totalCount, setTotalCount] = useState(dashboardTotalCount);
   const [page, setPage] = useState(1);
-  const [isLoadingDashboards, setIsLoadingDashboards] = useState(false);
+  const [isLoadingDashboards, setIsLoadingDashboards] = useState(true);
   const [dashboardError, setDashboardError] = useState(initialError);
   const dashboardSection = dashboardPageContent.sections[0];
   const invitedSection = dashboardPageContent.sections[1];
+
   const totalPages = useMemo(
     () => Math.max(1, Math.ceil(totalCount / dashboardPageSize)),
     [dashboardPageSize, totalCount],
@@ -63,30 +64,28 @@ export default function MyDashboardHomeClient({
   );
 
   useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      // 새로고침으로 진입했을 때 서버 초기값이 비어 있어도 클라이언트에서 최신 목록을 다시 맞춤
+      void fetchDashboardPage(1);
+    }, 0);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [fetchDashboardPage]);
+
+  useEffect(() => {
     if (dashboardListVersion === 0) return;
 
-    const refreshFirstPage = async () => {
-      try {
-        const response = await dashboardApi.getList({
-          navigationMethod: 'pagination',
-          page: 1,
-          size: dashboardPageSize,
-        });
+    const timerId = window.setTimeout(() => {
+      // 생성 모달에서 새 대시보드를 만들면 홈 목록도 첫 페이지부터 다시 맞춤
+      void fetchDashboardPage(1);
+    }, 0);
 
-        // 생성 모달에서 새 대시보드를 만들면 홈 목록도 첫 페이지부터 다시 맞춤
-        setDashboards(response.data.dashboards);
-        setTotalCount(response.data.totalCount);
-        setPage(1);
-        setDashboardError(null);
-      } catch (error) {
-        setDashboardError(
-          error instanceof Error ? error.message : '대시보드를 불러오지 못했어요',
-        );
-      }
+    return () => {
+      window.clearTimeout(timerId);
     };
-
-    void refreshFirstPage();
-  }, [dashboardListVersion, dashboardPageSize]);
+  }, [dashboardListVersion, fetchDashboardPage]);
 
   const handlePrevPage = () => {
     if (page <= 1 || isLoadingDashboards) return;
