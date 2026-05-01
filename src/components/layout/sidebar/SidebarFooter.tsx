@@ -5,7 +5,7 @@ import Image from 'next/image';
 import EditIcon from '@/assets/icons/EditIcon';
 import LogoutIcon from '@/assets/icons/LogoutIcon';
 import SettingIcon from '@/assets/icons/SettingIcon';
-import DropdownMenu from '@/components/common/dropDownMenu/DropDownMenu';
+import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
 import styles from './SidebarFooter.module.css';
 import { PATH } from '@/lib/constants/path';
 
