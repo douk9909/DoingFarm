@@ -13,13 +13,27 @@
 .content {
   position: relative;
   width: 100%;
-  max-width: 480px;
+  max-width: 480px; /* 기본 md */
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
   background-color: var(--color-black-300);
   border: 1px solid var(--color-gray-300);
   border-radius: var(--radius-xl);
   padding: 24px;
   color: var(--color-white);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28);
+}
+
+.contentSm {
+  max-width: 360px;
+}
+
+.contentMd {
+  max-width: 480px;
+}
+
+.contentLg {
+  max-width: 874px;
 }
 
 .header {

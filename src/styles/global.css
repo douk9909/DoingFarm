@@ -1,4 +1,5 @@
 @import './reset.css';
+@import 'react-datepicker/dist/react-datepicker.css';
 @import './tokens.css';
 @import './typography.css';
 
