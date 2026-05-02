@@ -1,7 +1,7 @@
 'use client';
 
 import styles from './Column.module.css';
-import Card from '@/components/common/card/Card';
+import Card, { type CardTag } from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
@@ -13,9 +13,13 @@ import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
-interface ColumnProps {
+export interface ColumnData {
   id: number;
   title: string;
+}
+
+interface ColumnProps extends ColumnData {
+  onAddCard?: () => void;
 }
 
 const getColumnIcon = (title: string) => {
@@ -49,11 +53,11 @@ export default function Column({ id, title }: ColumnProps) {
     <div className={styles.column}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
-          <Image src={getColumnIcon(title)} alt="콜럼 아이콘" width={17} height={24} />
+          <Image src={getColumnIcon(title)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{totalCount}</span>
         </div>
-        <button aria-label="컬럼 수정">
+        <button type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
         </button>
       </div>
@@ -80,7 +84,7 @@ export default function Column({ id, title }: ColumnProps) {
 
       <button aria-label="카드 추가" className={styles.addCardButton}>
         <div className={styles.iconWrapper}>
-          <PlusIcon size={16} color={'var(--color-gray-900)'} />
+          <PlusIcon size={16} color="var(--color-gray-900)" />
         </div>
       </button>
     </div>

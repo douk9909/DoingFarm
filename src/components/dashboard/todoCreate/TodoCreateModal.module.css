@@ -1,0 +1,57 @@
+.todoModal {
+  width: calc(100vw - 24px);
+  max-width: 436px;
+  max-height: calc(100dvh - 24px);
+  min-height: auto;
+  padding: 18px 14px 16px;
+  border-color: var(--color-overlay-stroke);
+  border-radius: var(--radius-xl);
+}
+
+.todoModal h2 {
+  font: var(--text-lg-16-semibold);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formInput {
+  min-height: 38px;
+  font: var(--text-sm-medium);
+}
+
+.formTextarea {
+  min-height: 88px;
+  padding: 12px 0;
+  font: var(--text-sm-medium);
+}
+
+.requiredMark {
+  color: var(--color-primary-500);
+}
+
+.selectRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.cancelButton {
+  background-color: var(--color-black-500);
+}
+
+.submitButton,
+.cancelButton {
+  min-height: 42px;
+  font: var(--text-sm-semibold);
+}
