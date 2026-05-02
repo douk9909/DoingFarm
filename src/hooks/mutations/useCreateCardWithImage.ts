@@ -16,16 +16,12 @@ export function useCreateCardWithImage({
 }: UseCreateCardWithImageProps) {
   const [isCreating, setIsCreating] = useState(false);
 
-  const createCard = async (
-    columnId: number,
-    card: CreateTodoRequest,
-    imageFile?: File | null,
-  ) => {
+  const createCard = async (columnId: number, card: CreateTodoRequest, imageFile?: File | null) => {
     const defaultAssigneeId = assignees[0]?.id;
     const assigneeUserId = card.assigneeUserId ?? defaultAssigneeId;
 
     if (!assigneeUserId) {
-      return;
+      throw new Error('담당자를 선택해주세요.');
     }
 
     try {
