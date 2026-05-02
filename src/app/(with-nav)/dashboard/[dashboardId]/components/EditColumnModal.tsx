@@ -7,6 +7,7 @@ import styles from './EditColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
 import { useColumnRefetch } from './ColumnRefetchContext';
+import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 
 interface EditColumnModalProps {
   onClose: () => void;
@@ -51,45 +52,59 @@ export default function EditColumnModal({ onClose, columnId, currentTitle }: Edi
   };
 
   return (
-    <Modal contentClassName={styles.editColumnModal} title="컬럼 관리" onClose={onClose}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          changeTitle();
-        }}
-      >
-        <Image
-          src={characterImg}
-          alt="캐릭터 이미지"
-          width={60}
-          height={72}
-          className={styles.characterImage}
-        />
-        <Input.Text
-          value={title}
-          type="text"
-          label="이름"
-          onChange={(e) => {
-            setTitle(e.target.value);
-            if (error) setError('');
-          }}
-          status={error ? 'error' : 'default'}
-          errorMsg={error}
-        />
-        <div className={styles.buttonWrapper}>
-          <Button
-            type="button"
-            onClick={deleteColumn}
-            className={`${styles.button} ${styles.delete}`}
-            disabled={isPending}
+    <>
+      {!isConfirmOpen && (
+        <Modal contentClassName={styles.editColumnModal} title="컬럼 관리" onClose={onClose}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              changeTitle();
+            }}
           >
-            삭제
-          </Button>
-          <Button disabled={isDisabled || isPending} type="submit" className={styles.button}>
-            변경
-          </Button>
-        </div>
-      </form>
-    </Modal>
+            <Image
+              src={characterImg}
+              alt="캐릭터 이미지"
+              width={60}
+              height={72}
+              className={styles.characterImage}
+            />
+            <Input.Text
+              value={title}
+              type="text"
+              label="이름"
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (error) setError('');
+              }}
+              status={error ? 'error' : 'default'}
+              errorMsg={error}
+            />
+            <div className={styles.buttonWrapper}>
+              <Button
+                type="button"
+                onClick={() => setIsConfirmOpen(true)}
+                className={`${styles.button} ${styles.delete}`}
+                disabled={isPending}
+              >
+                삭제
+              </Button>
+              <Button disabled={isDisabled || isPending} type="submit" className={styles.button}>
+                변경
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={deleteColumn}
+        title="컬럼을 삭제하시겠습니까?"
+        message="컬럼 내 모든 카드도 함께 삭제됩니다."
+        confirmText="삭제"
+        isLoading={isPending}
+      />
+    </>
   );
 }
