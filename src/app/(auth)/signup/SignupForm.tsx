@@ -102,7 +102,7 @@ export default function SignupForm() {
 
       <div className={styles.inputGroup}>
         <Input.Text
-          type="nickname"
+          type="text"
           label="닉네임"
           placeholder="닉네임을 입력해 주세요"
           status={nicknameError ? 'error' : 'default'}
