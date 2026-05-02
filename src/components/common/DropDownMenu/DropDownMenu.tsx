@@ -13,7 +13,7 @@ interface MenuItem {
   color?: string;
   label: string;
   href?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 interface DropdownMenuProps {
@@ -53,6 +53,18 @@ export default function DropdownMenu({
     };
   }, [isOpen]);
 
+  const renderItemContent = (item: MenuItem) => (
+    <>
+      {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
+      <span>{item.label}</span>
+    </>
+  );
+
+  const handleItemClick = (item: MenuItem) => {
+    item.onClick?.();
+    setIsOpen(false);
+  };
+
   return (
     <div className={styles.container} ref={menuRef}>
       <button className={styles.triggerButton} onClick={() => setIsOpen((prev) => !prev)}>
@@ -60,37 +72,32 @@ export default function DropdownMenu({
       </button>
       {isOpen && (
         <ul className={cn(styles.menuContainer, position === 'top' ? styles.top : styles.bottom)}>
-          {menuItems.map((item) =>
-            item.href ? (
-              <li key={item.id} className={styles.menuLi}>
+          {menuItems.map((item) => (
+            <li key={item.id} className={styles.menuLi}>
+              {item.href ? (
                 <Link
                   href={item.href}
                   className={styles.menuItem}
                   style={{ color: item.color }}
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => handleItemClick(item)}
                 >
-                  {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
-                  <span>{item.label}</span>
+                  {renderItemContent(item)}
                 </Link>
-              </li>
-            ) : (
-              <li key={item.id} className={styles.menuLi}>
+              ) : (
                 <button
                   type="button"
                   className={styles.menuItem}
+                  style={{ color: item.color }}
                   onClick={(e) => {
                     e.stopPropagation();
-                    item.onClick();
-                    setIsOpen(false);
+                    handleItemClick(item);
                   }}
-                  style={{ color: item.color }}
                 >
-                  {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
-                  <span>{item.label}</span>
+                  {renderItemContent(item)}
                 </button>
-              </li>
-            ),
-          )}
+              )}
+            </li>
+          ))}
         </ul>
       )}
     </div>

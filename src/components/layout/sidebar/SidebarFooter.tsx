@@ -29,7 +29,6 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
       icon: EditIcon,
       label: '프로필 변경',
       href: PATH.MY_PAGE,
-      onClick: () => router.push(PATH.MY_PAGE),
     },
     {
       id: 'logout',
