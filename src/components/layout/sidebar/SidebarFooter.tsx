@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import EditIcon from '@/assets/icons/EditIcon';
@@ -27,6 +28,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
       id: 'profile',
       icon: EditIcon,
       label: '프로필 변경',
+      href: PATH.MY_PAGE,
       onClick: () => router.push(PATH.MY_PAGE),
     },
     {
@@ -45,7 +47,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
 
   return (
     <footer className={styles.footer}>
-      <button className={styles.nameWrapper} onClick={() => router.push(PATH.MY_PAGE)}>
+      <Link href={PATH.MY_PAGE} className={styles.nameWrapper}>
         {isValidImageUrl(profileImageUrl) ? (
           <Image
             src={profileImageUrl}
@@ -58,7 +60,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
           <div className={styles.profile}>{nickname.slice(0, 2)}</div>
         )}
         <span className={styles.userName}>{nickname}</span>
-      </button>
+      </Link>
 
       <DropdownMenu trigger={trigger} menuItems={menuItems} position="top" />
     </footer>

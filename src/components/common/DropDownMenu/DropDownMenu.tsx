@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -11,6 +12,7 @@ interface MenuItem {
   icon?: React.ComponentType<{ className?: string; color?: string }>;
   color?: string;
   label: string;
+  href?: string;
   onClick: () => void;
 }
 
@@ -58,23 +60,37 @@ export default function DropdownMenu({
       </button>
       {isOpen && (
         <ul className={cn(styles.menuContainer, position === 'top' ? styles.top : styles.bottom)}>
-          {menuItems.map((item) => (
-            <li key={item.id} className={styles.menuLi}>
-              <button
-                type="button"
-                className={styles.menuItem}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  item.onClick();
-                  setIsOpen(false);
-                }}
-                style={{ color: item.color }}
-              >
-                {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
-                <span>{item.label}</span>
-              </button>
-            </li>
-          ))}
+          {menuItems.map((item) =>
+            item.href ? (
+              <li key={item.id} className={styles.menuLi}>
+                <Link
+                  href={item.href}
+                  className={styles.menuItem}
+                  style={{ color: item.color }}
+                  onClick={() => setIsOpen(false)}
+                >
+                  {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
+                  <span>{item.label}</span>
+                </Link>
+              </li>
+            ) : (
+              <li key={item.id} className={styles.menuLi}>
+                <button
+                  type="button"
+                  className={styles.menuItem}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    item.onClick();
+                    setIsOpen(false);
+                  }}
+                  style={{ color: item.color }}
+                >
+                  {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
+                  <span>{item.label}</span>
+                </button>
+              </li>
+            ),
+          )}
         </ul>
       )}
     </div>
