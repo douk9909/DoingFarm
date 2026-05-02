@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import EditIcon from '@/assets/icons/EditIcon';
@@ -8,6 +9,9 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
 import styles from './SidebarFooter.module.css';
 import { PATH } from '@/lib/constants/path';
+import { authApi } from '@/lib/api/auth';
+import { removeToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
 
 interface SideBarFooterProps {
   nickname: string;
@@ -22,22 +26,30 @@ function isValidImageUrl(url: string | null | undefined): url is string {
 export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFooterProps) {
   const router = useRouter();
 
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch {
+    } finally {
+      removeToken();
+      showToast.success('로그아웃 되었습니다.');
+      router.push(PATH.LOGIN);
+    }
+  };
+
   const menuItems = [
     {
       id: 'profile',
       icon: EditIcon,
       label: '프로필 변경',
-      onClick: () => router.push(PATH.MY_PAGE),
+      href: PATH.MY_PAGE,
     },
     {
       id: 'logout',
       icon: LogoutIcon,
       label: '로그아웃',
       color: 'var(--color-danger)',
-      onClick: () => {
-        // TODO: 로그아웃 API 호출
-        router.push(PATH.LOGIN);
-      },
+      onClick: handleLogout,
     },
   ];
 
@@ -45,7 +57,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
 
   return (
     <footer className={styles.footer}>
-      <button className={styles.nameWrapper} onClick={() => router.push(PATH.MY_PAGE)}>
+      <Link href={PATH.MY_PAGE} className={styles.nameWrapper}>
         {isValidImageUrl(profileImageUrl) ? (
           <Image
             src={profileImageUrl}
@@ -58,7 +70,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
           <div className={styles.profile}>{nickname.slice(0, 2)}</div>
         )}
         <span className={styles.userName}>{nickname}</span>
-      </button>
+      </Link>
 
       <DropdownMenu trigger={trigger} menuItems={menuItems} position="top" />
     </footer>

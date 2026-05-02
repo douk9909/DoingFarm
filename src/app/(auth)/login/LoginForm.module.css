@@ -39,7 +39,7 @@
 
 .signupLink {
   text-align: center;
-  font-size: 0.9rem;
+  font: var(--text-md-medium);
   color: var(--color-gray-600);
 }
 

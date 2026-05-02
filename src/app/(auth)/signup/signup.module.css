@@ -3,7 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url('/assets/backgroundImg/login_bg.svg');
+  background-image: url('/assets/backgroundImg/signup_bg.svg');
   background-size: cover;
   background-position: center;
 }
@@ -46,24 +46,5 @@
   .formSection {
     width: 50%;
     padding: 0 60px;
-  }
-}
-
-.characterImg {
-  display: none;
-}
-
-@media (min-width: 1200px) {
-  .characterImg {
-    display: block;
-    position: fixed;
-    pointer-events: none;
-
-    width: clamp(200px, 20vw, 397px);
-    height: auto;
-
-    bottom: clamp(420px, calc(470px + (420 - 470) * ((100vw - 1200px) / (1920 - 1200))), 470px);
-
-    left: clamp(-120px, calc(-120px + (-57.6 + 120) * ((100vw - 1200px) / (1920 - 1200))), -57.6px);
   }
 }
