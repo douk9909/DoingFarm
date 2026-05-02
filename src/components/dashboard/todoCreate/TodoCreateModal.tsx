@@ -20,14 +20,27 @@ interface TodoCreateModalProps {
   columns: TodoColumnOption[];
   assignees: TodoAssigneeOption[];
   initialColumnId: number;
+  isCreating?: boolean;
   onClose: () => void;
-  onCreate: (columnId: number, card: CreateTodoRequest) => Promise<void>;
+  onCreate: (columnId: number, card: CreateTodoRequest, imageFile?: File | null) => Promise<void>;
 }
+
+// dueDate를 API 요구 형식으로 변환
+const formatDueDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
 
 export default function TodoCreateModal({
   columns,
   assignees,
   initialColumnId,
+  isCreating = false,
   onClose,
   onCreate,
 }: TodoCreateModalProps) {
@@ -36,11 +49,11 @@ export default function TodoCreateModal({
   const [columnId, setColumnId] = useState(initialColumnId);
   const [assigneeId, setAssigneeId] = useState<number | null>(null);
   const [dueDate, setDueDate] = useState<Date | null>(null);
-  const [isCreating, setIsCreating] = useState(false);
-  const { tagInput, tags, setTagInput, addTag, removeTag } = useTodoTags();
-  const { imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
+
+  const { tagInput, tags, setTagInput, addTag, removeTag } = useTodoTags();
+  const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
 
   const selectedColumn = useMemo(
     () => columns.find((column) => column.id === columnId),
@@ -57,18 +70,8 @@ export default function TodoCreateModal({
     : -1;
 
   // 제목과 설명이 모두 들어왔을 때만 생성 버튼 활성화
-  const isSubmitDisabled = isCreating || title.trim().length === 0 || description.trim().length === 0;
-
-  // dueDate를 API 요구 형식으로 변환
-  const formatDueDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
-  };
+  const isSubmitDisabled =
+    isCreating || title.trim().length === 0 || description.trim().length === 0;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,21 +80,18 @@ export default function TodoCreateModal({
       return;
     }
 
-    try {
-      setIsCreating(true);
-
-      // 카드 렌더링에 필요한 값만 정리해서 상위로 전달
-      await onCreate(columnId, {
+    // 카드 생성에 필요한 값만 정리해서 상위로 전달
+    await onCreate(
+      columnId,
+      {
         assigneeUserId: selectedAssignee?.id ?? assignees[0]?.id ?? 0,
         title: title.trim(),
         description: description.trim(),
         dueDate: dueDate ? formatDueDate(dueDate) : '',
         tags: tags.map((tag) => tag.label),
-        imageUrl: imagePreviewUrl || undefined,
-      });
-    } finally {
-      setIsCreating(false);
-    }
+      },
+      imageFile,
+    );
   };
 
   return (
