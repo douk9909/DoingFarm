@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { DashboardInvitation } from '@/lib/api/dashboard';
 import { invitationApi } from '@/lib/api/invitations';
+import { useDashboards } from './useDashboards';
 
 const INVITATION_PAGE_SIZE = 8;
 
@@ -15,39 +16,50 @@ export function useReceivedInvitations(searchKeyword = '') {
   const [error, setError] = useState<string | null>(null);
   const hasNextPage = cursorId !== null;
 
-  const removeInvitation = useCallback((invitationId: number) => {
-    setInvitations((prevInvitations) =>
-      prevInvitations.filter((invitation) => invitation.id !== invitationId),
-    );
-  }, []);
+  const { dashboards, isLoading: isDashboardsLoading, refetchDashboards } = useDashboards();
 
-  const fetchFirstPage = useCallback(async (title: string, signal?: AbortSignal) => {
-    setIsLoading(true);
-    setError(null);
+  // 아직 응답을 하지 않은 초대 또는 이미 구성원이 된 대시보드가 아닌 경우 필터링하는 함수
+  const getFilteredInvitations = useCallback(
+    (rawList: DashboardInvitation[]) => {
+      const myDashboardIds = new Set(dashboards.map((d) => d.id));
 
-    try {
-      const response = await invitationApi.getReceivedInvitations(
-        {
-          size: INVITATION_PAGE_SIZE,
-          title: title.trim() || undefined,
-        },
-        signal,
-      );
+      return rawList.filter((inv) => !myDashboardIds.has(inv.dashboard.id));
+    },
+    [dashboards],
+  );
 
-      if (signal?.aborted) return;
+  const fetchFirstPage = useCallback(
+    async (title: string, signal?: AbortSignal) => {
+      setIsLoading(true);
+      setError(null);
 
-      setInvitations(response.data.invitations);
-      setCursorId(response.data.cursorId);
-    } catch (fetchError) {
-      if (signal?.aborted) return;
+      try {
+        const response = await invitationApi.getReceivedInvitations(
+          {
+            size: INVITATION_PAGE_SIZE,
+            title: title.trim() || undefined,
+          },
+          signal,
+        );
 
-      setError(fetchError instanceof Error ? fetchError.message : '초대 목록을 불러오지 못했어요');
-    } finally {
-      if (!signal?.aborted) {
-        setIsLoading(false);
+        if (signal?.aborted) return;
+
+        setInvitations(getFilteredInvitations(response.data.invitations));
+        setCursorId(response.data.cursorId);
+      } catch (fetchError) {
+        if (signal?.aborted) return;
+
+        setError(
+          fetchError instanceof Error ? fetchError.message : '초대 목록을 불러오지 못했어요',
+        );
+      } finally {
+        if (!signal?.aborted) {
+          setIsLoading(false);
+        }
       }
-    }
-  }, []);
+    },
+    [getFilteredInvitations],
+  );
 
   const fetchFirstPageRef = useRef(fetchFirstPage);
 
@@ -56,15 +68,16 @@ export function useReceivedInvitations(searchKeyword = '') {
   }, [fetchFirstPage]);
 
   useEffect(() => {
+    if (isDashboardsLoading) return;
     const controller = new AbortController();
 
     // 검색어가 확정되면 기존 목록 기준을 버리고 첫 페이지부터 다시 맞춤
-    void fetchFirstPageRef.current(searchKeyword, controller.signal);
+    fetchFirstPage(searchKeyword, controller.signal);
 
     return () => {
       controller.abort();
     };
-  }, [searchKeyword]);
+  }, [searchKeyword, fetchFirstPage, isDashboardsLoading]);
 
   const loadMore = useCallback(async () => {
     if (!hasNextPage || isLoadingMore) return;
@@ -80,7 +93,8 @@ export function useReceivedInvitations(searchKeyword = '') {
       });
 
       // cursor 기반이라 다음 페이지는 기존 목록 뒤에 자연스럽게 붙임
-      setInvitations((prevInvitations) => [...prevInvitations, ...response.data.invitations]);
+      const filteredNewData = getFilteredInvitations(response.data.invitations);
+      setInvitations((prev) => [...prev, ...filteredNewData]);
       setCursorId(response.data.cursorId);
     } catch (fetchError) {
       setError(
@@ -89,10 +103,10 @@ export function useReceivedInvitations(searchKeyword = '') {
     } finally {
       setIsLoadingMore(false);
     }
-  }, [cursorId, hasNextPage, isLoadingMore, searchKeyword]);
+  }, [cursorId, hasNextPage, isLoadingMore, searchKeyword, getFilteredInvitations]);
 
   const acceptInvitation = useCallback(
-    async (invitationId: number) => {
+    async (invitationId: number, dashboardId: number) => {
       if (pendingInvitationId) return;
 
       setPendingInvitationId(invitationId);
@@ -101,15 +115,16 @@ export function useReceivedInvitations(searchKeyword = '') {
       try {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: true });
 
+        await refetchDashboards();
         // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
-        removeInvitation(invitationId);
+        setInvitations((prev) => prev.filter((inv) => inv.dashboard.id !== dashboardId));
       } catch (acceptError) {
         setError(acceptError instanceof Error ? acceptError.message : '초대를 수락하지 못했어요');
       } finally {
         setPendingInvitationId(null);
       }
     },
-    [pendingInvitationId, removeInvitation],
+    [pendingInvitationId, refetchDashboards],
   );
 
   const rejectInvitation = useCallback(
@@ -123,19 +138,19 @@ export function useReceivedInvitations(searchKeyword = '') {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: false });
 
         // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거
-        removeInvitation(invitationId);
+        setInvitations((prev) => prev.filter((inv) => inv.id !== invitationId));
       } catch (rejectError) {
         setError(rejectError instanceof Error ? rejectError.message : '초대를 거절하지 못했어요');
       } finally {
         setPendingInvitationId(null);
       }
     },
-    [pendingInvitationId, removeInvitation],
+    [pendingInvitationId],
   );
 
   return {
     invitations,
-    isLoading,
+    isLoading: isLoading || isDashboardsLoading,
     isLoadingMore,
     pendingInvitationId,
     error,
