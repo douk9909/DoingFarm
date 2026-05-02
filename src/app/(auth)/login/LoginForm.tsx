@@ -11,6 +11,7 @@ import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,6 +48,7 @@ export default function LoginForm() {
         try {
           const res = await authApi.login({ email, password });
           setToken(res.data.accessToken);
+          showToast.success('환영합니다! 로그인에 성공했습니다.');
           router.push('/mydashboard');
         } catch (error) {
           const message = error instanceof Error ? error.message : '로그인에 실패했습니다.';
@@ -58,6 +60,7 @@ export default function LoginForm() {
           } else {
             setEmailError(message);
           }
+          showToast.error(message);
         }
       }}
     >

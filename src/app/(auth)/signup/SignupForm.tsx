@@ -9,11 +9,11 @@ import visibilityOn from '@/assets/icon/visibility_on.svg';
 import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
 import checkActive from '@/assets/icon/check_active.svg';
-import toast from 'react-hot-toast';
 import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -74,11 +74,12 @@ export default function SignupForm() {
         e.preventDefault();
         try {
           await authApi.signup({ email, nickname, password });
-          toast.success('가입이 완료되었습니다.');
+          showToast.success('가입이 완료되었습니다.');
           router.push('/login');
         } catch (error) {
           const message = error instanceof Error ? error.message : '회원가입에 실패했습니다.';
           setEmailError(message);
+          showToast.error(message);
         }
       }}
     >
