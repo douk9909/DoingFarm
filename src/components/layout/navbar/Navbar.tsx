@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -20,6 +21,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from './Navbar.module.css';
+import { dashboardApi } from '@/lib/api/dashboard';
 
 const MAX_VISIBLE_USERS = 5;
 
@@ -50,6 +52,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
       .getList(dashboardId, { page: 1, size: MAX_VISIBLE_USERS })
       .then((res) => ({ data: res.data }));
   });
+
 
   // 대시보드 정보 가져오기
   const { data: dashboardData, refetch: refetchDashboard } = useFetch(() => {

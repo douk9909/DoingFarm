@@ -1,5 +1,6 @@
 'use client';
 
+
 import { useState, useEffect } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 import { useMemberList } from '@/hooks/queries/useMemberList';
@@ -8,6 +9,7 @@ import { useDashboardCreateModal } from '@/components/dashboard/create/Dashboard
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
+
 import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
@@ -34,6 +36,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     fetchApi: dashboardApi.getInvitations,
     resourceName: 'invitations',
   });
+
 
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,6 +68,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     });
   };
 
+
   useEffect(() => {
     const handler = async () => {
       await fetchData();
@@ -76,6 +80,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
       window.removeEventListener('invitationUpdated', handler);
     };
   }, []);
+
 
   return (
     <>
@@ -130,6 +135,7 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           isLoading={isPending}
         />
       )}
+
       {isInviteModalOpen && (
         <InvitationModal
           dashboardId={dashboardId}

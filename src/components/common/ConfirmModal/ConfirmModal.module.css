@@ -51,6 +51,5 @@
 }
 .modalDeleteButton:hover:not(:disabled) {
   background-color: #e04a3c !important;
-
   cursor: pointer;
 }
