@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import { Toaster } from 'react-hot-toast';
 import '@/styles/global.css';
 
 export const metadata: Metadata = {
@@ -14,7 +15,10 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body>
+        <Toaster position="bottom-center" />
+        {children}
+      </body>
     </html>
   );
 }
