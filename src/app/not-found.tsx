@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import styles from './not-found.module.css';
 import Image from 'next/image';
 import notFoundCarrot from '@/assets/character/404carrot.svg';
+import Button from '@/components/common/button/Button';
 
 export default function NotFound() {
   const router = useRouter();
@@ -34,12 +35,12 @@ export default function NotFound() {
         </p>
 
         <div className={styles.buttonGroup}>
-          <Link href="/" className={styles.primaryButton}>
-            홈으로 가기
+          <Link href="/">
+            <Button variant="primary">홈으로 가기</Button>
           </Link>
-          <button type="button" className={styles.secondaryButton} onClick={() => router.back()}>
+          <Button variant="secondary" onClick={() => router.back()}>
             이전 페이지
-          </button>
+          </Button>
         </div>
       </div>
     </main>
