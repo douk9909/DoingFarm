@@ -10,9 +10,10 @@ import characterImg from '@/assets/character/carrot1.svg';
 interface AddColumnModalProps {
   onClose: () => void;
   dashboardId: number;
+  onSuccess: () => void;
 }
 
-export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalProps) {
+export default function AddColumnModal({ onClose, dashboardId, onSuccess }: AddColumnModalProps) {
   const [title, setTitle] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
@@ -23,6 +24,7 @@ export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalP
     setIsPending(true);
     try {
       await columnApi.create({ title, dashboardId });
+      onSuccess();
       onClose();
     } catch {
       setError('컬럼 생성에 실패했습니다.');

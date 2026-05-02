@@ -22,7 +22,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
-  const { data, isLoading, error } = useFetch(() =>
+  const { data, isLoading, error, refetch } = useFetch(() =>
     columnApi.getList(dashboardId).then((res) => ({ data: res.data })),
   );
 
@@ -57,7 +57,11 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
         ))}
         <AddColumnButton onClick={() => setIsModalOpen(true)} />
         {isModalOpen && (
-          <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
+          <AddColumnModal
+            dashboardId={dashboardId}
+            onClose={() => setIsModalOpen(false)}
+            onSuccess={refetch}
+          />
         )}
       </div>
 
