@@ -9,6 +9,7 @@ import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
 import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { userApi } from '@/lib/api/user';
+import { showToast } from '@/lib/utils/toast';
 import type { User } from '@/types/user';
 import styles from './page.module.css';
 
@@ -52,11 +53,11 @@ export default function MyPage() {
     if (!file) return;
 
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      alert('JPG, PNG, GIF, WEBP 형식의 이미지만 업로드할 수 있습니다.');
+      showToast.error('JPG, PNG, GIF, WEBP 형식의 이미지만 업로드할 수 있습니다.');
       return;
     }
     if (file.size > MAX_IMAGE_SIZE) {
-      alert('이미지 크기는 5MB 이하여야 합니다.');
+      showToast.error('이미지 크기는 5MB 이하여야 합니다.');
       return;
     }
 
@@ -65,7 +66,7 @@ export default function MyPage() {
       setProfileImageUrl(res.data.profileImageUrl);
       setIsImageChanged(true);
     } catch {
-      alert('이미지 업로드에 실패했습니다.');
+      showToast.error('이미지 업로드에 실패했습니다.');
     }
   };
 
@@ -88,9 +89,9 @@ export default function MyPage() {
       const res = await userApi.updateMe({ nickname, profileImageUrl });
       setUser(res.data);
       setIsImageChanged(false);
-      alert('프로필이 저장되었습니다.');
+      showToast.success('프로필이 저장되었습니다.');
     } catch (err) {
-      alert(err instanceof Error ? err.message : '저장에 실패했습니다.');
+      showToast.error(err instanceof Error ? err.message : '저장에 실패했습니다.');
     } finally {
       setIsProfileLoading(false);
     }
@@ -122,12 +123,12 @@ export default function MyPage() {
     setIsPasswordLoading(true);
     try {
       await userApi.updatePassword({ password: currentPassword, newPassword });
-      alert('비밀번호가 변경되었습니다.');
+      showToast.success('비밀번호가 변경되었습니다.');
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      alert(err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다.');
+      showToast.error(err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다.');
     } finally {
       setIsPasswordLoading(false);
     }
