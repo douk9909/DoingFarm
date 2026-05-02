@@ -11,9 +11,14 @@ import { useColumnRefetch } from './ColumnRefetchContext';
 interface AddColumnModalProps {
   onClose: () => void;
   dashboardId: number;
+  existingTitles: string[];
 }
 
-export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalProps) {
+export default function AddColumnModal({
+  onClose,
+  dashboardId,
+  existingTitles,
+}: AddColumnModalProps) {
   const [title, setTitle] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
@@ -23,6 +28,11 @@ export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalP
   const refetch = useColumnRefetch();
 
   const addColumn = async () => {
+    if (existingTitles.includes(title.trim())) {
+      setError('중복된 컬럼명입니다.');
+      return;
+    }
+
     setIsPending(true);
     try {
       await columnApi.create({ title, dashboardId });

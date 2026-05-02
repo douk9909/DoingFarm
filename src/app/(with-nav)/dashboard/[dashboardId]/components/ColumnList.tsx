@@ -58,7 +58,11 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
         ))}
         <AddColumnButton onClick={() => setIsModalOpen(true)} />
         {isModalOpen && (
-          <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
+          <AddColumnModal
+            dashboardId={dashboardId}
+            onClose={() => setIsModalOpen(false)}
+            existingTitles={columns.map((col) => col.title)}
+          />
         )}
       </div>
 
