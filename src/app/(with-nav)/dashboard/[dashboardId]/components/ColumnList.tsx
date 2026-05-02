@@ -9,6 +9,8 @@ import { columnApi } from '@/lib/api/column';
 import type { Column as ColumnType } from '@/types/column';
 import Column from './Column';
 import styles from './ColumnList.module.css';
+import AddColumnButton from './AddColumnButton';
+import AddColumnModal from './AddColumnModal';
 
 const mockAssignees = [
   { id: 1, nickname: '박주헌' },
@@ -17,6 +19,8 @@ const mockAssignees = [
 ];
 
 export default function ColumnList({ dashboardId }: { dashboardId: number }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
   const { data, isLoading, error } = useFetch(() =>
     columnApi.getList(dashboardId).then((res) => ({ data: res.data })),
@@ -42,7 +46,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
 
   return (
     <>
-      <div className={styles.columnList}>
+      <div className={`${styles.columnList} custom-scrollbar`}>
         {columns.map((column: ColumnType) => (
           <Column
             key={column.id}
@@ -51,6 +55,10 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
           />
         ))}
+        <AddColumnButton onClick={() => setIsModalOpen(true)} />
+        {isModalOpen && (
+          <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
+        )}
       </div>
 
       {selectedColumnId ? (

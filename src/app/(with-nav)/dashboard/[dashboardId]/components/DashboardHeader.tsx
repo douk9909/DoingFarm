@@ -1,20 +1,17 @@
 'use client';
 
 import styles from './DashboardHeader.module.css';
-import AddColumnButton from './AddColumnButton';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import AddColumnModal from './AddColumnModal';
+import { useEffect } from 'react';
 
 interface DashBoardHeaderProps {
   dashboardId: number;
 }
 
 export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
   const { data, isLoading, error } = useFetch(() =>
     dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
@@ -34,10 +31,6 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
         <HashTagIcon className={styles.hashTag} color={data?.color} />
         <h1 className={styles.title}>{data?.title}</h1>
       </div>
-      <AddColumnButton onClick={() => setIsModalOpen(true)} />
-      {isModalOpen && (
-        <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
-      )}
     </header>
   );
 }
