@@ -1,14 +1,15 @@
 'use client';
 
+import { useCallback } from 'react';
+import Image from 'next/image';
 import styles from './Column.module.css';
-import Card, { type CardTag } from '@/components/common/card/Card';
+import Card from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
 import PumpkinIcon from '@/assets/character/pumkin.svg';
 import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
-import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import { useState } from 'react';
@@ -31,16 +32,21 @@ const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title, index }: ColumnProps) {
+export default function Column({ id, title, index, onAddCard }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const fetchCards = useCallback(
+    (cursorId?: number) =>
+      cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
+        data: res.data.cards,
+        totalCount: res.data.totalCount,
+        nextCursorId: res.data.cursorId,
+      })),
+    [id],
+  );
   const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
     {
-      fetcher: (cursorId) =>
-        cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
-          data: res.data.cards,
-          totalCount: res.data.totalCount,
-          nextCursorId: res.data.cursorId,
-        })),
+      fetcher: fetchCards,
     },
   );
 
@@ -60,11 +66,11 @@ export default function Column({ id, title, index }: ColumnProps) {
       </div>
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
-        {items.map((card: CardType, index) => (
+        {items.map((card: CardType, cardIndex) => (
           // wrapper div로 마지막 카드 감지
           <div
             key={card.id}
-            ref={index === items.length - 1 ? lastItemRef : null}
+            ref={cardIndex === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
           >
             <Card
@@ -79,7 +85,12 @@ export default function Column({ id, title, index }: ColumnProps) {
         ))}
       </div>
 
-      <button aria-label="카드 추가" className={styles.addCardButton}>
+      <button
+        type="button"
+        aria-label="카드 추가"
+        className={styles.addCardButton}
+        onClick={onAddCard}
+      >
         <div className={styles.iconWrapper}>
           <PlusIcon size={16} color="var(--color-gray-900)" />
         </div>

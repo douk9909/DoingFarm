@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 
 import { cn } from '@/lib/utils/cn';
 
@@ -11,7 +12,8 @@ interface MenuItem {
   icon?: React.ComponentType<{ className?: string; color?: string }>;
   color?: string;
   label: string;
-  onClick: () => void;
+  href?: string;
+  onClick?: () => void;
 }
 
 interface DropdownMenuProps {
@@ -51,6 +53,18 @@ export default function DropdownMenu({
     };
   }, [isOpen]);
 
+  const renderItemContent = (item: MenuItem) => (
+    <>
+      {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
+      <span>{item.label}</span>
+    </>
+  );
+
+  const handleItemClick = (item: MenuItem) => {
+    item.onClick?.();
+    setIsOpen(false);
+  };
+
   return (
     <div className={styles.container} ref={menuRef}>
       <button className={styles.triggerButton} onClick={() => setIsOpen((prev) => !prev)}>
@@ -60,19 +74,28 @@ export default function DropdownMenu({
         <ul className={cn(styles.menuContainer, position === 'top' ? styles.top : styles.bottom)}>
           {menuItems.map((item) => (
             <li key={item.id} className={styles.menuLi}>
-              <button
-                type="button"
-                className={styles.menuItem}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  item.onClick();
-                  setIsOpen(false);
-                }}
-                style={{ color: item.color }}
-              >
-                {item.icon && <item.icon className={styles.menuIcon} color={item.color} />}
-                <span>{item.label}</span>
-              </button>
+              {item.href ? (
+                <Link
+                  href={item.href}
+                  className={styles.menuItem}
+                  style={{ color: item.color }}
+                  onClick={() => handleItemClick(item)}
+                >
+                  {renderItemContent(item)}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className={styles.menuItem}
+                  style={{ color: item.color }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleItemClick(item);
+                  }}
+                >
+                  {renderItemContent(item)}
+                </button>
+              )}
             </li>
           ))}
         </ul>
