@@ -11,9 +11,9 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import Image from 'next/image';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
-import { useFetch } from '@/hooks/queries/useFetch';
 import { useState } from 'react';
 import EditColumnModal from './EditColumnModal';
+import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
 export interface ColumnData {
   id: number;
@@ -37,14 +37,19 @@ const getColumnIcon = (title: string) => {
   }
 };
 
-export default function Column({ id, title, onAddCard }: ColumnProps) {
+export default function Column({ id, title }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { data, isLoading, error } = useFetch(() =>
-    cardApi.getList({ columnId: id }).then((res) => ({ data: res.data })),
+  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
+    {
+      fetcher: (cursorId) =>
+        cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
+          data: res.data.cards,
+          totalCount: res.data.totalCount,
+          nextCursorId: res.data.cursorId,
+        })),
+    },
   );
 
-  if (isLoading) return <div>로딩 중...</div>;
   if (error) return <div>에러: {error}</div>;
 
   return (
@@ -53,32 +58,34 @@ export default function Column({ id, title, onAddCard }: ColumnProps) {
         <div className={styles.titleWrapper}>
           <Image src={getColumnIcon(title)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
-          <span className={styles.count}>{data?.totalCount}</span>
+          <span className={styles.count}>{totalCount}</span>
         </div>
         <button onClick={() => setIsModalOpen(true)} type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
         </button>
       </div>
 
-      <div className={`${styles.cardList} custom-scrollbar`}>
-        {data?.cards.map((card: CardType) => (
-          <Card
+      <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
+        {items.map((card: CardType, index) => (
+          // wrapper div로 마지막 카드 감지
+          <div
             key={card.id}
-            id={card.id}
-            title={card.title}
-            tags={card.tags}
-            dueDate={card.dueDate}
-            assignee={card.assignee}
-            src={card.imageUrl}
-          />
+            ref={index === items.length - 1 ? lastItemRef : null}
+            className={styles.cardWrapper}
+          >
+            <Card
+              id={card.id}
+              title={card.title}
+              tags={card.tags}
+              dueDate={card.dueDate}
+              assignee={card.assignee}
+              src={card.imageUrl}
+            />
+          </div>
         ))}
       </div>
-      <button
-        type="button"
-        aria-label={`${title} 할 일 추가`}
-        className={styles.addCardButton}
-        onClick={onAddCard}
-      >
+
+      <button aria-label="카드 추가" className={styles.addCardButton}>
         <div className={styles.iconWrapper}>
           <PlusIcon size={16} color="var(--color-gray-900)" />
         </div>
