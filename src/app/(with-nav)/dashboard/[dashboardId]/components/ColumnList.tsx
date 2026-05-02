@@ -10,7 +10,7 @@ import type { Column as ColumnType } from '@/types/column';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
-import AddColumnModal from './AddColumnModal';
+import AddColumnModal from './modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
 import { showToast } from '@/lib/utils/toast';
 

@@ -6,7 +6,7 @@ import Button from '@/components/common/button/Button';
 import styles from './EditColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
-import { useColumnRefetch } from './ColumnRefetchContext';
+import { useColumnRefetch } from '../ColumnRefetchContext';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 
 interface EditColumnModalProps {

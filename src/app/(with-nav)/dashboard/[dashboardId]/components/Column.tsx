@@ -13,7 +13,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import { useState } from 'react';
-import EditColumnModal from './EditColumnModal';
+import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
 export interface ColumnData {
