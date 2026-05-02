@@ -35,7 +35,7 @@ const getColumnIcon = (title: string) => {
   }
 };
 
-export default function Column({ id, title }: ColumnProps) {
+export default function Column({ id, title, onAddCard }: ColumnProps) {
   const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
     {
       fetcher: (cursorId) =>
@@ -82,7 +82,7 @@ export default function Column({ id, title }: ColumnProps) {
         ))}
       </div>
 
-      <button aria-label="카드 추가" className={styles.addCardButton}>
+      <button aria-label="카드 추가" className={styles.addCardButton} onClick={onAddCard}>
         <div className={styles.iconWrapper}>
           <PlusIcon size={16} color="var(--color-gray-900)" />
         </div>
