@@ -81,13 +81,19 @@ export default function TodoCreateModal({
     }
 
     // 카드 생성에 필요한 값만 정리해서 상위로 전달
+    // 카드 생성에 필요한 값만 정리해서 상위로 전달
     await onCreate(
       columnId,
       {
-        assigneeUserId: selectedAssignee?.id ?? assignees[0]?.id ?? 0,
+        // 담당자가 없으면 undefined로 넘겨서 훅에서 처리하도록 함
+        assigneeUserId: selectedAssignee?.id ?? assignees[0]?.id,
+
         title: title.trim(),
         description: description.trim(),
-        dueDate: dueDate ? formatDueDate(dueDate) : '',
+
+        // dueDate가 있을 때만 포함 (빈 문자열 보내지 않음)
+        ...(dueDate ? { dueDate: formatDueDate(dueDate) } : {}),
+
         tags: tags.map((tag) => tag.label),
       },
       imageFile,
