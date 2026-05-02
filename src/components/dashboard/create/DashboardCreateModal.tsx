@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/button/Button';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
@@ -17,6 +18,7 @@ interface DashboardCreateModalProps {
 }
 
 export default function DashboardCreateModal({ onClose, onCreated }: DashboardCreateModalProps) {
+  const router = useRouter();
   const [title, setTitle] = useState('');
   const [color, setColor] = useState<DashboardColor>(DASHBOARD_COLORS[0]);
   const { createDashboard, isPending, error } = useCreateDashboard();
@@ -39,9 +41,10 @@ export default function DashboardCreateModal({ onClose, onCreated }: DashboardCr
     });
 
     if (createdDashboard) {
-      // 생성 성공 후 목록 반영은 사이드바 API 연결에서 처리
+      // 생성 성공 후 목록을 갱신하고 방금 만든 대시보드로 바로 이동
       onCreated();
       onClose();
+      router.push(`/dashboard/${createdDashboard.id}`);
     }
   };
 

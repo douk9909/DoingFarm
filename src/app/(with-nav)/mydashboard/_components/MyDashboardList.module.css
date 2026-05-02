@@ -1,0 +1,231 @@
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto var(--dashboard-section-title-margin-bottom);
+  gap: 12px;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.96);
+  font: var(--text-lg-16-bold);
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.pagination {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  margin-left: auto;
+  gap: 8px;
+  color: var(--color-white);
+  font: var(--text-xs-semibold);
+}
+
+.pageButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.95);
+  transition:
+    transform 0.18s ease,
+    background-color 0.18s ease,
+    color 0.18s ease;
+}
+
+.pageButton svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.pageButton:hover {
+  color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.pageButton:active {
+  transform: scale(0.92);
+}
+
+.pageButton:disabled {
+  cursor: not-allowed;
+  color: rgba(255, 255, 255, 0.28);
+  background-color: transparent;
+  opacity: 1;
+}
+
+.statusText {
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+  color: var(--dashboard-text-muted);
+  font: var(--text-sm-medium);
+}
+
+.dashboardCardGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+}
+
+.createDashboardCard,
+.dashboardCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 80px;
+  padding: 0 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 18px;
+  background-color: rgba(31, 32, 38, 0.96);
+  color: var(--color-gray-800);
+  font: var(--text-sm-semibold);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.createDashboardCard::after,
+.dashboardCard::after {
+  position: absolute;
+  inset: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.14);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  content: '';
+}
+
+.createDashboardCard:active::after,
+.dashboardCard:active::after {
+  width: 220%;
+  height: 220%;
+  opacity: 1;
+  transition:
+    width 0.28s ease,
+    height 0.28s ease,
+    opacity 0.45s ease;
+}
+
+.createDashboardCard:hover,
+.dashboardCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.12);
+  background-color: rgba(38, 39, 46, 0.98);
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
+}
+
+.createDashboardCard:active,
+.dashboardCard:active {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.createDashboardCard {
+  justify-content: center;
+  gap: 8px;
+  border: 2px dashed rgba(255, 255, 255, 0.28);
+  background-color: rgba(31, 32, 38, 0.86);
+}
+
+.createDashboardCard:hover {
+  border-color: rgba(255, 255, 255, 0.48);
+}
+
+.dashboardCard {
+  gap: 8px;
+}
+
+.dashboardCard svg {
+  flex: 0 0 auto;
+  fill: var(--color-white);
+  stroke: var(--color-white);
+}
+
+.dashboardColor {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.dashboardTitle {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashboardCrown {
+  flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .sectionTitle {
+    font: var(--text-xl-bold);
+  }
+
+  .dashboardCardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    height: 80px;
+    padding: 0 18px;
+    font: var(--text-md-semibold);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .dashboardCardGrid > :nth-child(n + 3) {
+    display: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .dashboardCardGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    height: 80px;
+    padding: 0 24px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 767px) {
+  .dashboardCardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .dashboardCardGrid > :nth-child(n + 3) {
+    display: none;
+  }
+
+  .createDashboardCard,
+  .dashboardCard {
+    height: 80px;
+    padding: 0 14px;
+  }
+}
