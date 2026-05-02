@@ -17,6 +17,7 @@ import { showToast } from '@/lib/utils/toast';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -130,7 +131,7 @@ export default function SignupForm() {
 
       <div className={styles.inputGroup}>
         <Input.Text
-          type={showPassword ? 'text' : 'password'}
+          type={showConfirmPassword ? 'text' : 'password'}
           label="비밀번호 확인"
           placeholder="비밀번호를 한 번 더 입력해 주세요"
           status={confirmPasswordError ? 'error' : 'default'}
@@ -139,7 +140,7 @@ export default function SignupForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           onBlur={() => validateConfirmPassword(confirmPassword)}
           rightIcon={EyeIcon}
-          onRightIconClick={() => setShowPassword((prev) => !prev)}
+          onRightIconClick={() => setShowConfirmPassword((prev) => !prev)}
         />
       </div>
 
