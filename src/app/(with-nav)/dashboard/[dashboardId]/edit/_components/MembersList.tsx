@@ -116,7 +116,7 @@ export default function MembersList({ dashboardId }: MembersListProps) {
           onConfirm={handleDeleteMember}
           title="구성원 삭제"
           message={`${targetMember.nickname} 님을 삭제하시겠습니까?`}
-          isLoading={isLoading}
+          isLoading={isPending}
         />
       )}
     </>
