@@ -1,13 +1,18 @@
 'use client';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import styles from './not-found.module.css';
 import Image from 'next/image';
 import notFoundCarrot from '@/assets/character/404carrot.svg';
 import Button from '@/components/common/button/Button';
+import { getToken } from '@/lib/utils/storage';
 
 export default function NotFound() {
   const router = useRouter();
+
+  const handleHome = () => {
+    const isLoggedIn = !!getToken();
+    router.push(isLoggedIn ? '/mydashboard' : '/');
+  };
 
   return (
     <main className={styles.container}>
@@ -35,9 +40,9 @@ export default function NotFound() {
         </p>
 
         <div className={styles.buttonGroup}>
-          <Link href="/">
-            <Button variant="primary">홈으로 가기</Button>
-          </Link>
+          <Button variant="primary" onClick={handleHome}>
+            홈으로 가기
+          </Button>
           <Button variant="secondary" onClick={() => router.back()}>
             이전 페이지
           </Button>
