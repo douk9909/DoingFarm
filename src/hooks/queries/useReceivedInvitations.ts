@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
+import type { DashboardInvitation } from '@/lib/api/dashboard';
+import { invitationApi } from '@/lib/api/invitations';
 
 const INVITATION_PAGE_SIZE = 8;
 
@@ -25,7 +26,7 @@ export function useReceivedInvitations(searchKeyword = '') {
     setError(null);
 
     try {
-      const response = await dashboardApi.getReceivedInvitations(
+      const response = await invitationApi.getReceivedInvitations(
         {
           size: INVITATION_PAGE_SIZE,
           title: title.trim() || undefined,
@@ -72,7 +73,7 @@ export function useReceivedInvitations(searchKeyword = '') {
     setError(null);
 
     try {
-      const response = await dashboardApi.getReceivedInvitations({
+      const response = await invitationApi.getReceivedInvitations({
         cursorId,
         size: INVITATION_PAGE_SIZE,
         title: searchKeyword.trim() || undefined,
@@ -98,7 +99,7 @@ export function useReceivedInvitations(searchKeyword = '') {
       setError(null);
 
       try {
-        await dashboardApi.acceptInvitation(invitationId);
+        await invitationApi.updateInvitation(invitationId, { inviteAccepted: true });
 
         // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
         removeInvitation(invitationId);
@@ -119,7 +120,7 @@ export function useReceivedInvitations(searchKeyword = '') {
       setError(null);
 
       try {
-        await dashboardApi.rejectInvitation(invitationId);
+        await invitationApi.updateInvitation(invitationId, { inviteAccepted: false });
 
         // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거
         removeInvitation(invitationId);
