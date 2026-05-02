@@ -64,6 +64,17 @@ export default function Column({ id, title, index, onAddCard }: ColumnProps) {
           <SettingIcon size={20} />
         </button>
       </div>
+      {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
+      <button
+        type="button"
+        aria-label="카드 추가"
+        className={styles.addCardButton}
+        onClick={onAddCard}
+      >
+        <div className={styles.iconWrapper}>
+          <PlusIcon size={16} color="var(--color-gray-900)" />
+        </div>
+      </button>
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
         {items.map((card: CardType, cardIndex) => (
@@ -85,16 +96,6 @@ export default function Column({ id, title, index, onAddCard }: ColumnProps) {
         ))}
       </div>
 
-      <button
-        type="button"
-        aria-label="카드 추가"
-        className={styles.addCardButton}
-        onClick={onAddCard}
-      >
-        <div className={styles.iconWrapper}>
-          <PlusIcon size={16} color="var(--color-gray-900)" />
-        </div>
-      </button>
       {isModalOpen && (
         <EditColumnModal columnId={id} currentTitle={title} onClose={() => setIsModalOpen(false)} />
       )}
