@@ -6,6 +6,7 @@ import Button from '@/components/common/button/Button';
 import styles from './EditColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
+import { useColumnRefetch } from './ColumnRefetchContext';
 
 interface EditColumnModalProps {
   onClose: () => void;
@@ -21,10 +22,13 @@ export default function EditColumnModal({ onClose, columnId, currentTitle }: Edi
 
   const isDisabled = title.trim() === '';
 
+  const refetch = useColumnRefetch();
+
   const changeTitle = async () => {
     setIsPending(true);
     try {
       await columnApi.update(columnId, { title });
+      refetch();
       onClose();
     } catch {
       setError('이름을 변경하는데 실패했습니다.');
@@ -37,6 +41,7 @@ export default function EditColumnModal({ onClose, columnId, currentTitle }: Edi
     setIsPending(true);
     try {
       await columnApi.delete(columnId);
+      refetch();
       onClose();
     } catch {
       setError('컬럼 삭제에 실패했습니다');

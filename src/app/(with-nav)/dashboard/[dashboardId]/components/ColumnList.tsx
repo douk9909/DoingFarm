@@ -11,6 +11,7 @@ import Column from './Column';
 import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
 import AddColumnModal from './AddColumnModal';
+import ColumnRefetchContext from './ColumnRefetchContext';
 
 const mockAssignees = [
   { id: 1, nickname: '박주헌' },
@@ -45,7 +46,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   if (error) return <div>에러: {error}</div>;
 
   return (
-    <>
+    <ColumnRefetchContext.Provider value={refetch}>
       <div className={`${styles.columnList} custom-scrollbar`}>
         {columns.map((column: ColumnType) => (
           <Column
@@ -57,11 +58,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
         ))}
         <AddColumnButton onClick={() => setIsModalOpen(true)} />
         {isModalOpen && (
-          <AddColumnModal
-            dashboardId={dashboardId}
-            onClose={() => setIsModalOpen(false)}
-            onSuccess={refetch}
-          />
+          <AddColumnModal dashboardId={dashboardId} onClose={() => setIsModalOpen(false)} />
         )}
       </div>
 
@@ -74,6 +71,6 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
           onCreate={handleCreateCard}
         />
       ) : null}
-    </>
+    </ColumnRefetchContext.Provider>
   );
 }

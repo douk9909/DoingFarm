@@ -6,25 +6,27 @@ import Button from '@/components/common/button/Button';
 import styles from './AddColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
+import { useColumnRefetch } from './ColumnRefetchContext';
 
 interface AddColumnModalProps {
   onClose: () => void;
   dashboardId: number;
-  onSuccess: () => void;
 }
 
-export default function AddColumnModal({ onClose, dashboardId, onSuccess }: AddColumnModalProps) {
+export default function AddColumnModal({ onClose, dashboardId }: AddColumnModalProps) {
   const [title, setTitle] = useState('');
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
 
   const isDisabled = title.trim() === '';
 
+  const refetch = useColumnRefetch();
+
   const addColumn = async () => {
     setIsPending(true);
     try {
       await columnApi.create({ title, dashboardId });
-      onSuccess();
+      refetch();
       onClose();
     } catch {
       setError('컬럼 생성에 실패했습니다.');
