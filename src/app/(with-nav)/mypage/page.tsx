@@ -6,7 +6,8 @@ import Image from 'next/image';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
 import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
-import { TextInput } from '@/components/common/input/TextInput';
+import Input from '@/components/common/input';
+import Button from '@/components/common/button/Button';
 import { userApi } from '@/lib/api/user';
 import type { User } from '@/types/user';
 import styles from './page.module.css';
@@ -183,7 +184,7 @@ export default function MyPage() {
           </div>
 
           <form className={styles.profileForm} onSubmit={handleProfileSave}>
-            <TextInput
+            <Input.Text
               label="이메일"
               id="email"
               type="email"
@@ -191,10 +192,10 @@ export default function MyPage() {
               isDisabled
               readOnly
             />
-            <TextInput
+            <Input.Text
               label="닉네임"
               id="nickname"
-              type="nickname"
+              type="text"
               value={nickname}
               status={nicknameError ? 'error' : 'default'}
               errorMsg={nicknameError}
@@ -205,13 +206,14 @@ export default function MyPage() {
               onBlur={() => validateNickname(nickname)}
               placeholder="닉네임을 입력해 주세요"
             />
-            <button
+            <Button
               type="submit"
               className={styles.submitButton}
               disabled={!isProfileValid || isProfileLoading}
+              useDisabledOpacity={false}
             >
               {isProfileLoading ? '저장 중...' : '저장'}
-            </button>
+            </Button>
           </form>
         </div>
       </section>
@@ -220,7 +222,7 @@ export default function MyPage() {
         <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
 
         <form className={styles.passwordCard} onSubmit={handlePasswordChange}>
-          <TextInput
+          <Input.Text
             label="현재 비밀번호"
             id="currentPassword"
             type={showCurrent ? 'text' : 'password'}
@@ -232,7 +234,7 @@ export default function MyPage() {
             }
             onRightIconClick={() => setShowCurrent((v) => !v)}
           />
-          <TextInput
+          <Input.Text
             label="새 비밀번호"
             id="newPassword"
             type={showNew ? 'text' : 'password'}
@@ -251,7 +253,7 @@ export default function MyPage() {
             rightIcon={showNew ? <VisibilityOnIcon size={20} /> : <VisibilityOffIcon size={20} />}
             onRightIconClick={() => setShowNew((v) => !v)}
           />
-          <TextInput
+          <Input.Text
             label="새 비밀번호 확인"
             id="confirmPassword"
             type={showConfirm ? 'text' : 'password'}
@@ -270,13 +272,14 @@ export default function MyPage() {
             }
             onRightIconClick={() => setShowConfirm((v) => !v)}
           />
-          <button
+          <Button
             type="submit"
             className={styles.submitButton}
             disabled={!isPasswordValid || isPasswordLoading}
+            useDisabledOpacity={false}
           >
             {isPasswordLoading ? '변경 중...' : '변경'}
-          </button>
+          </Button>
         </form>
       </section>
     </div>
