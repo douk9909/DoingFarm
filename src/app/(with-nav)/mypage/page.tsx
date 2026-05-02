@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
+import TrashIcon from '@/assets/icons/TrashIcon';
 import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
 import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
 import Input from '@/components/common/input';
@@ -47,6 +48,12 @@ export default function MyPage() {
       setProfileImageUrl(data.profileImageUrl ?? null);
     });
   }, []);
+
+  const handleImageDelete = () => {
+    setProfileImageUrl(null);
+    setIsImageChanged(true);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -175,6 +182,18 @@ export default function MyPage() {
                 <span className={styles.avatarPlus}>+</span>
               )}
             </button>
+            {profileImageUrl && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className={styles.avatarDeleteButton}
+                onClick={handleImageDelete}
+                aria-label="프로필 사진 삭제"
+              >
+                <TrashIcon size={20} />
+                삭제
+              </Button>
+            )}
             <input
               ref={fileInputRef}
               type="file"
