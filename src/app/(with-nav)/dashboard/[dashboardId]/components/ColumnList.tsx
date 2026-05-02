@@ -57,11 +57,12 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   return (
     <ColumnRefetchContext.Provider value={refetch}>
       <div className={`${styles.columnList} custom-scrollbar`}>
-        {columns.map((column: ColumnType) => (
+        {columns.map((column: ColumnType, index) => (
           <Column
             key={column.id}
             id={column.id}
             title={column.title}
+            index={index}
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
           />
         ))}

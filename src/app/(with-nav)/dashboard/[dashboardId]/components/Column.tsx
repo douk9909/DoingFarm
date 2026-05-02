@@ -22,22 +22,16 @@ export interface ColumnData {
 
 interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
+  index: number;
 }
 
-const getColumnIcon = (title: string) => {
-  switch (title) {
-    case 'To do':
-      return SeedTodo;
-    case 'On progress':
-      return SeedOnProgress;
-    case 'Done':
-      return CarrotDone;
-    default:
-      return PumpkinIcon;
-  }
+const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
+
+const getColumnIcon = (index: number) => {
+  return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title }: ColumnProps) {
+export default function Column({ id, title, index }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
     {
@@ -56,7 +50,7 @@ export default function Column({ id, title }: ColumnProps) {
     <div className={styles.column}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
-          <Image src={getColumnIcon(title)} alt="" width={17} height={24} aria-hidden />
+          <Image src={getColumnIcon(index)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{totalCount}</span>
         </div>
