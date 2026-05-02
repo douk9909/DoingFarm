@@ -10,7 +10,7 @@ import type { Column as ColumnType } from '@/types/column';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 
-const MEMBER_PAGE_SIZE = 50;
+const MEMBER_PAGE_SIZE = 100;
 
 export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);

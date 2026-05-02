@@ -71,7 +71,7 @@ export default function Column({ id, title, onAddCard }: ColumnProps) {
         {items.map((card: CardType, index) => (
           // wrapper div로 마지막 카드 감지
           <div
-            key={`${card.id}-${index}`}
+            key={card.id}
             ref={index === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
           >
