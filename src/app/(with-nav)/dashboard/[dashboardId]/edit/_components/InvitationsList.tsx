@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 import { useMemberList } from '@/hooks/queries/useMemberList';
 import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
@@ -8,6 +9,8 @@ import { useDashboardCreateModal } from '@/components/dashboard/create/Dashboard
 
 import Button from '@/components/common/button/Button';
 import Avatar from '@/components/common/avatar/Avatar';
+
+import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
@@ -34,6 +37,8 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     resourceName: 'invitations',
   });
 
+
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetInvitation, setTargetInvitation] = useState<DashboardInvitation | null>(null);
 
@@ -63,12 +68,26 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     });
   };
 
+
+  useEffect(() => {
+    const handler = async () => {
+      await fetchData();
+    };
+
+    window.addEventListener('invitationUpdated', handler);
+
+    return () => {
+      window.removeEventListener('invitationUpdated', handler);
+    };
+  }, []);
+
+
   return (
     <>
       <BaseSectionLayout
         title="초대 내역"
         headerButton={
-          <Button className={styles.inviteButton}>
+          <Button className={styles.inviteButton} onClick={() => setIsInviteModalOpen(true)}>
             <UserPlusIcon size={18} color="var(--color-gray-900)" />
             <span>초대</span>
           </Button>
@@ -114,6 +133,16 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
           title="초대 취소"
           message={`${targetInvitation.invitee.email} 님의 초대를 취소하시겠습니까?`}
           isLoading={isPending}
+        />
+      )}
+
+      {isInviteModalOpen && (
+        <InvitationModal
+          dashboardId={dashboardId}
+          onClose={() => setIsInviteModalOpen(false)}
+          onInvite={async () => {
+            await fetchData();
+          }}
         />
       )}
     </>

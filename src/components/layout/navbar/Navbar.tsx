@@ -1,16 +1,19 @@
 'use client';
 
-import { useEffect } from 'react';
+
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useParams } from 'next/navigation';
 
 import { memberApi } from '@/lib/api/member';
+import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
 
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
 import Avatar from '@/components/common/avatar/Avatar';
+import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 
 import characterImg from '@/assets/character/carrot1.svg';
 import SidebarIcon from '@/assets/icons/SidebarIcon';
@@ -28,14 +31,16 @@ interface NavbarProps {
 }
 
 export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSidebar }: NavbarProps) {
+  const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
+
   const pathname = usePathname();
-  const segments = pathname.split('/');
+  const params = useParams();
+  const dashboardId = Number(params.dashboardId);
 
-  const dashboardId = Number(segments[2]);
-
-  const isDashboardDetail = segments[1] === 'dashboard' && !isNaN(dashboardId);
+  const isDashboardDetail = !!params.dashboardId && !isNaN(dashboardId);
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
+  // 멤버 정보 가져오기
   const { data: membersData, refetch: refetchMembers } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
@@ -48,6 +53,8 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
       .then((res) => ({ data: res.data }));
   });
 
+
+  // 대시보드 정보 가져오기
   const { data: dashboardData, refetch: refetchDashboard } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
@@ -67,72 +74,98 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
 
     refetchMembers();
     refetchDashboard();
-  }, [isDashboardDetail]);
+  }, [isDashboardDetail, dashboardId]);
+
+  useEffect(() => {
+    const handler = async () => {
+      await refetchMembers();
+      await refetchDashboard();
+    };
+
+    window.addEventListener('invitationUpdated', handler);
+
+    return () => {
+      window.removeEventListener('invitationUpdated', handler);
+    };
+  }, []);
 
   return (
-    <header className={styles.container}>
-      <div className={styles.leftContainer}>
-        <Image
-          src={characterImg}
-          alt="캐릭터 이미지"
-          width={60}
-          height={72}
-          className={styles.characterImg}
-        />
-        <button
-          type="button"
-          aria-label="사이드바 열기"
-          aria-expanded={isMobileSidebarOpen}
-          className={cn(
-            styles.button,
-            styles.sideMenuButton,
-            isMobileSidebarOpen && styles.sideMenuButtonOpen,
-          )}
-          onClick={onOpenMobileSidebar}
-        >
-          <SidebarIcon size={24} className={styles.buttonIcon} />
-        </button>
-      </div>
+    <>
+      <header className={styles.container}>
+        <div className={styles.leftContainer}>
+          <Image
+            src={characterImg}
+            alt="캐릭터 이미지"
+            width={60}
+            height={72}
+            className={styles.characterImg}
+          />
+          <button
+            type="button"
+            aria-label="사이드바 열기"
+            aria-expanded={isMobileSidebarOpen}
+            className={cn(
+              styles.button,
+              styles.sideMenuButton,
+              isMobileSidebarOpen && styles.sideMenuButtonOpen,
+            )}
+            onClick={onOpenMobileSidebar}
+          >
+            <SidebarIcon size={24} className={styles.buttonIcon} />
+          </button>
+        </div>
 
-      <div className={styles.rightContainer}>
-        {!isMyDashboard && (
-          <>
-            <div className={styles.userList}>
-              {displayMembers?.map((member) => (
-                <Avatar
-                  key={member.userId}
-                  src={member.profileImageUrl}
-                  name={member.nickname}
-                  alt={member.nickname}
-                  className={styles.profile}
-                />
-              ))}
-              {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
-            </div>
-            <div className={styles.line}></div>
+        <div className={styles.rightContainer}>
+          {isDashboardDetail && !isMyDashboard && (
+            <>
+              <div className={styles.userList}>
+                {displayMembers?.map((member) => (
+                  <Avatar
+                    key={member.userId}
+                    src={member.profileImageUrl}
+                    name={member.nickname}
+                    alt={member.nickname}
+                    className={styles.profile}
+                  />
+                ))}
+                {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
+              </div>
+              <div className={styles.line}></div>
 
-            <div className={styles.buttonContainer}>
-              {dashboardData?.createdByMe && (
-                <Link
-                  href={`/dashboard/${dashboardId}/edit`}
-                  className={cn(styles.button, styles.textButton, styles.manageButton)}
+              <div className={styles.buttonContainer}>
+                {dashboardData?.createdByMe && (
+                  <Link
+                    href={`/dashboard/${dashboardId}/edit`}
+                    className={cn(styles.button, styles.textButton, styles.manageButton)}
+                  >
+                    <SettingIcon size={20} className={styles.buttonIcon} />
+                    <span>관리</span>
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  className={cn(styles.button, styles.textButton, styles.inviteButton)}
+                  onClick={() => setIsInviteModalOpen(true)}
                 >
-                  <SettingIcon size={20} className={styles.buttonIcon} />
-                  <span>관리</span>
-                </Link>
-              )}
-
-              <button
-                type="button"
-                className={cn(styles.button, styles.textButton, styles.inviteButton)}
-              >
-                <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
-                <span>초대</span>
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </header>
+                  <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
+                  <span>초대</span>
+                </button>
+              </div>
+            </>
+          )}
+        </div>
+      </header>
+      {isInviteModalOpen && (
+        <InvitationModal
+          dashboardId={dashboardId}
+          onClose={() => setIsInviteModalOpen(false)}
+          onInvite={async () => {
+            await refetchMembers();
+            await refetchDashboard();
+          }}
+        />
+      )}
+    </>
   );
 }
