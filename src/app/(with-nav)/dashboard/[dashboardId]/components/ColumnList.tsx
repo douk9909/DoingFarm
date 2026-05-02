@@ -12,6 +12,7 @@ import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
 import AddColumnModal from './AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
+import { showToast } from '@/lib/utils/toast';
 
 const mockAssignees = [
   { id: 1, nickname: '박주헌' },
@@ -28,6 +29,14 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   );
 
   const columns = data?.data ?? [];
+
+  const handleAddButton = () => {
+    if (columns.length >= 10) {
+      showToast.error('컬럼은 10개까지만 생성 가능합니다.');
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
   const handleOpenTodoCreateModal = (columnId: number) => {
     setSelectedColumnId(columnId);
@@ -56,7 +65,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
           />
         ))}
-        <AddColumnButton onClick={() => setIsModalOpen(true)} />
+        <AddColumnButton onClick={handleAddButton} />
         {isModalOpen && (
           <AddColumnModal
             dashboardId={dashboardId}
