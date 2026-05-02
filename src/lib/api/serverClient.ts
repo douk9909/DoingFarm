@@ -29,7 +29,8 @@ export async function serverApiRequest<T>(
   path: string,
   { params, headers, ...init }: ServerApiRequestOptions = {},
 ): Promise<T> {
-  const token = (await cookies()).get(TOKEN_KEY)?.value;
+  const cookieStore = await cookies();
+  const token = cookieStore.get(TOKEN_KEY)?.value;
 
   if (!token) {
     throw new Error('로그인이 필요합니다.');

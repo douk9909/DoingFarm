@@ -1,0 +1,309 @@
+.panel {
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+  padding: 0 14px 14px;
+  border: 1px solid var(--dashboard-panel-border);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(31, 32, 38, 0.96), rgba(25, 26, 31, 0.96)),
+    var(--dashboard-panel-bg);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: flex-start;
+  width: min(100%, var(--dashboard-content-max-width));
+  margin: 0 auto;
+  padding: 0 0 8px;
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 54px;
+  padding: 0 16px;
+  border-radius: 14px;
+  background-color: #201f23;
+  color: var(--color-gray-600);
+}
+
+.searchBox img {
+  filter: invert(69%) sepia(7%) saturate(577%) hue-rotate(213deg) brightness(91%) contrast(88%);
+}
+
+.searchBox input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background-color: transparent;
+  color: var(--color-gray-800);
+  font: var(--text-sm-medium);
+}
+
+.searchBox input::placeholder {
+  color: var(--color-gray-600);
+}
+
+.emptyText {
+  margin: 18px 0 4px;
+  color: var(--dashboard-text-muted);
+  font: var(--text-sm-medium);
+  text-align: center;
+}
+
+.table {
+  margin-top: 0;
+}
+
+.header,
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px 118px;
+  align-items: center;
+  gap: 8px;
+}
+
+.header {
+  height: 42px;
+  color: var(--color-gray-600);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.header span:nth-child(2),
+.header span:nth-child(3) {
+  justify-self: start;
+}
+
+.rows {
+  display: grid;
+}
+
+.row {
+  min-height: 64px;
+  padding: 10px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--color-gray-800);
+  font-size: 13px;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.row:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  transform: translateY(-1px);
+}
+
+.row:active {
+  background-color: rgba(255, 255, 255, 0.08);
+  transform: scale(0.99);
+}
+
+.title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.inviter {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  justify-self: start;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.avatar {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  border-color: rgba(24, 24, 30, 0.9);
+  font-size: 11px;
+  letter-spacing: -0.4px;
+}
+
+.actions {
+  display: flex;
+  justify-self: start;
+  gap: 6px;
+}
+
+.acceptButton,
+.rejectButton {
+  position: relative;
+  overflow: hidden;
+  width: 52px;
+  height: 28px;
+  border-radius: 999px;
+  color: var(--color-white);
+  font-size: 12px;
+}
+
+.acceptButton {
+  background-color: var(--color-primary-500);
+}
+
+.rejectButton {
+  background-color: var(--color-black-500);
+}
+
+.acceptButton:hover {
+  filter: brightness(1.1);
+}
+
+.rejectButton:hover {
+  filter: brightness(1.15);
+}
+
+.acceptButton::after,
+.rejectButton::after {
+  position: absolute;
+  inset: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  content: '';
+}
+
+.acceptButton:active::after,
+.rejectButton:active::after {
+  width: 220%;
+  height: 220%;
+  opacity: 1;
+  transition:
+    width 0.25s ease,
+    height 0.25s ease,
+    opacity 0.4s ease;
+}
+
+.sentinel {
+  min-height: 24px;
+  padding-top: 8px;
+  color: var(--dashboard-text-muted);
+  font: var(--text-xs-medium);
+  text-align: center;
+}
+
+.skeleton {
+  height: 52px;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.12) 37%,
+    rgba(255, 255, 255, 0.05) 63%
+  );
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.2s ease infinite;
+}
+
+.acceptButton:disabled,
+.rejectButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+@media (min-width: 768px) {
+  .panel {
+    padding: 0 18px 18px;
+    border-radius: 16px;
+  }
+
+  .toolbar {
+    justify-content: flex-end;
+  }
+
+  .searchBox {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .header,
+  .row {
+    grid-template-columns: minmax(0, 1fr) 140px 118px;
+    gap: 18px;
+  }
+
+  .header {
+    height: 42px;
+    font-size: 12px;
+  }
+
+  .row {
+    min-height: 52px;
+    padding: 0;
+    font-size: 13px;
+  }
+
+  .inviter {
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .avatar {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .actions {
+    justify-self: start;
+  }
+
+  .acceptButton,
+  .rejectButton {
+    width: 56px;
+    height: 28px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .panel {
+    padding: 0 20px 18px;
+    border-radius: 20px;
+  }
+
+  .header,
+  .row {
+    grid-template-columns: minmax(0, 1fr) 220px 128px;
+    gap: 200px;
+  }
+
+  .header {
+    font-size: 13px;
+  }
+
+  .searchBox {
+    width: 355px;
+  }
+
+  .row {
+    font-size: 14px;
+  }
+}
