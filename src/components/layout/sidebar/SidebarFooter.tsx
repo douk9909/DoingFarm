@@ -8,6 +8,9 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
 import styles from './SidebarFooter.module.css';
 import { PATH } from '@/lib/constants/path';
+import { authApi } from '@/lib/api/auth';
+import { removeToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
 
 interface SideBarFooterProps {
   nickname: string;
@@ -22,6 +25,17 @@ function isValidImageUrl(url: string | null | undefined): url is string {
 export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFooterProps) {
   const router = useRouter();
 
+  const handleLogout = async () => {
+    try {
+      await authApi.logout();
+    } catch {
+    } finally {
+      removeToken();
+      showToast.success('로그아웃 되었습니다.');
+      router.push(PATH.LOGIN);
+    }
+  };
+
   const menuItems = [
     {
       id: 'profile',
@@ -34,10 +48,7 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
       icon: LogoutIcon,
       label: '로그아웃',
       color: 'var(--color-danger)',
-      onClick: () => {
-        // TODO: 로그아웃 API 호출
-        router.push(PATH.LOGIN);
-      },
+      onClick: handleLogout,
     },
   ];
 
