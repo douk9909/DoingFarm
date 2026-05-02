@@ -1,0 +1,52 @@
+/*모달*/
+
+.characterImage {
+  position: absolute;
+  top: -68px;
+  right: 28px;
+  width: 60px;
+  height: 72px;
+  object-fit: contain;
+  pointer-events: none;
+  transform: scaleX(-1);
+}
+
+.modalProfileWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.modalTitle {
+  font: var(--text-xl-bold);
+  color: var(--color-gray-800);
+}
+
+.modalText {
+  font: var(--text-2lg-medium);
+  color: var(--color-gray-700);
+}
+
+.modalButtonWrapper {
+  margin-top: 18px;
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+.modalButton {
+  width: 100%;
+  padding: 16px 0;
+  font: var(--text-lg-16-semibold);
+}
+
+.modalDeleteButton {
+  background-color: var(--color-danger);
+  color: var(--color-white);
+}
+.modalDeleteButton:hover:not(:disabled) {
+  background-color: #e04a3c !important;
+
+  cursor: pointer;
+}

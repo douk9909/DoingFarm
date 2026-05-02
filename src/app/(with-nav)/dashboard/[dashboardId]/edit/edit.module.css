@@ -61,7 +61,12 @@
 
 /* 대시보드 title 수정 section */
 .editTitleForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
   gap: 24px;
+
   font: var(--text-lg-14-semibold);
 }
 
@@ -163,6 +168,22 @@
   border-radius: 4px;
   padding: 7px 20px;
   gap: 8px;
+}
+
+.sectionTitleWrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.inviteButton {
+  min-height: 32px;
+  display: flex;
+  gap: 6px;
+  color: var(--color-gray-900);
+  font: var(--text-lg-16-medium);
+  font: var(--text-xs-medium);
+  padding: 0 16px;
 }
 
 /* 하단 삭제 버튼 */
