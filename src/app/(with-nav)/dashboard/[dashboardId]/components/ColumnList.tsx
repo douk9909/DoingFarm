@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import TodoCreateModal from '@/components/dashboard/todoCreate/TodoCreateModal';
-import { cardApi } from '@/lib/api/card';
 import { memberApi, type Member } from '@/lib/api/member';
-import type { CreateTodoRequest } from '@/types/todo';
+import { useCreateCardWithImage } from '@/hooks/mutations/useCreateCardWithImage';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { columnApi } from '@/lib/api/column';
 import type { Column as ColumnType } from '@/types/column';
@@ -59,28 +58,14 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
     }));
   };
 
-  const handleCreateCard = async (columnId: number, card: CreateTodoRequest) => {
-    const defaultAssigneeId = assignees[0]?.id;
-
-    if (!card.assigneeUserId && !defaultAssigneeId) {
-      return;
-    }
-
-    try {
-      await cardApi.create({
-        ...card,
-        assigneeUserId: card.assigneeUserId ?? defaultAssigneeId,
-        dashboardId,
-        columnId,
-      });
-
+  const { isCreating, createCard } = useCreateCardWithImage({
+    dashboardId,
+    assignees,
+    onSuccess: (columnId) => {
       setSelectedColumnId(null);
       refreshColumn(columnId);
-    } catch (error) {
-      console.error('카드 생성 실패:', error);
-      throw error;
-    }
-  };
+    },
+  });
 
   if (isColumnLoading || isMemberLoading) return <div>로딩 중...</div>;
   if (columnError) return <div>에러: {columnError}</div>;
@@ -104,8 +89,9 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
           columns={columns.map(({ id, title }) => ({ id, title }))}
           assignees={assignees}
           initialColumnId={selectedColumnId}
+          isCreating={isCreating}
           onClose={handleCloseTodoCreateModal}
-          onCreate={handleCreateCard}
+          onCreate={createCard}
         />
       ) : null}
     </>
