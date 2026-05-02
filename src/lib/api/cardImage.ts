@@ -13,6 +13,11 @@ export const cardImageApi = {
     return apiClient.post<UploadCardImageResponse>(
       `/columns/${columnId}/card-image`,
       formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
   },
 };
