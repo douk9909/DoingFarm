@@ -12,6 +12,7 @@ import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
 import BaseSectionLayout from './BaseSectionLayout';
+import { showToast } from '@/lib/utils/toast';
 
 interface EditFormProps {
   dashboardId: number;
@@ -65,12 +66,9 @@ export default function EditForm({
       onColorUpdate(color);
       notifyDashboardCreated();
 
-      // Todo: 토스트 띄우기로 변경 완료 알림
-      alert('변경되었습니다');
+      showToast.success('변경되었습니다');
     } catch (error) {
-      // Todo: 토스트 띄우기로 오류알림
-      console.error('대시보드 정보를 수정하는 중 오류 발생:', error);
-      alert('변경에 실패했습니다. 다시 시도해주세요.');
+      showToast.error(error instanceof Error ? error.message : '대시보드 정보 수정 중 오류 발생');
     } finally {
       setIsLoading(false);
       isFetching.current = false;
