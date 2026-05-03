@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { DashboardInvitation } from '@/lib/api/dashboard';
 import { invitationApi } from '@/lib/api/invitations';
 import { useDashboards } from './useDashboards';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
 const INVITATION_PAGE_SIZE = 8;
 
@@ -16,6 +17,7 @@ export function useReceivedInvitations(searchKeyword = '') {
   const [error, setError] = useState<string | null>(null);
   const hasNextPage = cursorId !== null;
 
+  const { notifyDashboardCreated } = useDashboardCreateModal();
   const { dashboards, isLoading: isDashboardsLoading, refetchDashboards } = useDashboards();
 
   // 아직 응답을 하지 않은 초대 또는 이미 구성원이 된 대시보드가 아닌 경우 필터링하는 함수
@@ -115,7 +117,9 @@ export function useReceivedInvitations(searchKeyword = '') {
       try {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: true });
 
+        notifyDashboardCreated();
         await refetchDashboards();
+
         // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
         setInvitations((prev) => prev.filter((inv) => inv.dashboard.id !== dashboardId));
       } catch (acceptError) {
@@ -124,7 +128,7 @@ export function useReceivedInvitations(searchKeyword = '') {
         setPendingInvitationId(null);
       }
     },
-    [pendingInvitationId, refetchDashboards],
+    [pendingInvitationId, refetchDashboards, notifyDashboardCreated],
   );
 
   const rejectInvitation = useCallback(

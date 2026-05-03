@@ -107,7 +107,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
                       <button
                         type="button"
                         className={styles.rejectButton}
-                        onClick={() => rejectInvitation(invitation.id, invitation.dashboard.id)}
+                        onClick={() => rejectInvitation(invitation.id)}
                         disabled={isPending}
                       >
                         {isPending ? '처리 중' : '거절'}
