@@ -80,9 +80,16 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   });
 
   const { isEditing, updateCard } = useUpdateCardWithImage({
-    onSuccess: (columnId) => {
+    onSuccess: (nextColumnId) => {
+      const previousColumnId = editingCard?.columnId;
+
       setEditingCard(null);
-      refreshColumn(columnId);
+
+      refreshColumn(nextColumnId);
+
+      if (previousColumnId && previousColumnId !== nextColumnId) {
+        refreshColumn(previousColumnId);
+      }
     },
   });
 
