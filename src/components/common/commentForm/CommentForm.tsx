@@ -7,6 +7,7 @@ import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
 
 import styles from './CommentForm.module.css';
+import { showToast } from '@/lib/utils/toast';
 
 interface CommentFormProps {
   mode?: 'create' | 'edit';
@@ -52,14 +53,13 @@ export default function CommentForm({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    /* Todo: toast로 안내 */
-    if (content.trim() === '') return alert('댓글 내용을 입력해주세요.');
+    if (content.trim() === '') return showToast('댓글 내용을 입력해주세요');
 
     /* Todo: 댓글 등록 로직 추가 */
     onSubmit(content);
 
     /* Todo: toast로 안내 */
-    alert('댓글이 등록되었습니다.');
+    showToast.success('댓글이 등록되었습니다');
 
     if (mode === 'create') {
       setContent('');
