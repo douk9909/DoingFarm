@@ -1,8 +1,11 @@
 'use client';
 
+import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { dashboardApi } from '@/lib/api/dashboard';
+import { showToast } from '@/lib/utils/toast';
+import type { ApiError } from '@/lib/api/client';
 import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
@@ -12,7 +15,6 @@ import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
 import BaseSectionLayout from './BaseSectionLayout';
-import { showToast } from '@/lib/utils/toast';
 
 interface EditFormProps {
   dashboardId: number;
@@ -68,7 +70,10 @@ export default function EditForm({
 
       showToast.success('변경되었습니다');
     } catch (error) {
-      showToast.error(error instanceof Error ? error.message : '대시보드 정보 수정 중 오류 발생');
+      if (axios.isAxiosError<ApiError>(error) && error.response?.data?.message) {
+        showToast.error(error.response.data.message);
+      }
+      showToast.error('대시보드 수정 중 오류 발생');
     } finally {
       setIsLoading(false);
       isFetching.current = false;
