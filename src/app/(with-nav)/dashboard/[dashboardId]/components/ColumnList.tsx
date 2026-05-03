@@ -5,6 +5,7 @@ import TodoCreateModal from '@/components/dashboard/todoCreate/TodoCreateModal';
 import TodoEditModal from '@/components/dashboard/todoEdit/TodoEditModal';
 import { memberApi, type Member } from '@/lib/api/member';
 import { useCreateCardWithImage } from '@/hooks/mutations/useCreateCardWithImage';
+import { useUpdateCardWithImage } from '@/hooks/mutations/useUpdateCardWithImage';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { columnApi } from '@/lib/api/column';
 import type { Column as ColumnType } from '@/types/column';
@@ -12,7 +13,7 @@ import type { Card as CardType } from '@/types/card';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 
-const MEMBER_PAGE_SIZE = 100;
+const MEMBER_PAGE_SIZE = 50;
 
 export default function ColumnList({ dashboardId }: { dashboardId: number }) {
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
@@ -78,6 +79,13 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
     },
   });
 
+  const { isEditing, updateCard } = useUpdateCardWithImage({
+    onSuccess: (columnId) => {
+      setEditingCard(null);
+      refreshColumn(columnId);
+    },
+  });
+
   if (isColumnLoading || isMemberLoading) return <div>로딩 중...</div>;
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
@@ -112,11 +120,9 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
           card={editingCard}
           columns={columns.map(({ id, title }) => ({ id, title }))}
           assignees={assignees}
+          isEditing={isEditing}
           onClose={handleCloseTodoEditModal}
-          onEdit={async (cardId, card) => {
-            console.log('수정 테스트:', cardId, card);
-            handleCloseTodoEditModal();
-          }}
+          onEdit={updateCard}
         />
       ) : null}
     </>
