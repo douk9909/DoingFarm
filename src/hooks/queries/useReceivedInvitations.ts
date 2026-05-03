@@ -5,6 +5,7 @@ import type { DashboardInvitation } from '@/lib/api/dashboard';
 import { invitationApi } from '@/lib/api/invitations';
 import { useDashboards } from './useDashboards';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
+import { showToast } from '@/lib/utils/toast';
 
 const INVITATION_PAGE_SIZE = 8;
 
@@ -107,6 +108,7 @@ export function useReceivedInvitations(searchKeyword = '') {
     }
   }, [cursorId, hasNextPage, isLoadingMore, searchKeyword, getFilteredInvitations]);
 
+  // 초대 수락
   const acceptInvitation = useCallback(
     async (invitationId: number, dashboardId: number) => {
       if (pendingInvitationId) return;
@@ -117,13 +119,18 @@ export function useReceivedInvitations(searchKeyword = '') {
       try {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: true });
 
-        notifyDashboardCreated();
-        await refetchDashboards();
+        showToast.success('초대를 수락했습니다');
 
         // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
         setInvitations((prev) => prev.filter((inv) => inv.dashboard.id !== dashboardId));
+
+        notifyDashboardCreated();
+        void refetchDashboards();
       } catch (acceptError) {
         setError(acceptError instanceof Error ? acceptError.message : '초대를 수락하지 못했어요');
+        showToast.error(
+          acceptError instanceof Error ? acceptError.message : '초대를 수락하지 못했어요',
+        );
       } finally {
         setPendingInvitationId(null);
       }
@@ -131,6 +138,7 @@ export function useReceivedInvitations(searchKeyword = '') {
     [pendingInvitationId, refetchDashboards, notifyDashboardCreated],
   );
 
+  // 초대 거절
   const rejectInvitation = useCallback(
     async (invitationId: number) => {
       if (pendingInvitationId) return;
@@ -141,10 +149,14 @@ export function useReceivedInvitations(searchKeyword = '') {
       try {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: false });
 
+        showToast.success('초대를 거절했습니다');
         // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거
         setInvitations((prev) => prev.filter((inv) => inv.id !== invitationId));
       } catch (rejectError) {
         setError(rejectError instanceof Error ? rejectError.message : '초대를 거절하지 못했어요');
+        showToast.error(
+          rejectError instanceof Error ? rejectError.message : '초대를 거절하지 못했어요',
+        );
       } finally {
         setPendingInvitationId(null);
       }
