@@ -146,9 +146,9 @@ export default function TodoEditModal({
         assigneeUserId: assigneeId,
         title: title.trim(),
         description: description.trim(),
-        dueDate: currentDueDate,
+        ...(currentDueDate ? { dueDate: currentDueDate } : {}),
         tags: currentTags,
-        imageUrl: originImageUrl,
+        ...(originImageUrl ? { imageUrl: originImageUrl } : {}),
       },
       imageFile,
     );
