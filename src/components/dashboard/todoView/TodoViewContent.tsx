@@ -397,7 +397,6 @@ export default function TodoViewContent({
           <div className={styles.separator} />
 
           <section className={styles.commentSection}>
-            <h3 className={styles.commentSectionTitle}>댓글</h3>
             <CommentForm
               mode="create"
               currentUser={{
