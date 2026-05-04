@@ -80,6 +80,17 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     [hasMore, fetchData],
   );
 
+  const reset = useCallback(() => {
+    setItems([]);
+    setHasMore(true);
+    setIsLoading(true);
+    setError(null);
+    setTotalCount(0);
+    cursorIdRef.current = undefined;
+    isFetchingRef.current = false;
+    fetchData();
+  }, [fetchData]);
+
   return {
     items,
     isLoading,
@@ -88,5 +99,6 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     lastItemRef,
     totalCount,
     scrollContainerRef,
+    reset,
   };
 }
