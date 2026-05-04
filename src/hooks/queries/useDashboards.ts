@@ -36,6 +36,6 @@ export const useDashboards = (refreshKey = 0) => {
     error,
     lastItemRef,
     scrollContainerRef,
-    refetchDashboards: async () => reset(),
+    refetchDashboards: reset,
   };
 };
