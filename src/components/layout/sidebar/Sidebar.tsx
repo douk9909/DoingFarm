@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import { Suspense, type MouseEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './Sidebar.module.css';
@@ -6,6 +6,7 @@ import { PATH } from '@/lib/constants/path';
 import logo from '@/assets/logo/Do!ngFarm.svg';
 import DashBoardList from './DashBoardList';
 import SidebarFooter from './SidebarFooter';
+import SkeletonFooter from './SkeletonFooter';
 
 interface SidebarProps {
   isMobileOpen?: boolean;
@@ -38,7 +39,9 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
         <DashBoardList />
       </div>
 
-      <SidebarFooter />
+      <Suspense fallback={<SkeletonFooter />}>
+        <SidebarFooter />
+      </Suspense>
     </aside>
   );
 }

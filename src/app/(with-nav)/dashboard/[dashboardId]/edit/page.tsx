@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { use, useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -73,18 +73,24 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
       </Link>
 
       <div className={styles.contentWrapper}>
-        {dashboardData && (
-          <EditForm
-            dashboardId={id}
-            initialTitle={dashboardTitle}
-            initialColor={dashboardColor}
-            currentDisplayTitle={dashboardTitle}
-            onTitleUpdate={setUpdatedDashboardTitle}
-            onColorUpdate={setUpdatedDashboardColor}
-          />
-        )}
-        <MembersList dashboardId={id} />
-        <InvitationsList dashboardId={id} />
+        <Suspense fallback={<SkeletonSettingSection />}>
+          {dashboardData && (
+            <EditForm
+              dashboardId={id}
+              initialTitle={dashboardTitle}
+              initialColor={dashboardColor}
+              currentDisplayTitle={dashboardTitle}
+              onTitleUpdate={setUpdatedDashboardTitle}
+              onColorUpdate={setUpdatedDashboardColor}
+            />
+          )}
+        </Suspense>
+        <Suspense fallback={<SkeletonListSection />}>
+          <MembersList dashboardId={id} />
+        </Suspense>
+        <Suspense fallback={<SkeletonListSection />}>
+          <InvitationsList dashboardId={id} />
+        </Suspense>
         <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
