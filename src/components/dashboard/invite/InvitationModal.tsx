@@ -10,6 +10,7 @@ import Input from '@/components/common/input';
 import Modal from '@/components/common/modal/Modal';
 
 import styles from './InvitationModal.module.css';
+import { showToast } from '@/lib/utils/toast';
 
 interface InvitationModalProps {
   dashboardId: number;
@@ -40,13 +41,15 @@ export default function InvitationModal({ dashboardId, onClose, onInvite }: Invi
 
       onInvite(inviteEmail);
       setInviteEmail('');
-      // Todo: 초대 성공 시 알림 추가
-      alert('초대가 성공적으로 전송되었습니다.');
+
+      showToast.success('초대가 성공적으로 전송되었습니다.');
       window.dispatchEvent(new Event('invitationUpdated'));
 
       onClose();
     } catch (error) {
-      setEmailError('초대에 실패했습니다. 다시 시도해주세요.');
+      setEmailError(
+        error instanceof Error ? error.message : '초대에 실패했습니다. 다시 시도해주세요.',
+      );
     } finally {
       setIsPending(false);
     }

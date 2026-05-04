@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
 import Card from '@/components/common/card/Card';
@@ -12,7 +12,6 @@ import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
-import { useState } from 'react';
 import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
@@ -25,6 +24,7 @@ interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
   index: number;
   existingTitles: string[];
+  onCardClick?: (cardId: number) => void;
 }
 
 const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
@@ -33,7 +33,7 @@ const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title, index, onAddCard, existingTitles }: ColumnProps) {
+export default function Column({ id, title, index, onAddCard, existingTitles, onCardClick }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchCards = useCallback(
@@ -45,6 +45,7 @@ export default function Column({ id, title, index, onAddCard, existingTitles }: 
       })),
     [id],
   );
+
   const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
     {
       fetcher: fetchCards,
@@ -84,6 +85,7 @@ export default function Column({ id, title, index, onAddCard, existingTitles }: 
             key={card.id}
             ref={cardIndex === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
+            onClick={() => onCardClick?.(card.id)}
           >
             <Card
               id={card.id}
