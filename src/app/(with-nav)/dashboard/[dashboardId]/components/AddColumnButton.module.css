@@ -1,5 +1,8 @@
 .addButton {
+  height: 40px;
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
   padding: 6px 10px;
   gap: 6px;
@@ -17,10 +20,6 @@
 }
 
 @media (min-width: 768px) {
-  .addButton {
-    padding: 12px 18px;
-  }
-
   .buttonText {
     font: var(--text-lg-16-medium);
   }
@@ -33,7 +32,13 @@
 
 @media (min-width: 1200px) {
   .addButton {
-    padding: 14px 20px;
+    height: 56px;
+    max-width: 400px;
+    min-width: 334px;
+    width: unset;
+    flex-shrink: 0;
+    flex-grow: 1;
+    padding: 16px 14px;
   }
 
   .addIcon {
