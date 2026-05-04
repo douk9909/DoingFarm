@@ -13,9 +13,15 @@ interface EditColumnModalProps {
   onClose: () => void;
   columnId: number;
   currentTitle: string;
+  existingTitles: string[];
 }
 
-export default function EditColumnModal({ onClose, columnId, currentTitle }: EditColumnModalProps) {
+export default function EditColumnModal({
+  onClose,
+  columnId,
+  currentTitle,
+  existingTitles,
+}: EditColumnModalProps) {
   const [title, setTitle] = useState(currentTitle);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
@@ -26,6 +32,11 @@ export default function EditColumnModal({ onClose, columnId, currentTitle }: Edi
   const refetch = useColumnRefetch();
 
   const changeTitle = async () => {
+    if (existingTitles.includes(title.trim())) {
+      setError('중복된 컬럼명입니다.');
+      return;
+    }
+
     setIsPending(true);
     try {
       await columnApi.update(columnId, { title });

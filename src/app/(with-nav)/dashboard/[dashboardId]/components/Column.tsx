@@ -24,6 +24,7 @@ export interface ColumnData {
 interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
   index: number;
+  existingTitles: string[];
 }
 
 const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
@@ -32,7 +33,7 @@ const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title, index, onAddCard }: ColumnProps) {
+export default function Column({ id, title, index, onAddCard, existingTitles }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchCards = useCallback(
@@ -97,7 +98,12 @@ export default function Column({ id, title, index, onAddCard }: ColumnProps) {
       </div>
 
       {isModalOpen && (
-        <EditColumnModal columnId={id} currentTitle={title} onClose={() => setIsModalOpen(false)} />
+        <EditColumnModal
+          columnId={id}
+          currentTitle={title}
+          onClose={() => setIsModalOpen(false)}
+          existingTitles={existingTitles}
+        />
       )}
     </div>
   );

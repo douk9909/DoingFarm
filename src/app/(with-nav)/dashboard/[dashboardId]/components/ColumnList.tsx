@@ -96,6 +96,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
             title={column.title}
             index={index}
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
+            existingTitles={columns.map((col) => col.title)}
           />
         ))}
         <AddColumnButton onClick={handleAddButton} />
