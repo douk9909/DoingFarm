@@ -109,6 +109,7 @@
     padding-right: 0;
     max-height: calc(100vh - 250px);
     align-items: stretch;
+    min-height: 100px;
   }
 
   .cardWrapper {
