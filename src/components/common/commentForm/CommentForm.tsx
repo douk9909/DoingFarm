@@ -50,7 +50,7 @@ export default function CommentForm({
     adjustHeight();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (content.trim() === '') {
@@ -58,13 +58,15 @@ export default function CommentForm({
       return;
     }
 
-    onSubmit(content);
-    showToast.success(mode === 'create' ? '댓글이 등록되었습니다.' : '댓글이 수정되었습니다.');
+    try {
+      await onSubmit(content);
+      showToast.success(mode === 'create' ? '댓글이 등록되었습니다.' : '댓글이 수정되었습니다.');
 
-    if (mode === 'create') {
-      setContent('');
-      setIsExpanded(false);
-    }
+      if (mode === 'create') {
+        setContent('');
+        setIsExpanded(false);
+      }
+    } catch (error) {}
   };
 
   const handleCancel = () => {
@@ -87,12 +89,14 @@ export default function CommentForm({
   return (
     <div className={styles.container}>
       {!isExpanded && mode === 'create' ? (
-        <div className={styles.placeholderContainer}>
+        <button
+          type="button"
+          className={styles.placeholderContainer}
+          onClick={() => setIsExpanded(true)}
+        >
           <Avatar src={currentUser.src} alt={currentUser.nickname} name={currentUser.nickname} />
-          <div className={styles.placeholder} onClick={() => setIsExpanded(true)}>
-            댓글을 남겨보세요
-          </div>
-        </div>
+          <div className={styles.placeholder}>댓글을 남겨보세요</div>
+        </button>
       ) : (
         <form className={styles.commentInputContainer} onSubmit={handleSubmit}>
           <textarea
