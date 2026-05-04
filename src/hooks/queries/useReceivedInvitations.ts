@@ -169,7 +169,7 @@ export function useReceivedInvitations(searchKeyword = '') {
 
   return {
     invitations,
-    isLoading: isLoading || isDashboardsLoading,
+    isLoading: (isLoading || isDashboardsLoading) && invitations.length === 0,
     isLoadingMore,
     pendingInvitationId,
     error,
