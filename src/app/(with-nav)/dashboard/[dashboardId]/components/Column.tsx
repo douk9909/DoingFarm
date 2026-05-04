@@ -33,7 +33,14 @@ const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title, index, onAddCard, existingTitles, onCardClick }: ColumnProps) {
+export default function Column({
+  id,
+  title,
+  index,
+  onAddCard,
+  existingTitles,
+  onCardClick,
+}: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchCards = useCallback(
@@ -46,11 +53,10 @@ export default function Column({ id, title, index, onAddCard, existingTitles, on
     [id],
   );
 
-  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
-    {
+  const { items, totalCount, error, lastItemRef, scrollContainerRef } =
+    useInfiniteScroll<CardType>({
       fetcher: fetchCards,
-    },
-  );
+    });
 
   if (error) return <div>에러: {error}</div>;
 
@@ -66,6 +72,7 @@ export default function Column({ id, title, index, onAddCard, existingTitles, on
           <SettingIcon size={20} />
         </button>
       </div>
+
       {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
       <button
         type="button"
@@ -85,16 +92,21 @@ export default function Column({ id, title, index, onAddCard, existingTitles, on
             key={card.id}
             ref={cardIndex === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
-            onClick={() => onCardClick?.(card.id)}
           >
-            <Card
-              id={card.id}
-              title={card.title}
-              tags={card.tags}
-              dueDate={card.dueDate}
-              assignee={card.assignee}
-              src={card.imageUrl}
-            />
+            <button
+              type="button"
+              className={styles.cardButton}
+              onClick={() => onCardClick?.(card.id)}
+            >
+              <Card
+                id={card.id}
+                title={card.title}
+                tags={card.tags}
+                dueDate={card.dueDate}
+                assignee={card.assignee}
+                src={card.imageUrl}
+              />
+            </button>
           </div>
         ))}
       </div>

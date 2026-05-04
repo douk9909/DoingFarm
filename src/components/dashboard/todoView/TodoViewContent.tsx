@@ -27,12 +27,14 @@ import type { User } from '@/types/user';
 import styles from './TodoView.module.css';
 
 function formatDateTime(date: string | Date) {
-  return new Date(date).toLocaleString('ko-KR', {
+  const d = new Date(date);
+  return d.toLocaleString('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit',
+    timeZone: 'UTC',
   });
 }
 
@@ -189,7 +191,7 @@ function SideInfo({
       {card.dueDate && (
         <div className={styles.sideSection}>
           <span className={styles.sideLabel}>마감일</span>
-          <span className={styles.sideValue}>{formatDate(card.dueDate)}</span>
+          <span className={styles.sideValue}>{formatDateTime(card.dueDate)}</span>{' '}
         </div>
       )}
     </>
@@ -322,22 +324,6 @@ export default function TodoViewContent({
     },
   ];
 
-  const getCommentKebabItems = (commentId: number) => [
-    {
-      id: 'edit',
-      icon: EditIcon,
-      label: '수정하기',
-      onClick: () => setEditingCommentId(commentId),
-    },
-    {
-      id: 'delete',
-      icon: TrashIcon,
-      color: 'var(--color-danger)',
-      label: '삭제하기',
-      onClick: () => handleCommentDelete(commentId),
-    },
-  ];
-
   if (cardLoading || !card) {
     return (
       <div className={styles.loadingWrapper}>
@@ -434,12 +420,6 @@ export default function TodoViewContent({
                             {formatDateTime(comment.createdAt)}
                           </span>
                         </div>
-                        {isMine && !isEditing && (
-                          <DropdownMenu
-                            trigger={<MoreIcon size={16} />}
-                            menuItems={getCommentKebabItems(comment.id)}
-                          />
-                        )}
                       </div>
                       {isEditing ? (
                         <CommentForm
@@ -453,7 +433,27 @@ export default function TodoViewContent({
                           onCancel={() => setEditingCommentId(null)}
                         />
                       ) : (
-                        <p className={styles.commentText}>{comment.content}</p>
+                        <>
+                          <p className={styles.commentText}>{comment.content}</p>
+                          {isMine && (
+                            <div className={styles.commentActions}>
+                              <button
+                                type="button"
+                                className={styles.commentActionBtn}
+                                onClick={() => setEditingCommentId(comment.id)}
+                              >
+                                수정
+                              </button>
+                              <button
+                                type="button"
+                                className={styles.commentActionBtn}
+                                onClick={() => handleCommentDelete(comment.id)}
+                              >
+                                삭제
+                              </button>
+                            </div>
+                          )}
+                        </>
                       )}
                     </div>
                   </li>
