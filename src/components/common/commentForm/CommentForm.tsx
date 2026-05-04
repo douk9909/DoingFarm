@@ -53,11 +53,11 @@ export default function CommentForm({
   };
 
   // 댓글 등록
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     /* Todo: 댓글 등록 로직 추가 */
-    onSubmit(content);
+    await onSubmit(content);
 
     showToast.success('댓글이 등록되었습니다');
 

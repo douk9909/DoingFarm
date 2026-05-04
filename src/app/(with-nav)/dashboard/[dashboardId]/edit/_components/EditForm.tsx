@@ -70,10 +70,11 @@ export default function EditForm({
 
       showToast.success('변경되었습니다');
     } catch (error) {
-      if (axios.isAxiosError<ApiError>(error) && error.response?.data?.message) {
-        showToast.error(error.response.data.message);
-      }
-      showToast.error('대시보드 수정 중 오류 발생');
+      const message =
+        axios.isAxiosError<ApiError>(error) && error.response?.data?.message
+          ? error.response.data.message
+          : '대시보드 수정 중 오류 발생';
+      showToast.error(message);
     } finally {
       setIsLoading(false);
       isFetching.current = false;
