@@ -55,4 +55,8 @@
   .characterImage {
     display: block;
   }
+
+  .content {
+    padding: 0 80px;
+  }
 }

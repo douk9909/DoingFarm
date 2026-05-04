@@ -20,13 +20,21 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
+  //fetcher를 ref에 저장 — 매 렌더링마다 최신 fetcher로 갱신
+  const fetcherRef = useRef(fetcher);
+  useEffect(() => {
+    fetcherRef.current = fetcher;
+  }, [fetcher]);
+
   const fetchData = useCallback(async () => {
     if (isFetchingRef.current) return;
     isFetchingRef.current = true;
 
     setIsLoading(true);
+    setError(null);
     try {
-      const result = await fetcher(cursorIdRef.current);
+      //ref를 통해 호출 — 의존성 배열에 fetcher 안 넣어도 항상 최신
+      const result = await fetcherRef.current(cursorIdRef.current);
       setItems((prev) => [...prev, ...result.data]);
       setTotalCount((prev) => result.totalCount ?? prev);
       cursorIdRef.current = result.nextCursorId ?? undefined;
@@ -37,13 +45,13 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
       setIsLoading(false);
       isFetchingRef.current = false;
     }
-  }, [fetcher]);
+  }, []);
 
-  // 최초 1회 fetch
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  // 언마운트 시 옵저버 정리
   useEffect(() => {
     return () => {
       if (observerRef.current) {

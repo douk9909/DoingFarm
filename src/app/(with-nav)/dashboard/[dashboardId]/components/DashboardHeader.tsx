@@ -1,7 +1,6 @@
 'use client';
 
 import styles from './DashboardHeader.module.css';
-import AddColumnButton from './AddColumnButton';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
@@ -32,7 +31,6 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
         <HashTagIcon className={styles.hashTag} color={data?.color} />
         <h1 className={styles.title}>{data?.title}</h1>
       </div>
-      <AddColumnButton />
     </header>
   );
 }

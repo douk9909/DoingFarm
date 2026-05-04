@@ -16,6 +16,10 @@ import type { Card } from '@/types/card';
 import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
+import AddColumnButton from './AddColumnButton';
+import AddColumnModal from './modal/AddColumnModal';
+import ColumnRefetchContext from './ColumnRefetchContext';
+import { showToast } from '@/lib/utils/toast';
 
 const MEMBER_PAGE_SIZE = 100;
 
@@ -32,6 +36,7 @@ export default function ColumnList({
   dashboardId: number;
   dashboardTitle?: string;
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
   const [selectedCard, setSelectedCard] = useState<SelectedCard | null>(null);
   const [editingCard, setEditingCard] = useState<Card | null>(null);
@@ -47,6 +52,7 @@ export default function ColumnList({
     data: columnData,
     isLoading: isColumnLoading,
     error: columnError,
+    refetch,
   } = useFetch(() => columnApi.getList(dashboardId).then((res) => ({ data: res.data })));
 
   // 대시보드 멤버 조회
@@ -67,6 +73,7 @@ export default function ColumnList({
 
   const columns = columnData?.data ?? [];
   const todoColumns = columns.map(({ id, title }) => ({ id, title }));
+  const existingColumnTitles = columns.map((column) => column.title);
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
   // 담당자 드롭다운에 사용할 멤버 목록 변환
@@ -75,6 +82,15 @@ export default function ColumnList({
       id: member.userId,
       nickname: member.nickname,
     })) ?? [];
+
+  const handleAddButton = () => {
+    if (columns.length >= 10) {
+      showToast.error('컬럼은 10개까지만 생성 가능합니다.');
+      return;
+    }
+
+    setIsModalOpen(true);
+  };
 
   const handleOpenTodoCreateModal = (columnId: number) => {
     setSelectedColumnId(columnId);
@@ -147,17 +163,29 @@ export default function ColumnList({
   if (memberError) return <div>에러: {memberError}</div>;
 
   return (
-    <>
-      <div className={styles.columnList}>
-        {columns.map((column: ColumnType) => (
+    <ColumnRefetchContext.Provider value={refetch}>
+      <div className={`${styles.columnList} custom-scrollbar`}>
+        {columns.map((column: ColumnType, index) => (
           <Column
             key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
             id={column.id}
             title={column.title}
+            index={index}
+            existingTitles={existingColumnTitles}
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
-            onCardClick={(cardId: number) => handleCardClick(cardId, column.id, column.title)}
+            onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
           />
         ))}
+
+        <AddColumnButton onClick={handleAddButton} />
+
+        {isModalOpen && (
+          <AddColumnModal
+            dashboardId={dashboardId}
+            onClose={() => setIsModalOpen(false)}
+            existingTitles={existingColumnTitles}
+          />
+        )}
       </div>
 
       {selectedColumnId ? (
@@ -195,6 +223,6 @@ export default function ColumnList({
           onEdit={updateCard}
         />
       ) : null}
-    </>
+    </ColumnRefetchContext.Provider>
   );
 }

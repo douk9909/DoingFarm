@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
 import Card from '@/components/common/card/Card';
@@ -12,6 +12,7 @@ import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
+import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 
 export interface ColumnData {
@@ -21,23 +22,27 @@ export interface ColumnData {
 
 interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
+  index: number;
+  existingTitles: string[];
   onCardClick?: (cardId: number) => void;
 }
 
-const getColumnIcon = (title: string) => {
-  switch (title) {
-    case 'To do':
-      return SeedTodo;
-    case 'On progress':
-      return SeedOnProgress;
-    case 'Done':
-      return CarrotDone;
-    default:
-      return PumpkinIcon;
-  }
+const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
+
+const getColumnIcon = (index: number) => {
+  return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
-export default function Column({ id, title, onAddCard, onCardClick }: ColumnProps) {
+export default function Column({
+  id,
+  title,
+  index,
+  onAddCard,
+  existingTitles,
+  onCardClick,
+}: ColumnProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const fetchCards = useCallback(
     (cursorId?: number) =>
       cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
@@ -59,21 +64,33 @@ export default function Column({ id, title, onAddCard, onCardClick }: ColumnProp
     <div className={styles.column}>
       <div className={styles.header}>
         <div className={styles.titleWrapper}>
-          <Image src={getColumnIcon(title)} alt="" width={17} height={24} aria-hidden />
+          <Image src={getColumnIcon(index)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
           <span className={styles.count}>{totalCount}</span>
         </div>
-        <button type="button" aria-label="컬럼 설정">
+        <button onClick={() => setIsModalOpen(true)} type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
         </button>
       </div>
 
+      {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
+      <button
+        type="button"
+        aria-label="카드 추가"
+        className={styles.addCardButton}
+        onClick={onAddCard}
+      >
+        <div className={styles.iconWrapper}>
+          <PlusIcon size={16} color="var(--color-gray-900)" />
+        </div>
+      </button>
+
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
-        {items.map((card: CardType, index) => (
+        {items.map((card: CardType, cardIndex) => (
           // wrapper div로 마지막 카드 감지
           <div
-            key={`${card.id}-${index}`}
-            ref={index === items.length - 1 ? lastItemRef : null}
+            key={card.id}
+            ref={cardIndex === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
           >
             <button
@@ -94,16 +111,14 @@ export default function Column({ id, title, onAddCard, onCardClick }: ColumnProp
         ))}
       </div>
 
-      <button
-        type="button"
-        aria-label="카드 추가"
-        className={styles.addCardButton}
-        onClick={onAddCard}
-      >
-        <div className={styles.iconWrapper}>
-          <PlusIcon size={16} color="var(--color-gray-900)" />
-        </div>
-      </button>
+      {isModalOpen && (
+        <EditColumnModal
+          columnId={id}
+          currentTitle={title}
+          onClose={() => setIsModalOpen(false)}
+          existingTitles={existingTitles}
+        />
+      )}
     </div>
   );
 }
