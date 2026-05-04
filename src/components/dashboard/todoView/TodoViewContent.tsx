@@ -27,7 +27,7 @@ import type { User } from '@/types/user';
 import styles from './TodoView.module.css';
 
 function formatDateTime(date: string | Date) {
-  return new Date(date).toLocaleDateString('ko-KR', {
+  return new Date(date).toLocaleString('ko-KR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -274,6 +274,7 @@ export default function TodoViewContent({
       commentDispatch({ type: 'ADD', comment: res.data });
     } catch (e) {
       console.error('댓글 등록 실패', e);
+      showToast.error('댓글 등록에 실패했습니다.');
     }
   };
 
@@ -304,6 +305,7 @@ export default function TodoViewContent({
       onClose();
     } catch (e) {
       console.error('카드 삭제 실패', e);
+      showToast.error('카드 삭제에 실패했습니다.');
     } finally {
       setShowCardDeleteConfirm(false);
     }
@@ -340,6 +342,14 @@ export default function TodoViewContent({
     return (
       <div className={styles.loadingWrapper}>
         <span className={styles.loadingText}>불러오는 중...</span>
+      </div>
+    );
+  }
+
+  if (!card) {
+    return (
+      <div className={styles.loadingWrapper}>
+        <span className={styles.loadingText}>데이터를 불러오지 못했습니다.</span>
       </div>
     );
   }

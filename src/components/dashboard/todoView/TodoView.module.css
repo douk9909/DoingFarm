@@ -377,7 +377,7 @@
 
 .sideLabel {
   font: var(--text-lg-14-semibold);
-  color: var(---color-gray-700);
+  color: var(--color-gray-700);
 }
 
 .sideValue {
