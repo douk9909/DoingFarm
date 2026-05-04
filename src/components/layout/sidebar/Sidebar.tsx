@@ -12,16 +12,6 @@ interface SidebarProps {
   onCloseMobile?: () => void;
 }
 
-// Mock 유저
-const mockUser = {
-  id: 0,
-  email: 'text@gmail.com',
-  nickname: '박민영',
-  profileImageUrl: 'string',
-  createdAt: '2026-04-23T11:56:44.104Z',
-  updatedAt: '2026-04-23T11:56:44.104Z',
-};
-
 export default function Sidebar({ isMobileOpen = false, onCloseMobile }: SidebarProps) {
   // 링크 클릭 닫힘
   const handleClickCapture = (event: MouseEvent<HTMLElement>) => {
@@ -48,7 +38,7 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
         <DashBoardList />
       </div>
 
-      <SidebarFooter nickname={mockUser.nickname} profileImageUrl={mockUser.profileImageUrl} />
+      <SidebarFooter />
     </aside>
   );
 }
