@@ -4,6 +4,9 @@ import myboard from '@/assets/backgroundImg/myboard.svg';
 import styles from './page.module.css';
 import DashBoardHeader from './components/DashboardHeader';
 import ColumnList from './components/ColumnList';
+import { Suspense } from 'react';
+import SkeletonDashboardHeader from './components/Skeleton/SkeletonDashboardHeader';
+import SkeletonColumnList from './components/Skeleton/SkeletonColumnList';
 
 interface DashboardDetailPageProps {
   params: Promise<{
@@ -24,8 +27,12 @@ export default async function DashboardDetailPage({ params }: DashboardDetailPag
       </div>
 
       <div className={styles.content}>
-        <DashBoardHeader dashboardId={id} />
-        <ColumnList dashboardId={id} />
+        <Suspense fallback={<SkeletonDashboardHeader />}>
+          <DashBoardHeader dashboardId={id} />
+        </Suspense>
+        <Suspense fallback={<SkeletonColumnList />}>
+          <ColumnList dashboardId={id} />
+        </Suspense>
       </div>
     </section>
   );
