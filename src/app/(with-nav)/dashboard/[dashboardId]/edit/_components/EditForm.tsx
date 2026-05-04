@@ -15,6 +15,7 @@ import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
 import BaseSectionLayout from './BaseSectionLayout';
+import SkeletonSettingSection from './SkeletonSettingSection';
 
 interface EditFormProps {
   dashboardId: number;
@@ -80,6 +81,10 @@ export default function EditForm({
       isFetching.current = false;
     }
   };
+
+  if (isLoading) {
+    return <SkeletonSettingSection />;
+  }
 
   return (
     <BaseSectionLayout title={currentDisplayTitle}>

@@ -15,6 +15,8 @@ import DeleteDashboardButton from './_components/DeleteDashboardButton';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 
 import styles from './edit.module.css';
+import SkeletonSettingSection from './_components/SkeletonSettingSection';
+import SkeletonListSection from './_components/SkeletonListSection';
 
 interface DashboardEditPageProps {
   params: Promise<{
@@ -38,8 +40,22 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const dashboardTitle = updatedDashboardTitle ?? dashboardData?.title ?? '';
   const dashboardColor = updatedDashboardColor ?? dashboardData?.color ?? '';
 
-  // Todo: 로딩 컴포넌트 추가
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.prevButton}>
+          <ArrowLeftIcon size={20} />
+          <span>돌아가기</span>
+        </div>
+        <div className={styles.contentWrapper}>
+          <SkeletonSettingSection />
+          <SkeletonListSection />
+          <SkeletonListSection />
+          <div className={styles.skeletonDeleteButton} />
+        </div>
+      </div>
+    );
+  }
 
   if (error || !dashboardData) {
     router.push('/not-found');
@@ -52,6 +68,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
         <ArrowLeftIcon size={20} />
         <span>돌아가기</span>
       </Link>
+
       <div className={styles.contentWrapper}>
         {dashboardData && (
           <EditForm

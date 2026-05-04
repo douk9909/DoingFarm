@@ -204,6 +204,12 @@
   opacity: 0.8;
 }
 
+.skeletonDeleteButton {
+  width: 320px;
+  padding: 16px 76px;
+  background-color: #444444;
+}
+
 @media (min-width: 768px) {
   .container {
     padding: 20px;

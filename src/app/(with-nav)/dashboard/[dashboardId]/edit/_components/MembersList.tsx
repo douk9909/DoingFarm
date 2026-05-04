@@ -16,6 +16,7 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import CrownIcon from '@/assets/icons/CrownIcon';
 
 import styles from '../edit.module.css';
+import SkeletonListSection from './SkeletonListSection';
 
 interface MembersListProps {
   dashboardId: number;
@@ -71,6 +72,10 @@ export default function MembersList({ dashboardId }: MembersListProps) {
       },
     });
   };
+
+  if (isLoading && members.length === 0) {
+    return <SkeletonListSection />;
+  }
 
   return (
     <>
