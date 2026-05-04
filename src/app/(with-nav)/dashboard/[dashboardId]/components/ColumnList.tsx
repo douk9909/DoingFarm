@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
 import TodoEdit from '@/components/dashboard/todoEdit/TodoEdit';
 import TodoView from '@/components/dashboard/todoView/TodoView';
 import { apiClient } from '@/lib/api/client';
+import { cardApi } from '@/lib/api/card';
 import { dashboardApi } from '@/lib/api/dashboard';
 import { memberApi, type Member } from '@/lib/api/member';
 import { useCreateCardWithImage } from '@/hooks/mutations/useCreateCardWithImage';
@@ -22,11 +23,17 @@ import ColumnRefetchContext from './ColumnRefetchContext';
 import { showToast } from '@/lib/utils/toast';
 
 const MEMBER_PAGE_SIZE = 100;
+const CARD_CACHE_SIZE = 1000;
 
 interface SelectedCard {
   cardId: number;
   columnId: number;
   columnTitle: string;
+}
+
+interface CardTitleCacheItem {
+  id: number;
+  title: string;
 }
 
 export default function ColumnList({
@@ -41,6 +48,8 @@ export default function ColumnList({
   const [selectedCard, setSelectedCard] = useState<SelectedCard | null>(null);
   const [editingCard, setEditingCard] = useState<Card | null>(null);
   const [refreshKeyByColumnId, setRefreshKeyByColumnId] = useState<Record<number, number>>({});
+  const [cardTitleCache, setCardTitleCache] = useState<CardTitleCacheItem[]>([]);
+  const [isTitleCacheReady, setIsTitleCacheReady] = useState(false);
 
   // 대시보드 정보 조회
   const { data: dashboardData } = useFetch(() =>
@@ -71,9 +80,19 @@ export default function ColumnList({
     apiClient.get<User>('/users/me').then((res) => ({ data: res.data })),
   );
 
-  const columns = columnData?.data ?? [];
-  const todoColumns = columns.map(({ id, title }) => ({ id, title }));
-  const existingColumnTitles = columns.map((column) => column.title);
+  // ❗ columns를 useMemo로 감싸서 불필요한 리렌더 방지
+  const columns = useMemo(() => columnData?.data ?? [], [columnData]);
+
+  const todoColumns = useMemo(
+    () => columns.map(({ id, title }) => ({ id, title })),
+    [columns],
+  );
+
+  const existingColumnTitles = useMemo(
+    () => columns.map((column) => column.title),
+    [columns],
+  );
+
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
   // 담당자 드롭다운에 사용할 멤버 목록 변환
@@ -82,6 +101,56 @@ export default function ColumnList({
       id: member.userId,
       nickname: member.nickname,
     })) ?? [];
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const fetchCardTitleCache = async () => {
+      if (todoColumns.length === 0) {
+        setCardTitleCache([]);
+        setIsTitleCacheReady(true);
+        return;
+      }
+
+      setIsTitleCacheReady(false);
+
+      try {
+        const responses = await Promise.all(
+          todoColumns.map((column) =>
+            cardApi.getList({
+              columnId: column.id,
+              size: CARD_CACHE_SIZE,
+            }),
+          ),
+        );
+
+        if (isCancelled) return;
+
+        const nextCardTitleCache = responses.flatMap((res) =>
+          res.data.cards.map((card) => ({
+            id: card.id,
+            title: card.title,
+          })),
+        );
+
+        setCardTitleCache(nextCardTitleCache);
+        setIsTitleCacheReady(true);
+      } catch (error) {
+        console.error('카드 제목 캐시 조회 실패:', error);
+
+        if (isCancelled) return;
+
+        setCardTitleCache([]);
+        setIsTitleCacheReady(true);
+      }
+    };
+
+    void fetchCardTitleCache();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [todoColumns]);
 
   const handleAddButton = () => {
     if (columns.length >= 10) {
@@ -125,30 +194,63 @@ export default function ColumnList({
     }));
   };
 
-  const handleCardDeleted = (_cardId: number) => {
+  const handleCardDeleted = (cardId: number) => {
     if (selectedCard) {
       refreshColumn(selectedCard.columnId);
     }
 
+    setCardTitleCache((prev) => prev.filter((card) => card.id !== cardId));
     setSelectedCard(null);
   };
 
   const { isCreating, createCard } = useCreateCardWithImage({
     dashboardId,
     assignees,
-    columns: todoColumns,
-    onSuccess: (columnId) => {
+    existingCardTitles: cardTitleCache,
+    isTitleCacheReady,
+    onSuccess: (columnId, createdCard) => {
       setSelectedColumnId(null);
+      setCardTitleCache((prev) => [
+        ...prev,
+        {
+          id: createdCard.id,
+          title: createdCard.title,
+        },
+      ]);
       refreshColumn(columnId);
     },
   });
 
   const { isEditing, updateCard } = useUpdateCardWithImage({
-    columns: todoColumns,
-    onSuccess: (nextColumnId) => {
+    existingCardTitles: cardTitleCache,
+    isTitleCacheReady,
+    onSuccess: (nextColumnId, updatedCard) => {
       const previousColumnId = editingCard?.columnId;
 
       setEditingCard(null);
+
+      setCardTitleCache((prev) => {
+        const hasCachedCard = prev.some((card) => card.id === updatedCard.id);
+
+        if (!hasCachedCard) {
+          return [
+            ...prev,
+            {
+              id: updatedCard.id,
+              title: updatedCard.title,
+            },
+          ];
+        }
+
+        return prev.map((card) =>
+          card.id === updatedCard.id
+            ? {
+                id: updatedCard.id,
+                title: updatedCard.title,
+              }
+            : card,
+        );
+      });
 
       refreshColumn(nextColumnId);
 
