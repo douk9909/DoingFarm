@@ -12,19 +12,36 @@ import { PATH } from '@/lib/constants/path';
 import { authApi } from '@/lib/api/auth';
 import { removeToken } from '@/lib/utils/storage';
 import { showToast } from '@/lib/utils/toast';
-
-interface SideBarFooterProps {
-  nickname: string;
-  profileImageUrl: string | null;
-}
+import { useState, useEffect } from 'react';
+import { userApi } from '@/lib/api/user';
+import type { User } from '@/types/user';
 
 function isValidImageUrl(url: string | null | undefined): url is string {
   if (!url) return false;
   return url.startsWith('/') || url.startsWith('http://') || url.startsWith('https://');
 }
 
-export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFooterProps) {
+export default function SidebarFooter() {
   const router = useRouter();
+
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const res = await userApi.getMe();
+        setUser(res.data);
+      } catch (error) {
+        console.error('유저 정보를 불러오지 못했습니다.', error);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -55,21 +72,37 @@ export default function SidebarFooter({ nickname, profileImageUrl }: SideBarFoot
 
   const trigger = <SettingIcon size={20} />;
 
+  if (isLoading) {
+    return (
+      <footer className={styles.footer}>
+        <span className={styles.userName}>로딩 중...</span>
+      </footer>
+    );
+  }
+
+  if (!user) {
+    return (
+      <footer className={styles.footer}>
+        <span className={styles.userName}>로그인이 필요합니다.</span>
+      </footer>
+    );
+  }
+
   return (
     <footer className={styles.footer}>
       <Link href={PATH.MY_PAGE} className={styles.nameWrapper}>
-        {isValidImageUrl(profileImageUrl) ? (
+        {isValidImageUrl(user.profileImageUrl) ? (
           <Image
-            src={profileImageUrl}
-            alt={nickname}
+            src={user.profileImageUrl}
+            alt={user.nickname}
             width={30}
             height={30}
             className={styles.profileImg}
           />
         ) : (
-          <div className={styles.profile}>{nickname.slice(0, 2)}</div>
+          <div className={styles.profile}>{user.nickname.slice(0, 2)}</div>
         )}
-        <span className={styles.userName}>{nickname}</span>
+        <span className={styles.userName}>{user.nickname}</span>
       </Link>
 
       <DropdownMenu trigger={trigger} menuItems={menuItems} position="top" />
