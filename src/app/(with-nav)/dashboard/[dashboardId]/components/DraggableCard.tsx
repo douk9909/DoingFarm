@@ -23,6 +23,14 @@ export default function DraggableCard({ card, onClick }: DraggableCardProps) {
     mouseDownTimeRef.current = Date.now();
   };
 
+  const handlePointerUp = () => {
+    const elapsed = Date.now() - mouseDownTimeRef.current;
+    console.log('elapsed:', elapsed);
+    if (elapsed < 200) {
+      onClick?.();
+    }
+  };
+
   const style = {
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.5 : 1,
@@ -30,7 +38,14 @@ export default function DraggableCard({ card, onClick }: DraggableCardProps) {
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes} onClick={onClick}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      onMouseDown={handleMouseDown}
+      onPointerUp={handlePointerUp}
+      {...listeners}
+    >
       <Card
         id={card.id}
         title={card.title}
