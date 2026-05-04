@@ -206,7 +206,8 @@
 
 .skeletonDeleteButton {
   width: 320px;
-  padding: 16px 76px;
+  height: 55px;
+  border-radius: var(--radius-sm);
   background-color: #444444;
 }
 

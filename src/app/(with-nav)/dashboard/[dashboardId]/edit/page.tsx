@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -40,13 +40,19 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const dashboardTitle = updatedDashboardTitle ?? dashboardData?.title ?? '';
   const dashboardColor = updatedDashboardColor ?? dashboardData?.color ?? '';
 
+  useEffect(() => {
+    if (!isLoading && (error || !dashboardData)) {
+      router.push('/not-found');
+    }
+  }, [isLoading, error, dashboardData, router]);
+
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <div className={styles.prevButton}>
+        <Link href={`/dashboard/${dashboardId}`} className={styles.prevButton}>
           <ArrowLeftIcon size={20} />
           <span>돌아가기</span>
-        </div>
+        </Link>
         <div className={styles.contentWrapper}>
           <SkeletonSettingSection />
           <SkeletonListSection />
@@ -57,10 +63,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
     );
   }
 
-  if (error || !dashboardData) {
-    router.push('/not-found');
-    return null;
-  }
+  if (error || !dashboardData) return null;
 
   return (
     <section className={styles.container}>
