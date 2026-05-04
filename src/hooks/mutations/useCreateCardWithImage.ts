@@ -1,17 +1,30 @@
 import { useState } from 'react';
 import { cardApi } from '@/lib/api/card';
 import { cardImageApi } from '@/lib/api/cardImage';
+import { showToast } from '@/lib/utils/toast';
+import type { Card } from '@/types/card';
 import type { CreateTodoRequest, TodoAssigneeOption } from '@/types/todo';
+
+interface CardTitleCacheItem {
+  id: number;
+  title: string;
+}
 
 interface UseCreateCardWithImageProps {
   dashboardId: number;
   assignees: TodoAssigneeOption[];
-  onSuccess?: (columnId: number) => void;
+  existingCardTitles: CardTitleCacheItem[];
+  isTitleCacheReady: boolean;
+  onSuccess?: (columnId: number, createdCard: Card) => void;
 }
+
+const normalizeTitle = (title: string) => title.trim().toLowerCase();
 
 export function useCreateCardWithImage({
   dashboardId,
   assignees,
+  existingCardTitles,
+  isTitleCacheReady,
   onSuccess,
 }: UseCreateCardWithImageProps) {
   const [isCreating, setIsCreating] = useState(false);
@@ -21,11 +34,27 @@ export function useCreateCardWithImage({
     const assigneeUserId = card.assigneeUserId ?? defaultAssigneeId;
 
     if (!assigneeUserId) {
-      throw new Error('담당자를 선택해주세요.');
+      showToast.error('담당자를 선택해주세요.');
+      return;
+    }
+
+    if (!isTitleCacheReady) {
+      showToast.error('할 일 목록을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+      return;
     }
 
     try {
       setIsCreating(true);
+
+      const normalizedTitle = normalizeTitle(card.title);
+      const isDuplicate = existingCardTitles.some(
+        (item) => normalizeTitle(item.title) === normalizedTitle,
+      );
+
+      if (isDuplicate) {
+        showToast.error('이미 같은 제목의 할 일이 있습니다.');
+        return;
+      }
 
       let imageUrl = card.imageUrl;
 
@@ -35,7 +64,7 @@ export function useCreateCardWithImage({
         imageUrl = res.data.imageUrl;
       }
 
-      await cardApi.create({
+      const res = await cardApi.create({
         ...card,
         assigneeUserId,
         dashboardId,
@@ -43,10 +72,11 @@ export function useCreateCardWithImage({
         imageUrl,
       });
 
-      onSuccess?.(columnId);
+      showToast.success('할 일이 생성되었습니다.');
+      onSuccess?.(columnId, res.data);
     } catch (error) {
       console.error('카드 생성 실패:', error);
-      throw error;
+      showToast.error('카드 생성에 실패했습니다.');
     } finally {
       setIsCreating(false);
     }

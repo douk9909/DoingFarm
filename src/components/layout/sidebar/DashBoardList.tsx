@@ -15,7 +15,8 @@ export default function DashBoardList() {
   const isHomeActive = pathName === PATH.MY_DASHBOARD;
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
   // 생성 모달에서 version을 올리면 목록을 다시 불러옴
-  const { dashboards, isLoading, error } = useDashboards(dashboardListVersion);
+  const { dashboards, isLoading, error, lastItemRef, scrollContainerRef } =
+    useDashboards(dashboardListVersion);
 
   return (
     <div className={styles.sideMenu}>
@@ -33,22 +34,23 @@ export default function DashBoardList() {
         </Link>
       </section>
 
-      <section className={styles.menus}>
+      <div ref={scrollContainerRef} className={`${styles.menus} custom-scrollbar`}>
         {isLoading ? <p className={styles.statusText}>대시보드를 불러오는 중</p> : null}
         {error ? <p className={styles.statusText}>{error}</p> : null}
         {!isLoading && !error && dashboards.length === 0 ? (
           <p className={styles.statusText}>대시보드가 없습니다</p>
         ) : null}
-        {dashboards.map((dashboard) => (
-          <DashBoardItem
-            key={dashboard.id}
-            id={dashboard.id}
-            title={dashboard.title}
-            color={dashboard.color}
-            createdByMe={dashboard.createdByMe}
-          />
+        {dashboards.map((dashboard, index) => (
+          <div key={dashboard.id} ref={index === dashboards.length - 1 ? lastItemRef : null}>
+            <DashBoardItem
+              id={dashboard.id}
+              title={dashboard.title}
+              color={dashboard.color}
+              createdByMe={dashboard.createdByMe}
+            />
+          </div>
         ))}
-      </section>
+      </div>
     </div>
   );
 }
