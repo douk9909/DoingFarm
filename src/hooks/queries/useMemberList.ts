@@ -1,7 +1,10 @@
 'use client';
 
+import axios from 'axios';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { usePagination } from '@/hooks/queries/usePagination';
+import type { ApiError } from '@/lib/api/client';
+import { showToast } from '@/lib/utils/toast';
 
 interface UseMemberListProps {
   dashboardId: number;
@@ -36,7 +39,10 @@ export function useMemberList<T>({ dashboardId, fetchApi, resourceName }: UseMem
       setItems(response.data[resourceName]);
       setTotalCount(response.data.totalCount);
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError<ApiError>(error) && error.response?.data?.message) {
+        showToast.error(error.response.data.message);
+      }
+      showToast.error('정보를 불러오지 못했어요');
     } finally {
       setIsLoading(false);
       isFetching.current = false;

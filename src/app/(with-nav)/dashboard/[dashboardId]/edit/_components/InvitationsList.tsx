@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useState, useEffect } from 'react';
 import { dashboardApi, type DashboardInvitation } from '@/lib/api/dashboard';
 import { useMemberList } from '@/hooks/queries/useMemberList';
@@ -37,7 +36,6 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     resourceName: 'invitations',
   });
 
-
   const [isInviteModalOpen, setIsInviteModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [targetInvitation, setTargetInvitation] = useState<DashboardInvitation | null>(null);
@@ -68,7 +66,6 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
     });
   };
 
-
   useEffect(() => {
     const handler = async () => {
       await fetchData();
@@ -80,7 +77,6 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
       window.removeEventListener('invitationUpdated', handler);
     };
   }, []);
-
 
   return (
     <>
