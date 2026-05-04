@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import type { CreateTodoRequest, TodoAssigneeOption, TodoColumnOption } from '@/types/todo';
+import { useIsMobile } from '@/hooks/ui/useIsMobile';
 import TodoCreateModal from './TodoCreateModal';
 import TodoCreatePage from './TodoCreatePage';
 
@@ -15,17 +16,7 @@ export interface TodoCreateProps {
 }
 
 export default function TodoCreate(props: TodoCreateProps) {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== 'undefined' ? window.matchMedia('(max-width: 767px)').matches : false,
-  );
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    const handler = (event: MediaQueryListEvent) => setIsMobile(event.matches);
-
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
+  const isMobile = useIsMobile();
 
   return isMobile ? <TodoCreatePage {...props} /> : <TodoCreateModal {...props} />;
 }
