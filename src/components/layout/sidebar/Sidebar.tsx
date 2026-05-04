@@ -22,10 +22,7 @@ const mockUser = {
   updatedAt: '2026-04-23T11:56:44.104Z',
 };
 
-export default function Sidebar({
-  isMobileOpen = false,
-  onCloseMobile,
-}: SidebarProps) {
+export default function Sidebar({ isMobileOpen = false, onCloseMobile }: SidebarProps) {
   // 링크 클릭 닫힘
   const handleClickCapture = (event: MouseEvent<HTMLElement>) => {
     if (!(event.target instanceof Element)) {
@@ -42,7 +39,7 @@ export default function Sidebar({
       className={`${styles.sideBar} ${isMobileOpen ? styles.mobileOpen : ''}`}
       onClickCapture={handleClickCapture}
     >
-      <div>
+      <div className={styles.main}>
         <header className={styles.logoWrapper}>
           <Link href={PATH.MY_DASHBOARD}>
             <Image className={styles.logoImg} src={logo} alt="로고" width={148} height={33} />
