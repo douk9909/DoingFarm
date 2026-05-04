@@ -28,19 +28,23 @@ export default function SidebarFooter() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchUserData = async () => {
       try {
         const res = await userApi.getMe();
-        setUser(res.data);
+        if (isMounted) setUser(res.data);
       } catch (error) {
         console.error('유저 정보를 불러오지 못했습니다.', error);
-        setUser(null);
+        if (isMounted) setUser(null);
       } finally {
-        setIsLoading(false);
+        if (isMounted) setIsLoading(false);
       }
     };
 
     fetchUserData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const handleLogout = async () => {
