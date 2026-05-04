@@ -55,3 +55,56 @@
   min-height: 42px;
   font: var(--text-sm-semibold);
 }
+
+.pageOverlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  overflow: hidden;
+}
+
+.pageContainer {
+  width: 100%;
+  height: 100%;
+  padding: 24px 20px 32px;
+  background-color: #242429;
+  overflow-y: auto;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.pageHeader h2 {
+  margin: 0;
+  color: var(--color-gray-900);
+  font: var(--text-xl-semibold);
+}
+
+.pageCloseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: var(--color-gray-700);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageCloseButton:hover {
+    background-color: var(--color-gray-100);
+    border-radius: 999px;
+  }
+}
