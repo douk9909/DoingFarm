@@ -18,8 +18,12 @@ export function useReceivedInvitations(searchKeyword = '') {
   const [error, setError] = useState<string | null>(null);
   const hasNextPage = cursorId !== null;
 
-  const { notifyDashboardCreated } = useDashboardCreateModal();
-  const { dashboards, isLoading: isDashboardsLoading, refetchDashboards } = useDashboards();
+  const { notifyDashboardCreated, dashboardListVersion } = useDashboardCreateModal();
+  const {
+    dashboards,
+    isLoading: isDashboardsLoading,
+    refetchDashboards,
+  } = useDashboards(dashboardListVersion);
 
   // 아직 응답을 하지 않은 초대 또는 이미 구성원이 된 대시보드가 아닌 경우 필터링하는 함수
   const getFilteredInvitations = useCallback(
@@ -125,7 +129,6 @@ export function useReceivedInvitations(searchKeyword = '') {
         setInvitations((prev) => prev.filter((inv) => inv.dashboard.id !== dashboardId));
 
         notifyDashboardCreated();
-        void refetchDashboards();
       } catch (acceptError) {
         setError(acceptError instanceof Error ? acceptError.message : '초대를 수락하지 못했어요');
         showToast.error(
