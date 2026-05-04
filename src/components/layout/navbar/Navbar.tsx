@@ -127,28 +127,31 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
                 ))}
                 {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
               </div>
-              <div className={styles.line}></div>
 
-              <div className={styles.buttonContainer}>
-                {dashboardData?.createdByMe && (
-                  <Link
-                    href={`/dashboard/${dashboardId}/edit`}
-                    className={cn(styles.button, styles.textButton, styles.manageButton)}
-                  >
-                    <SettingIcon size={20} className={styles.buttonIcon} />
-                    <span>관리</span>
-                  </Link>
-                )}
+              {dashboardData?.createdByMe && (
+                <>
+                  <div className={styles.line}></div>
 
-                <button
-                  type="button"
-                  className={cn(styles.button, styles.textButton, styles.inviteButton)}
-                  onClick={() => setIsInviteModalOpen(true)}
-                >
-                  <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
-                  <span>초대</span>
-                </button>
-              </div>
+                  <div className={styles.buttonContainer}>
+                    <Link
+                      href={`/dashboard/${dashboardId}/edit`}
+                      className={cn(styles.button, styles.textButton, styles.manageButton)}
+                    >
+                      <SettingIcon size={20} className={styles.buttonIcon} />
+                      <span>관리</span>
+                    </Link>
+
+                    <button
+                      type="button"
+                      className={cn(styles.button, styles.textButton, styles.inviteButton)}
+                      onClick={() => setIsInviteModalOpen(true)}
+                    >
+                      <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
+                      <span>초대</span>
+                    </button>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

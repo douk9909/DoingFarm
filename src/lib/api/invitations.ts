@@ -4,7 +4,7 @@ import type { DashboardInvitation } from './dashboard';
 export interface GetMyInvitationsRequest {
   size?: number;
   cursorId?: number;
-  title: string;
+  title?: string;
 }
 
 export interface GetMyInvitationsResponse {
@@ -17,9 +17,9 @@ export interface UpdateMyInvitationRequest {
 }
 
 export const invitationApi = {
-  /* 내 초대 목록 API 호출 */
-  getList: (params: GetMyInvitationsRequest) =>
-    apiClient.get<GetMyInvitationsResponse>('/invitations', { params }),
+  // 받은 초대 목록은 cursor 기반이라 홈 화면 무한스크롤에서 사용
+  getReceivedInvitations: (params?: GetMyInvitationsRequest, signal?: AbortSignal) =>
+    apiClient.get<GetMyInvitationsResponse>('/invitations', { params, signal }),
 
   /* 초대 응답 API 호출 */
   updateInvitation: (invitationId: number, data: UpdateMyInvitationRequest) =>
