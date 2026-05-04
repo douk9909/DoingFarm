@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import TodoCreateModal from '@/components/dashboard/todoCreate/TodoCreateModal';
+import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
 import TodoEditModal from '@/components/dashboard/todoEdit/TodoEditModal';
 import TodoView from '@/components/dashboard/todoView/TodoView';
 import { apiClient } from '@/lib/api/client';
@@ -158,7 +158,7 @@ export default function ColumnList({
       </div>
 
       {selectedColumnId ? (
-        <TodoCreateModal
+        <TodoCreate
           columns={columns.map(({ id, title }) => ({ id, title }))}
           assignees={assignees}
           initialColumnId={selectedColumnId}

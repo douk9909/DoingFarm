@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils/cn';
 import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
 
-import styles from './Comment.module.css';
+import styles from './CommentForm.module.css';
 
 interface CommentFormProps {
   mode?: 'create' | 'edit';
