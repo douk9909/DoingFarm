@@ -1,5 +1,7 @@
 'use client';
 
+import { DndContext, type DragEndEvent } from '@dnd-kit/core';
+
 import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
 import TodoEdit from '@/components/dashboard/todoEdit/TodoEdit';
@@ -83,15 +85,9 @@ export default function ColumnList({
   // ❗ columns를 useMemo로 감싸서 불필요한 리렌더 방지
   const columns = useMemo(() => columnData?.data ?? [], [columnData]);
 
-  const todoColumns = useMemo(
-    () => columns.map(({ id, title }) => ({ id, title })),
-    [columns],
-  );
+  const todoColumns = useMemo(() => columns.map(({ id, title }) => ({ id, title })), [columns]);
 
-  const existingColumnTitles = useMemo(
-    () => columns.map((column) => column.title),
-    [columns],
-  );
+  const existingColumnTitles = useMemo(() => columns.map((column) => column.title), [columns]);
 
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
@@ -264,31 +260,57 @@ export default function ColumnList({
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
 
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (!over) return; //드롭 영역 밖에 놓으면 무시
+
+    const card = active.data.current?.card as Card;
+    const newColumnId = Number(over.id.toString().replace('column-', ''));
+
+    if (card.columnId === newColumnId) return; // 같은 컬럼이면 무시
+
+    await cardApi.update(card.id, {
+      columnId: newColumnId,
+      assigneeUserId: card.assignee.id,
+      title: card.title,
+      description: card.description,
+      dueDate: card.dueDate,
+      tags: card.tags,
+      imageUrl: card.imageUrl ?? undefined,
+    });
+
+    refreshColumn(card.columnId);
+    refreshColumn(newColumnId);
+  };
+
   return (
     <ColumnRefetchContext.Provider value={refetch}>
-      <div className={`${styles.columnList} custom-scrollbar`}>
-        {columns.map((column: ColumnType, index) => (
-          <Column
-            key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
-            id={column.id}
-            title={column.title}
-            index={index}
-            existingTitles={existingColumnTitles}
-            onAddCard={() => handleOpenTodoCreateModal(column.id)}
-            onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
-          />
-        ))}
+      <DndContext onDragEnd={handleDragEnd}>
+        <div className={`${styles.columnList} custom-scrollbar`}>
+          {columns.map((column: ColumnType, index) => (
+            <Column
+              key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
+              id={column.id}
+              title={column.title}
+              index={index}
+              existingTitles={existingColumnTitles}
+              onAddCard={() => handleOpenTodoCreateModal(column.id)}
+              onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
+            />
+          ))}
 
-        <AddColumnButton onClick={handleAddButton} />
+          <AddColumnButton onClick={handleAddButton} />
 
-        {isModalOpen && (
-          <AddColumnModal
-            dashboardId={dashboardId}
-            onClose={() => setIsModalOpen(false)}
-            existingTitles={existingColumnTitles}
-          />
-        )}
-      </div>
+          {isModalOpen && (
+            <AddColumnModal
+              dashboardId={dashboardId}
+              onClose={() => setIsModalOpen(false)}
+              existingTitles={existingColumnTitles}
+            />
+          )}
+        </div>
+      </DndContext>
 
       {selectedColumnId ? (
         <TodoCreate
