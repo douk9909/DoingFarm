@@ -191,7 +191,7 @@ function SideInfo({
       {card.dueDate && (
         <div className={styles.sideSection}>
           <span className={styles.sideLabel}>마감일</span>
-          <span className={styles.sideValue}>{formatDate(card.dueDate)}</span>
+          <span className={styles.sideValue}>{formatDateTime(card.dueDate)}</span>{' '}
         </div>
       )}
     </>
