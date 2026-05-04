@@ -8,16 +8,28 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  text-align: left;
 }
 
 .placeholder {
   flex: 1;
+  min-width: 0;
   padding: 10px 20px;
   border: 1px solid var(--color-gray-600);
   border-radius: 100px;
   font: var(--text-lg-16-medium);
   color: var(--color-gray-600);
   cursor: pointer;
+}
+
+.placeholderContainer:focus-visible .placeholder {
+  border-color: var(--color-blue-300);
+  outline: 1.5px solid var(--color-blue-300);
+  outline-offset: 1.5px;
 }
 
 .commentInputContainer {
@@ -39,10 +51,9 @@
 .textareaStyle {
   width: 100%;
   min-height: 26px;
-  max-height: 78px;
+  max-height: 104px;
   border: none;
   background-color: transparent;
-
   font: var(--text-lg-16-medium);
   resize: none;
   outline: none;
@@ -54,7 +65,7 @@
 }
 
 .textareaStyle.filledBlur:not(:focus) {
-  color: #999999;
+  color: var(--color-gray-900);
 }
 
 .textareaStyle::placeholder {
