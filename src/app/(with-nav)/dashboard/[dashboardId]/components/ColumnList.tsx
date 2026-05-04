@@ -3,22 +3,44 @@
 import { useState } from 'react';
 import TodoCreateModal from '@/components/dashboard/todoCreate/TodoCreateModal';
 import TodoEditModal from '@/components/dashboard/todoEdit/TodoEditModal';
+import TodoView from '@/components/dashboard/todoView/TodoView';
+import { apiClient } from '@/lib/api/client';
+import { dashboardApi } from '@/lib/api/dashboard';
 import { memberApi, type Member } from '@/lib/api/member';
 import { useCreateCardWithImage } from '@/hooks/mutations/useCreateCardWithImage';
 import { useUpdateCardWithImage } from '@/hooks/mutations/useUpdateCardWithImage';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { columnApi } from '@/lib/api/column';
 import type { Column as ColumnType } from '@/types/column';
-import type { Card as CardType } from '@/types/card';
+import type { Card } from '@/types/card';
+import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 
 const MEMBER_PAGE_SIZE = 50;
 
-export default function ColumnList({ dashboardId }: { dashboardId: number }) {
+interface SelectedCard {
+  cardId: number;
+  columnId: number;
+  columnTitle: string;
+}
+
+export default function ColumnList({
+  dashboardId,
+  dashboardTitle,
+}: {
+  dashboardId: number;
+  dashboardTitle?: string;
+}) {
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
-  const [editingCard, setEditingCard] = useState<CardType | null>(null);
+  const [selectedCard, setSelectedCard] = useState<SelectedCard | null>(null);
+  const [editingCard, setEditingCard] = useState<Card | null>(null);
   const [refreshKeyByColumnId, setRefreshKeyByColumnId] = useState<Record<number, number>>({});
+
+  // 대시보드 정보 조회
+  const { data: dashboardData } = useFetch(() =>
+    dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
+  );
 
   // 컬럼 조회
   const {
@@ -38,7 +60,13 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
       .then((res) => ({ data: res.data })),
   );
 
+  // 현재 로그인 유저 조회
+  const { data: currentUser, isLoading: isUserLoading } = useFetch(() =>
+    apiClient.get<User>('/users/me').then((res) => ({ data: res.data })),
+  );
+
   const columns = columnData?.data ?? [];
+  const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
   // 담당자 드롭다운에 사용할 멤버 목록 변환
   const assignees =
@@ -55,7 +83,17 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
     setSelectedColumnId(null);
   };
 
-  const handleOpenTodoEditModal = (card: CardType) => {
+  const handleCardClick = (cardId: number, columnId: number, columnTitle: string) => {
+    setSelectedCard({ cardId, columnId, columnTitle });
+  };
+
+  const handleCloseTodoView = () => {
+    setSelectedCard(null);
+  };
+
+  const handleEditCard = (card: Card) => {
+    // 상세 모달의 수정하기 버튼에서 받은 카드 정보로 수정 모달을 열어줌
+    setSelectedCard(null);
     setEditingCard(card);
   };
 
@@ -68,6 +106,14 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
       ...prev,
       [columnId]: (prev[columnId] ?? 0) + 1,
     }));
+  };
+
+  const handleCardDeleted = (_cardId: number) => {
+    if (selectedCard) {
+      refreshColumn(selectedCard.columnId);
+    }
+
+    setSelectedCard(null);
   };
 
   const { isCreating, createCard } = useCreateCardWithImage({
@@ -93,7 +139,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
     },
   });
 
-  if (isColumnLoading || isMemberLoading) return <div>로딩 중...</div>;
+  if (isColumnLoading || isMemberLoading || isUserLoading) return <div>로딩 중...</div>;
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
 
@@ -106,7 +152,7 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
             id={column.id}
             title={column.title}
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
-            onEditCard={handleOpenTodoEditModal}
+            onCardClick={(cardId: number) => handleCardClick(cardId, column.id, column.title)}
           />
         ))}
       </div>
@@ -121,6 +167,20 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
           onCreate={createCard}
         />
       ) : null}
+
+      {selectedCard !== null && currentUser && (
+        <TodoView
+          cardId={selectedCard.cardId}
+          columnId={selectedCard.columnId}
+          dashboardId={dashboardId}
+          dashboardTitle={resolvedDashboardTitle}
+          columnTitle={selectedCard.columnTitle}
+          currentUser={currentUser}
+          onClose={handleCloseTodoView}
+          onCardDeleted={handleCardDeleted}
+          onEditCard={handleEditCard}
+        />
+      )}
 
       {editingCard ? (
         <TodoEditModal

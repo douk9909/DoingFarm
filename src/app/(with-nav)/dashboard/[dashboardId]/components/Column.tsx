@@ -21,7 +21,7 @@ export interface ColumnData {
 
 interface ColumnProps extends ColumnData {
   onAddCard?: () => void;
-  onEditCard?: (card: CardType) => void;
+  onCardClick?: (cardId: number) => void;
 }
 
 const getColumnIcon = (title: string) => {
@@ -37,7 +37,7 @@ const getColumnIcon = (title: string) => {
   }
 };
 
-export default function Column({ id, title, onAddCard, onEditCard }: ColumnProps) {
+export default function Column({ id, title, onAddCard, onCardClick }: ColumnProps) {
   const fetchCards = useCallback(
     (cursorId?: number) =>
       cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
@@ -48,11 +48,10 @@ export default function Column({ id, title, onAddCard, onEditCard }: ColumnProps
     [id],
   );
 
-  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
-    {
+  const { items, totalCount, error, lastItemRef, scrollContainerRef } =
+    useInfiniteScroll<CardType>({
       fetcher: fetchCards,
-    },
-  );
+    });
 
   if (error) return <div>에러: {error}</div>;
 
@@ -77,7 +76,11 @@ export default function Column({ id, title, onAddCard, onEditCard }: ColumnProps
             ref={index === items.length - 1 ? lastItemRef : null}
             className={styles.cardWrapper}
           >
-            <button type="button" className={styles.cardButton} onClick={() => onEditCard?.(card)}>
+            <button
+              type="button"
+              className={styles.cardButton}
+              onClick={() => onCardClick?.(card.id)}
+            >
               <Card
                 id={card.id}
                 title={card.title}
