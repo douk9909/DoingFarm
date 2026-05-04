@@ -12,19 +12,9 @@ import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
 import { useTodoImagePreview } from '@/hooks/ui/useTodoImagePreview';
 import { useTodoTags } from '@/hooks/ui/useTodoTags';
 import { TODO_ASSIGNEE_COLORS, getTodoAssigneeInitial } from '@/lib/constants/todo';
+import { formatDueDate } from '@/lib/utils/date';
 import type { TodoCreateProps } from './TodoCreate';
 import styles from './TodoCreateModal.module.css';
-
-// dueDate를 API 요구 형식으로 변환
-const formatDueDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-};
 
 export default function TodoCreateContent({
   columns,

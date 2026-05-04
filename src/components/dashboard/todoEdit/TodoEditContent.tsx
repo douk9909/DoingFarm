@@ -10,9 +10,10 @@ import TodoFormDropdown, {
 import TodoImageField from '@/components/dashboard/todoForm/TodoImageField';
 import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
 import { useTodoImagePreview } from '@/hooks/ui/useTodoImagePreview';
+import { useTodoTags } from '@/hooks/ui/useTodoTags';
 import { TODO_ASSIGNEE_COLORS, getTodoAssigneeInitial } from '@/lib/constants/todo';
+import { formatDueDate, isSameDueDate, parseDueDate } from '@/lib/utils/date';
 import { getHashColor } from '@/lib/utils/color';
-import type { CardTag } from '@/components/common/card/Card';
 import type { UpdateCardRequest } from '@/lib/api/card';
 import type { Card } from '@/types/card';
 import type { TodoAssigneeOption, TodoColumnOption } from '@/types/todo';
@@ -26,24 +27,6 @@ interface TodoEditContentProps {
   onClose: () => void;
   onEdit: (cardId: number, card: UpdateCardRequest, imageFile?: File | null) => Promise<void>;
 }
-
-const parseDueDate = (dueDate: string) => {
-  if (!dueDate) return null;
-
-  const date = new Date(dueDate);
-  return Number.isNaN(date.getTime()) ? null : date;
-};
-
-// dueDate를 API 요구 형식으로 변환
-const formatDueDate = (date: Date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  const hours = String(date.getHours()).padStart(2, '0');
-  const minutes = String(date.getMinutes()).padStart(2, '0');
-
-  return `${year}-${month}-${day} ${hours}:${minutes}`;
-};
 
 const getInitialTags = (tags: string[]) =>
   tags.map((tag) => ({
@@ -64,12 +47,11 @@ export default function TodoEditContent({
   const [columnId, setColumnId] = useState(card.columnId);
   const [assigneeId, setAssigneeId] = useState(card.assignee.id);
   const [dueDate, setDueDate] = useState<Date | null>(parseDueDate(card.dueDate));
-  const [tagInput, setTagInput] = useState('');
-  const [tags, setTags] = useState<CardTag[]>(getInitialTags(card.tags));
   const [originImageUrl, setOriginImageUrl] = useState(card.imageUrl ?? '');
   const [isColumnOpen, setIsColumnOpen] = useState(false);
   const [isAssigneeOpen, setIsAssigneeOpen] = useState(false);
 
+  const { tagInput, tags, setTagInput, addTag, removeTag } = useTodoTags(getInitialTags(card.tags));
   const { imageFile, imagePreviewUrl, updateImage, removeImage } = useTodoImagePreview();
 
   const selectedColumn = useMemo(
@@ -96,34 +78,13 @@ export default function TodoEditContent({
     description.trim() !== card.description ||
     columnId !== card.columnId ||
     assigneeId !== card.assignee.id ||
-    currentDueDate !== card.dueDate ||
+    !isSameDueDate(dueDate, card.dueDate) ||
     currentTags.join(',') !== card.tags.join(',') ||
     imageFile !== null ||
     originImageUrl !== (card.imageUrl ?? '');
 
   const isSubmitDisabled =
     isEditing || !isChanged || title.trim().length === 0 || description.trim().length === 0;
-
-  const handleAddTag = () => {
-    const nextTag = tagInput.trim();
-
-    if (!nextTag || tags.some((tag) => tag.label === nextTag)) {
-      return;
-    }
-
-    setTags((prevTags) => [
-      ...prevTags,
-      {
-        label: nextTag,
-        color: getHashColor(nextTag),
-      },
-    ]);
-    setTagInput('');
-  };
-
-  const handleRemoveTag = (targetTag: string) => {
-    setTags((prevTags) => prevTags.filter((tag) => tag.label !== targetTag));
-  };
 
   const handleRemoveImage = () => {
     setOriginImageUrl('');
@@ -212,7 +173,9 @@ export default function TodoEditContent({
             selectedAssignee ? (
               <>
                 <TodoDropdownAvatar
-                  color={TODO_ASSIGNEE_COLORS[selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length]}
+                  color={
+                    TODO_ASSIGNEE_COLORS[selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length]
+                  }
                 >
                   {getTodoAssigneeInitial(selectedAssignee.nickname)}
                 </TodoDropdownAvatar>
@@ -233,7 +196,9 @@ export default function TodoEditContent({
           }}
           renderOption={(assignee, index) => (
             <>
-              <TodoDropdownAvatar color={TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length]}>
+              <TodoDropdownAvatar
+                color={TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length]}
+              >
                 {getTodoAssigneeInitial(assignee.nickname)}
               </TodoDropdownAvatar>
               {assignee.nickname}
@@ -248,8 +213,8 @@ export default function TodoEditContent({
         value={tagInput}
         tags={tags}
         onChange={setTagInput}
-        onAddTag={handleAddTag}
-        onRemoveTag={handleRemoveTag}
+        onAddTag={addTag}
+        onRemoveTag={removeTag}
       />
 
       <TodoImageField
