@@ -17,7 +17,7 @@ export default function EditTitleSkeleton() {
         ))}
       </div>
 
-      <div className={`${base.skeletonBase} ${base.roundedLg} ${styles.button}`} />
+      <div className={`${base.skeletonBase} ${base.lgBtn}`} />
     </div>
   );
 }

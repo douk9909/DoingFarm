@@ -13,8 +13,8 @@ export default function SkeletonListSection() {
         </div>
         <div className={styles.paginationGroup}>
           <div className={`${skeleton} ${styles.pagination}`} />
-          <div className={`${skeleton} ${styles.paginationButton}`} />
-          <div className={`${skeleton} ${styles.paginationButton}`} />
+          <div className={`${skeleton} ${base.smBtn}`} />
+          <div className={`${skeleton} ${base.smBtn}`} />
         </div>
       </div>
 
@@ -23,10 +23,10 @@ export default function SkeletonListSection() {
         {[...Array(4)].map((_, i) => (
           <div key={i} className={styles.item}>
             <div className={styles.userInfo}>
-              <div className={`${skeleton} ${base.circle} ${styles.avatar}`} />
+              <div className={`${skeleton} ${base.avatar}`} />
               <div className={`${skeleton} ${styles.text}`} />
             </div>
-            <div className={`${skeleton} ${styles.itemButton}`} />
+            <div className={`${skeleton} ${base.mdBtn}`} />
           </div>
         ))}
       </div>

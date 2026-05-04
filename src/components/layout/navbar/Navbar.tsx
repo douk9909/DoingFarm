@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useParams } from 'next/navigation';
@@ -20,6 +20,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from './Navbar.module.css';
+import SkeletonNavbar from './SkeletonNavbar';
 
 const MAX_VISIBLE_USERS = 5;
 
@@ -39,7 +40,11 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
   const isMyDashboard = pathname === PATH.MY_DASHBOARD || pathname === PATH.MY_PAGE;
 
   // 멤버 정보 가져오기
-  const { data: membersData, refetch: refetchMembers } = useFetch(() => {
+  const {
+    data: membersData,
+    isLoading: isMembersLoading,
+    refetch: refetchMembers,
+  } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
         data: { members: [], totalCount: 0 },
@@ -52,7 +57,11 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
   });
 
   // 대시보드 정보 가져오기
-  const { data: dashboardData, refetch: refetchDashboard } = useFetch(() => {
+  const {
+    data: dashboardData,
+    isLoading: isDashboardLoading,
+    refetch: refetchDashboard,
+  } = useFetch(() => {
     if (!isDashboardDetail) {
       return Promise.resolve({
         data: null,
@@ -65,6 +74,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
   const displayMembers = membersData?.members || [];
   const totalCount = membersData?.totalCount || 0;
   const extraCount = totalCount - MAX_VISIBLE_USERS;
+  const isLoading = isMembersLoading || isDashboardLoading;
 
   useEffect(() => {
     if (!isDashboardDetail) return;
@@ -113,6 +123,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
         </div>
 
         <div className={styles.rightContainer}>
+          {isLoading && <SkeletonNavbar />}
           {isDashboardDetail && !isMyDashboard && (
             <>
               <div className={styles.userList}>

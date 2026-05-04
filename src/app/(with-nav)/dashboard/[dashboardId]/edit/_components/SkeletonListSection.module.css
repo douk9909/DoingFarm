@@ -36,10 +36,6 @@
   height: 30px;
   width: 80px;
 }
-.paginationButton {
-  height: 40px;
-  width: 40px;
-}
 
 .subTitle {
   width: 40px;
@@ -59,16 +55,8 @@
   align-items: center;
   gap: 12px;
 }
-.avatar {
-  height: 40px;
-  width: 40px;
-}
+
 .text {
   height: 20px;
   width: 128px;
-}
-.itemButton {
-  height: 36px;
-  width: 64px;
-  border-radius: 6px;
 }

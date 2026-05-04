@@ -17,3 +17,25 @@
 .circle {
   border-radius: 50%;
 }
+
+.avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.smBtn {
+  width: 40px;
+  height: 40px;
+}
+
+.mdBtn {
+  height: 36px;
+  width: 64px;
+  border-radius: 6px;
+}
+
+.lgBtn {
+  height: 36px;
+  width: 100%;
+}
