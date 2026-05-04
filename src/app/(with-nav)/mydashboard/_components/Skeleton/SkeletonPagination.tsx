@@ -7,9 +7,9 @@ export default function SkeletonPagination() {
   return (
     <div className={styles.container}>
       <div className={styles.paginationGroup}>
-        <div className={`${skeleton} ${styles.pagination}`} />
-        <div className={`${skeleton} ${base.smBtn}`} />
-        <div className={`${skeleton} ${base.smBtn}`} />
+        <div className={`${skeleton} ${styles.paginationText}`} />
+        <div className={`${skeleton} ${styles.paginationBtn}`} />
+        <div className={`${skeleton} ${styles.paginationBtn}`} />
       </div>
     </div>
   );

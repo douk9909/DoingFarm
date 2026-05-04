@@ -15,7 +15,7 @@ import Button from '@/components/common/button/Button';
 
 import styles from '../edit.module.css';
 import BaseSectionLayout from './BaseSectionLayout';
-import SkeletonSettingSection from './SkeletonSettingSection';
+import SkeletonSettingSection from './Skeleton/SkeletonSettingSection';
 
 interface EditFormProps {
   dashboardId: number;

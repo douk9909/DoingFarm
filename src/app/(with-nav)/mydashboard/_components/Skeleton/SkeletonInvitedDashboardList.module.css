@@ -13,6 +13,7 @@
   grid-template-columns: 3fr 1fr 1fr;
   align-items: center;
   border-bottom: 1px solid #2a2a32;
+  padding-bottom: 10px;
 }
 
 .headerItem {

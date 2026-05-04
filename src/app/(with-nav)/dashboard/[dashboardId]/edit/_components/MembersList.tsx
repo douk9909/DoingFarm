@@ -16,7 +16,7 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import CrownIcon from '@/assets/icons/CrownIcon';
 
 import styles from '../edit.module.css';
-import SkeletonListSection from './SkeletonListSection';
+import SkeletonListSection from './Skeleton/SkeletonListSection';
 
 interface MembersListProps {
   dashboardId: number;

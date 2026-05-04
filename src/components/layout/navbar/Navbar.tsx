@@ -123,44 +123,52 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
         </div>
 
         <div className={styles.rightContainer}>
-          {isLoading && <SkeletonNavbar />}
-          {isDashboardDetail && !isMyDashboard && (
+          {isLoading ? (
+            <SkeletonNavbar />
+          ) : (
             <>
-              <div className={styles.userList}>
-                {displayMembers?.map((member) => (
-                  <Avatar
-                    key={member.userId}
-                    src={member.profileImageUrl}
-                    name={member.nickname}
-                    alt={member.nickname}
-                    className={styles.profile}
-                  />
-                ))}
-                {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
-              </div>
-
-              {dashboardData?.createdByMe && (
+              {isDashboardDetail && !isMyDashboard && (
                 <>
-                  <div className={styles.line}></div>
-
-                  <div className={styles.buttonContainer}>
-                    <Link
-                      href={`/dashboard/${dashboardId}/edit`}
-                      className={cn(styles.button, styles.textButton, styles.manageButton)}
-                    >
-                      <SettingIcon size={20} className={styles.buttonIcon} />
-                      <span>관리</span>
-                    </Link>
-
-                    <button
-                      type="button"
-                      className={cn(styles.button, styles.textButton, styles.inviteButton)}
-                      onClick={() => setIsInviteModalOpen(true)}
-                    >
-                      <UserPlusIcon size={20} className={cn(styles.buttonIcon, styles.iconStyle)} />
-                      <span>초대</span>
-                    </button>
+                  <div className={styles.userList}>
+                    {displayMembers?.map((member) => (
+                      <Avatar
+                        key={member.userId}
+                        src={member.profileImageUrl}
+                        name={member.nickname}
+                        alt={member.nickname}
+                        className={styles.profile}
+                      />
+                    ))}
+                    {extraCount > 0 && <span className={styles.extraCount}>+{extraCount}</span>}
                   </div>
+
+                  {dashboardData?.createdByMe && (
+                    <>
+                      <div className={styles.line}></div>
+
+                      <div className={styles.buttonContainer}>
+                        <Link
+                          href={`/dashboard/${dashboardId}/edit`}
+                          className={cn(styles.button, styles.textButton, styles.manageButton)}
+                        >
+                          <SettingIcon size={20} className={styles.buttonIcon} />
+                          <span>관리</span>
+                        </Link>
+
+                        <button
+                          type="button"
+                          className={cn(styles.button, styles.textButton, styles.inviteButton)}
+                          onClick={() => setIsInviteModalOpen(true)}
+                        >
+                          <UserPlusIcon
+                            size={20}
+                            className={cn(styles.buttonIcon, styles.iconStyle)}
+                          />
+                          <span>초대</span>
+                        </button>
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </>

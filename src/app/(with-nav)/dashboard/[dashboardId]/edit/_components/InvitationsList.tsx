@@ -16,7 +16,7 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from '../edit.module.css';
-import SkeletonListSection from './SkeletonListSection';
+import SkeletonListSection from './Skeleton/SkeletonListSection';
 
 interface InvitationsListProps {
   dashboardId: number;

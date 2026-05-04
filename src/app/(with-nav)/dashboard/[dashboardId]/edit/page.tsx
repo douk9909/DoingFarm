@@ -15,8 +15,8 @@ import DeleteDashboardButton from './_components/DeleteDashboardButton';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 
 import styles from './edit.module.css';
-import SkeletonSettingSection from './_components/SkeletonSettingSection';
-import SkeletonListSection from './_components/SkeletonListSection';
+import SkeletonSettingSection from './_components/Skeleton/SkeletonSettingSection';
+import SkeletonListSection from './_components/Skeleton/SkeletonListSection';
 
 interface DashboardEditPageProps {
   params: Promise<{
