@@ -25,13 +25,12 @@ export default function DraggableCard({ card, onClick }: DraggableCardProps) {
 
   const handlePointerUp = () => {
     const elapsed = Date.now() - mouseDownTimeRef.current;
-    console.log('elapsed:', elapsed);
     if (elapsed < 200) {
       onClick?.();
     }
   };
 
-  const style = {
+  const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0.5 : 1,
     cursor: 'grab',
