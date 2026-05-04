@@ -11,6 +11,8 @@ import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
 import EmptyDashboardPanel from './EmptyDashboardPanel';
 import styles from './MyDashboardList.module.css';
+import SkeletonMyDashboardList from './Skeleton/SkeletonMyDashboardList';
+import SkeletonPagination from './Skeleton/SkeletonPagination';
 
 interface MyDashboardListProps {
   title?: string;
@@ -48,7 +50,7 @@ export default function MyDashboardList({
   onPrevPage,
   onNextPage,
 }: MyDashboardListProps) {
-  if (dashboards.length === 0) {
+  if (!isLoading && !error && dashboards.length === 0) {
     return <EmptyDashboardPanel section={emptySection} />;
   }
 
@@ -57,7 +59,9 @@ export default function MyDashboardList({
       <div className={styles.sectionHeader}>
         {title ? <h2 className={styles.sectionTitle}>{title}</h2> : null}
 
-        {totalCount > 0 ? (
+        {isLoading ? (
+          <SkeletonPagination />
+        ) : totalCount > 0 ? (
           <div className={styles.pagination}>
             <span>
               {page} of {totalPages}
@@ -93,35 +97,36 @@ export default function MyDashboardList({
           새로운 대시보드
           <Image src={plusIcon} alt="" width={14} height={14} />
         </button>
-
-        {dashboards.map((dashboard) => (
-          <Link
-            key={dashboard.id}
-            href={`/dashboard/${dashboard.id}`}
-            className={styles.dashboardCard}
-          >
-            <span
-              className={styles.dashboardColor}
-              style={{ backgroundColor: LEGACY_COLOR_MAP[dashboard.color] ?? dashboard.color }}
-            />
-
-            <span className={styles.dashboardTitle}>{dashboard.title}</span>
-
-            {dashboard.createdByMe ? (
-              <Image
-                src={crownIcon}
-                alt="내가 만든 대시보드"
-                width={18}
-                height={18}
-                className={styles.dashboardCrown}
+        {isLoading ? (
+          <SkeletonMyDashboardList />
+        ) : (
+          dashboards.map((dashboard) => (
+            <Link
+              key={dashboard.id}
+              href={`/dashboard/${dashboard.id}`}
+              className={styles.dashboardCard}
+            >
+              <span
+                className={styles.dashboardColor}
+                style={{ backgroundColor: LEGACY_COLOR_MAP[dashboard.color] ?? dashboard.color }}
               />
-            ) : null}
 
-            <ArrowRightIcon width={16} height={16} />
-          </Link>
-        ))}
+              <span className={styles.dashboardTitle}>{dashboard.title}</span>
 
-        {isLoading ? <p className={styles.statusText}>불러오는 중...</p> : null}
+              {dashboard.createdByMe ? (
+                <Image
+                  src={crownIcon}
+                  alt="내가 만든 대시보드"
+                  width={18}
+                  height={18}
+                  className={styles.dashboardCrown}
+                />
+              ) : null}
+
+              <ArrowRightIcon width={16} height={16} />
+            </Link>
+          ))
+        )}
       </div>
     </>
   );

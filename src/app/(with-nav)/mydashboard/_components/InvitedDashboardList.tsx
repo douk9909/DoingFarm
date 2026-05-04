@@ -9,6 +9,7 @@ import searchIcon from '@/assets/icon/ic_search.svg';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
 import EmptyDashboardPanel from './EmptyDashboardPanel';
 import styles from './InvitedDashboardList.module.css';
+import SkeletonInvitedDashboardList from './Skeleton/SkeletonInvitedDashboardList';
 
 interface InvitedDashboardListProps {
   emptySection: DashboardEmptySection;
@@ -81,7 +82,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
         {error ? <p className={styles.emptyText}>{error}</p> : null}
 
         {isLoading ? (
-          <p className={styles.emptyText}>초대 목록을 불러오는 중...</p>
+          <SkeletonInvitedDashboardList />
         ) : invitations.length === 0 ? (
           <p className={styles.emptyText}>검색 결과가 없어요</p>
         ) : (
