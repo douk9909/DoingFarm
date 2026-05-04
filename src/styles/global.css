@@ -74,6 +74,8 @@ img {
   font-weight: 400;
   line-height: 18px;
   letter-spacing: 0px;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: white !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   opacity: 0.8;
 

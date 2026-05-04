@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import axios from 'axios';
 
 import type { ApiError } from '@/lib/api/client';
+import { showToast } from '@/lib/utils/toast';
 interface UseDeleteActionParams {
   deleteAction: () => Promise<any>;
   successMessage?: string;
@@ -32,10 +33,10 @@ export function useGenericDelete() {
 
         await deleteAction();
 
-        if (successMessage) alert(successMessage); // Todo: 토스트로 변경
+        if (successMessage) showToast(successMessage);
         if (onSuccess) onSuccess();
       } catch (error) {
-        setError(getDeleteErrorMessage(error));
+        showToast.error(getDeleteErrorMessage(error));
       } finally {
         setIsPending(false);
       }
