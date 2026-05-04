@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
-import TodoEditModal from '@/components/dashboard/todoEdit/TodoEditModal';
+import TodoEdit from '@/components/dashboard/todoEdit/TodoEdit';
 import TodoView from '@/components/dashboard/todoView/TodoView';
 import { apiClient } from '@/lib/api/client';
 import { dashboardApi } from '@/lib/api/dashboard';
@@ -17,7 +17,7 @@ import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 
-const MEMBER_PAGE_SIZE = 50;
+const MEMBER_PAGE_SIZE = 100;
 
 interface SelectedCard {
   cardId: number;
@@ -66,6 +66,7 @@ export default function ColumnList({
   );
 
   const columns = columnData?.data ?? [];
+  const todoColumns = columns.map(({ id, title }) => ({ id, title }));
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
   // 담당자 드롭다운에 사용할 멤버 목록 변환
@@ -119,6 +120,7 @@ export default function ColumnList({
   const { isCreating, createCard } = useCreateCardWithImage({
     dashboardId,
     assignees,
+    columns: todoColumns,
     onSuccess: (columnId) => {
       setSelectedColumnId(null);
       refreshColumn(columnId);
@@ -126,6 +128,7 @@ export default function ColumnList({
   });
 
   const { isEditing, updateCard } = useUpdateCardWithImage({
+    columns: todoColumns,
     onSuccess: (nextColumnId) => {
       const previousColumnId = editingCard?.columnId;
 
@@ -159,7 +162,7 @@ export default function ColumnList({
 
       {selectedColumnId ? (
         <TodoCreate
-          columns={columns.map(({ id, title }) => ({ id, title }))}
+          columns={todoColumns}
           assignees={assignees}
           initialColumnId={selectedColumnId}
           isCreating={isCreating}
@@ -183,9 +186,9 @@ export default function ColumnList({
       )}
 
       {editingCard ? (
-        <TodoEditModal
+        <TodoEdit
           card={editingCard}
-          columns={columns.map(({ id, title }) => ({ id, title }))}
+          columns={todoColumns}
           assignees={assignees}
           isEditing={isEditing}
           onClose={handleCloseTodoEditModal}

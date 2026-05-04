@@ -1,17 +1,34 @@
 import { useState } from 'react';
 import { cardApi } from '@/lib/api/card';
 import { cardImageApi } from '@/lib/api/cardImage';
-import type { CreateTodoRequest, TodoAssigneeOption } from '@/types/todo';
+import { showToast } from '@/lib/utils/toast';
+import type { CreateTodoRequest, TodoAssigneeOption, TodoColumnOption } from '@/types/todo';
 
 interface UseCreateCardWithImageProps {
   dashboardId: number;
   assignees: TodoAssigneeOption[];
+  columns: TodoColumnOption[];
   onSuccess?: (columnId: number) => void;
 }
+
+const normalizeTitle = (title: string) => title.trim().toLowerCase();
+
+const checkDuplicateTitleInDashboard = async (columns: TodoColumnOption[], title: string) => {
+  const normalized = normalizeTitle(title);
+
+  const cardLists = await Promise.all(
+    columns.map((column) => cardApi.getList({ columnId: column.id, size: 100 })),
+  );
+
+  return cardLists.some((res) =>
+    res.data.cards.some((card) => normalizeTitle(card.title) === normalized),
+  );
+};
 
 export function useCreateCardWithImage({
   dashboardId,
   assignees,
+  columns,
   onSuccess,
 }: UseCreateCardWithImageProps) {
   const [isCreating, setIsCreating] = useState(false);
@@ -21,11 +38,19 @@ export function useCreateCardWithImage({
     const assigneeUserId = card.assigneeUserId ?? defaultAssigneeId;
 
     if (!assigneeUserId) {
-      throw new Error('담당자를 선택해주세요.');
+      showToast.error('담당자를 선택해주세요.');
+      return;
     }
 
     try {
       setIsCreating(true);
+
+      const isDuplicate = await checkDuplicateTitleInDashboard(columns, card.title);
+
+      if (isDuplicate) {
+        showToast.error('이미 같은 제목의 할 일이 있습니다.');
+        return;
+      }
 
       let imageUrl = card.imageUrl;
 
@@ -43,10 +68,11 @@ export function useCreateCardWithImage({
         imageUrl,
       });
 
+      showToast.success('할 일이 생성되었습니다.');
       onSuccess?.(columnId);
     } catch (error) {
       console.error('카드 생성 실패:', error);
-      throw error;
+      showToast.error('카드 생성에 실패했습니다.');
     } finally {
       setIsCreating(false);
     }

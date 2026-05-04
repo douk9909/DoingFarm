@@ -1,12 +1,35 @@
 import { useState } from 'react';
 import { cardApi, type UpdateCardRequest } from '@/lib/api/card';
 import { cardImageApi } from '@/lib/api/cardImage';
+import { showToast } from '@/lib/utils/toast';
+import type { TodoColumnOption } from '@/types/todo';
 
 interface UseUpdateCardWithImageProps {
+  columns: TodoColumnOption[];
   onSuccess?: (columnId: number) => void;
 }
 
-export function useUpdateCardWithImage({ onSuccess }: UseUpdateCardWithImageProps) {
+const normalizeTitle = (title: string) => title.trim().toLowerCase();
+
+const checkDuplicateTitleInDashboard = async (
+  columns: TodoColumnOption[],
+  title: string,
+  currentCardId: number,
+) => {
+  const normalized = normalizeTitle(title);
+
+  const cardLists = await Promise.all(
+    columns.map((column) => cardApi.getList({ columnId: column.id, size: 100 })),
+  );
+
+  return cardLists.some((res) =>
+    res.data.cards.some(
+      (card) => card.id !== currentCardId && normalizeTitle(card.title) === normalized,
+    ),
+  );
+};
+
+export function useUpdateCardWithImage({ columns, onSuccess }: UseUpdateCardWithImageProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   const updateCard = async (
@@ -16,6 +39,13 @@ export function useUpdateCardWithImage({ onSuccess }: UseUpdateCardWithImageProp
   ) => {
     try {
       setIsEditing(true);
+
+      const isDuplicate = await checkDuplicateTitleInDashboard(columns, card.title, cardId);
+
+      if (isDuplicate) {
+        showToast.error('이미 같은 제목의 할 일이 있습니다.');
+        return;
+      }
 
       let imageUrl = card.imageUrl;
 
@@ -30,10 +60,11 @@ export function useUpdateCardWithImage({ onSuccess }: UseUpdateCardWithImageProp
         imageUrl,
       });
 
+      showToast.success('할 일이 수정되었습니다.');
       onSuccess?.(card.columnId);
     } catch (error) {
       console.error('카드 수정 실패:', error);
-      throw error;
+      showToast.error('카드 수정에 실패했습니다.');
     } finally {
       setIsEditing(false);
     }
