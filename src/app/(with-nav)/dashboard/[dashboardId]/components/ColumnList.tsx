@@ -2,25 +2,55 @@
 
 import { useState } from 'react';
 import TodoCreateModal from '@/components/dashboard/todoCreate/TodoCreateModal';
+import TodoView from '@/components/dashboard/todoView/TodoView';
 import { memberApi, type Member } from '@/lib/api/member';
 import { useCreateCardWithImage } from '@/hooks/mutations/useCreateCardWithImage';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { columnApi } from '@/lib/api/column';
+import { dashboardApi } from '@/lib/api/dashboard';
+import { apiClient } from '@/lib/api/client';
 import type { Column as ColumnType } from '@/types/column';
+import type { Card } from '@/types/card';
+import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
+import AddColumnButton from './AddColumnButton';
+import AddColumnModal from './modal/AddColumnModal';
+import ColumnRefetchContext from './ColumnRefetchContext';
+import { showToast } from '@/lib/utils/toast';
 
 const MEMBER_PAGE_SIZE = 100;
 
-export default function ColumnList({ dashboardId }: { dashboardId: number }) {
+interface SelectedCard {
+  cardId: number;
+  columnId: number;
+  columnTitle: string;
+}
+
+export default function ColumnList({
+  dashboardId,
+  dashboardTitle,
+}: {
+  dashboardId: number;
+  dashboardTitle?: string;
+}) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedColumnId, setSelectedColumnId] = useState<number | null>(null);
   const [refreshKeyByColumnId, setRefreshKeyByColumnId] = useState<Record<number, number>>({});
 
-  // 컬럼 조회
+  const [selectedCard, setSelectedCard] = useState<SelectedCard | null>(null);
+
+  // 대시보드 정보 조회
+  const { data: dashboardData } = useFetch(() =>
+    dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
+  );
+
+  const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title;
   const {
     data: columnData,
     isLoading: isColumnLoading,
     error: columnError,
+    refetch,
   } = useFetch(() => columnApi.getList(dashboardId).then((res) => ({ data: res.data })));
 
   // 대시보드 멤버 조회
@@ -34,6 +64,11 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
       .then((res) => ({ data: res.data })),
   );
 
+  // 현재 로그인 유저 조회
+  const { data: currentUser, isLoading: isUserLoading } = useFetch(() =>
+    apiClient.get<User>('/users/me').then((res) => ({ data: res.data })),
+  );
+
   const columns = columnData?.data ?? [];
 
   // 담당자 드롭다운에 사용할 멤버 목록 변환
@@ -42,6 +77,14 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
       id: member.userId,
       nickname: member.nickname,
     })) ?? [];
+
+  const handleAddButton = () => {
+    if (columns.length >= 10) {
+      showToast.error('컬럼은 10개까지만 생성 가능합니다.');
+      return;
+    }
+    setIsModalOpen(true);
+  };
 
   const handleOpenTodoCreateModal = (columnId: number) => {
     setSelectedColumnId(columnId);
@@ -67,21 +110,51 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
     },
   });
 
-  if (isColumnLoading || isMemberLoading) return <div>로딩 중...</div>;
+  const handleCardClick = (cardId: number, columnId: number, columnTitle: string) => {
+    setSelectedCard({ cardId, columnId, columnTitle });
+  };
+
+  const handleCloseTodoView = () => {
+    setSelectedCard(null);
+  };
+
+  const handleCardDeleted = (_cardId: number) => {
+    if (selectedCard) {
+      refreshColumn(selectedCard.columnId);
+    }
+    setSelectedCard(null);
+  };
+
+  const handleEditCard = (_card: Card) => {
+    // TODO: 수정 모달 연결
+  };
+
+  if (isColumnLoading || isMemberLoading || isUserLoading) return <div>로딩 중...</div>;
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
 
   return (
-    <>
-      <div className={styles.columnList}>
-        {columns.map((column: ColumnType) => (
+    <ColumnRefetchContext.Provider value={refetch}>
+      <div className={`${styles.columnList} custom-scrollbar`}>
+        {columns.map((column: ColumnType, index) => (
           <Column
             key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
             id={column.id}
             title={column.title}
+            index={index}
             onAddCard={() => handleOpenTodoCreateModal(column.id)}
+            existingTitles={columns.map((col) => col.title)}
+            onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
           />
         ))}
+        <AddColumnButton onClick={handleAddButton} />
+        {isModalOpen && (
+          <AddColumnModal
+            dashboardId={dashboardId}
+            onClose={() => setIsModalOpen(false)}
+            existingTitles={columns.map((col) => col.title)}
+          />
+        )}
       </div>
 
       {selectedColumnId ? (
@@ -94,6 +167,20 @@ export default function ColumnList({ dashboardId }: { dashboardId: number }) {
           onCreate={createCard}
         />
       ) : null}
-    </>
+
+      {selectedCard !== null && currentUser && (
+        <TodoView
+          cardId={selectedCard.cardId}
+          columnId={selectedCard.columnId}
+          dashboardId={dashboardId}
+          dashboardTitle={resolvedDashboardTitle}
+          columnTitle={selectedCard.columnTitle}
+          currentUser={currentUser}
+          onClose={handleCloseTodoView}
+          onCardDeleted={handleCardDeleted}
+          onEditCard={handleEditCard}
+        />
+      )}
+    </ColumnRefetchContext.Provider>
   );
 }

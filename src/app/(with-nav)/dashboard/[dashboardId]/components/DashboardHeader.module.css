@@ -39,7 +39,7 @@
 
 @media (min-width: 1200px) {
   .header {
-    padding: 24px 50px 14px 50px;
+    padding: 24px 0 14px;
   }
 
   .hashTag {

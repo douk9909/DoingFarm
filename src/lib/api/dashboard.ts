@@ -13,9 +13,7 @@ interface GetDashboardsPaginationParams {
   size?: number;
 }
 
-export type GetDashboardsParams =
-  | GetDashboardsInfiniteScrollParams
-  | GetDashboardsPaginationParams;
+export type GetDashboardsParams = GetDashboardsInfiniteScrollParams | GetDashboardsPaginationParams;
 
 export interface GetDashboardsResponse {
   cursorId: number;
@@ -45,17 +43,6 @@ export interface DashboardInvitation {
 
 export interface GetInvitationsResponse {
   totalCount: number;
-  invitations: DashboardInvitation[];
-}
-
-export interface GetReceivedInvitationsParams {
-  cursorId?: number;
-  size?: number;
-  title?: string;
-}
-
-export interface GetReceivedInvitationsResponse {
-  cursorId: number | null;
   invitations: DashboardInvitation[];
 }
 
@@ -90,17 +77,4 @@ export const dashboardApi = {
 
   cancelInvitation: (dashboardId: number, invitationId: number) =>
     apiClient.delete(`/dashboards/${dashboardId}/invitations/${invitationId}`),
-
-  // 받은 초대 목록은 cursor 기반이라 홈 화면 무한스크롤에서 사용
-  getReceivedInvitations: (params?: GetReceivedInvitationsParams, signal?: AbortSignal) =>
-    apiClient.get<GetReceivedInvitationsResponse>('/invitations', { params, signal }),
-
-  // 수락하면 해당 대시보드가 내 목록에 추가됨
-  acceptInvitation: (invitationId: number) =>
-    apiClient.put<DashboardInvitation>(`/invitations/${invitationId}`, {
-      inviteAccepted: true,
-    }),
-
-  // 거절하면 받은 초대 목록에서 제거됨
-  rejectInvitation: (invitationId: number) => apiClient.delete(`/invitations/${invitationId}`),
 };

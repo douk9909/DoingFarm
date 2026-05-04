@@ -1,8 +1,11 @@
 'use client';
 
+import axios from 'axios';
 import { useRef, useState } from 'react';
 
 import { dashboardApi } from '@/lib/api/dashboard';
+import { showToast } from '@/lib/utils/toast';
+import type { ApiError } from '@/lib/api/client';
 import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
@@ -65,12 +68,13 @@ export default function EditForm({
       onColorUpdate(color);
       notifyDashboardCreated();
 
-      // Todo: 토스트 띄우기로 변경 완료 알림
-      alert('변경되었습니다');
+      showToast.success('변경되었습니다');
     } catch (error) {
-      // Todo: 토스트 띄우기로 오류알림
-      console.error('대시보드 정보를 수정하는 중 오류 발생:', error);
-      alert('변경에 실패했습니다. 다시 시도해주세요.');
+      const message =
+        axios.isAxiosError<ApiError>(error) && error.response?.data?.message
+          ? error.response.data.message
+          : '대시보드 수정 중 오류 발생';
+      showToast.error(message);
     } finally {
       setIsLoading(false);
       isFetching.current = false;

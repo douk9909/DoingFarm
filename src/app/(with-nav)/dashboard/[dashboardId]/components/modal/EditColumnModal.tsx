@@ -1,0 +1,121 @@
+import Modal from '@/components/common/modal/Modal';
+import Input from '@/components/common/input';
+import { useState } from 'react';
+import { columnApi } from '@/lib/api/column';
+import Button from '@/components/common/button/Button';
+import styles from './EditColumnModal.module.css';
+import Image from 'next/image';
+import characterImg from '@/assets/character/carrot1.svg';
+import { useColumnRefetch } from '../ColumnRefetchContext';
+import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
+
+interface EditColumnModalProps {
+  onClose: () => void;
+  columnId: number;
+  currentTitle: string;
+  existingTitles: string[];
+}
+
+export default function EditColumnModal({
+  onClose,
+  columnId,
+  currentTitle,
+  existingTitles,
+}: EditColumnModalProps) {
+  const [title, setTitle] = useState(currentTitle);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState('');
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+  const isDisabled = title.trim() === '';
+
+  const refetch = useColumnRefetch();
+
+  const changeTitle = async () => {
+    if (existingTitles.includes(title.trim())) {
+      setError('중복된 컬럼명입니다.');
+      return;
+    }
+
+    setIsPending(true);
+    try {
+      await columnApi.update(columnId, { title });
+      refetch();
+      onClose();
+    } catch {
+      setError('이름을 변경하는데 실패했습니다.');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const deleteColumn = async () => {
+    setIsPending(true);
+    try {
+      await columnApi.delete(columnId);
+      refetch();
+      onClose();
+    } catch {
+      setError('컬럼 삭제에 실패했습니다');
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <>
+      {!isConfirmOpen && (
+        <Modal contentClassName={styles.editColumnModal} title="컬럼 관리" onClose={onClose}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              changeTitle();
+            }}
+          >
+            <Image
+              src={characterImg}
+              alt="캐릭터 이미지"
+              width={60}
+              height={72}
+              className={styles.characterImage}
+            />
+            <Input.Text
+              value={title}
+              type="text"
+              label="이름"
+              onChange={(e) => {
+                setTitle(e.target.value);
+                if (error) setError('');
+              }}
+              status={error ? 'error' : 'default'}
+              errorMsg={error}
+            />
+            <div className={styles.buttonWrapper}>
+              <Button
+                type="button"
+                onClick={() => setIsConfirmOpen(true)}
+                className={`${styles.button} ${styles.delete}`}
+                disabled={isPending}
+              >
+                삭제
+              </Button>
+              <Button disabled={isDisabled || isPending} type="submit" className={styles.button}>
+                변경
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={deleteColumn}
+        title="컬럼을 삭제하시겠습니까?"
+        message="컬럼 내 모든 카드도 함께 삭제됩니다."
+        confirmText="삭제"
+        isLoading={isPending}
+      />
+    </>
+  );
+}

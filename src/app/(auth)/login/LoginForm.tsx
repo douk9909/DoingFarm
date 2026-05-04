@@ -60,7 +60,6 @@ export default function LoginForm() {
           } else {
             setEmailError(message);
           }
-          showToast.error(message);
         }
       }}
     >

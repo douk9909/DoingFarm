@@ -4,10 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
+import TrashIcon from '@/assets/icons/TrashIcon';
 import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
 import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
-import { TextInput } from '@/components/common/input/TextInput';
+import Input from '@/components/common/input';
+import Button from '@/components/common/button/Button';
 import { userApi } from '@/lib/api/user';
+import { showToast } from '@/lib/utils/toast';
 import type { User } from '@/types/user';
 import styles from './page.module.css';
 
@@ -46,16 +49,22 @@ export default function MyPage() {
     });
   }, []);
 
+  const handleImageDelete = () => {
+    setProfileImageUrl(null);
+    setIsImageChanged(true);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      alert('JPG, PNG, GIF, WEBP 형식의 이미지만 업로드할 수 있습니다.');
+      showToast.error('JPG, PNG, GIF, WEBP 형식의 이미지만 업로드할 수 있습니다.');
       return;
     }
     if (file.size > MAX_IMAGE_SIZE) {
-      alert('이미지 크기는 5MB 이하여야 합니다.');
+      showToast.error('이미지 크기는 5MB 이하여야 합니다.');
       return;
     }
 
@@ -64,7 +73,7 @@ export default function MyPage() {
       setProfileImageUrl(res.data.profileImageUrl);
       setIsImageChanged(true);
     } catch {
-      alert('이미지 업로드에 실패했습니다.');
+      showToast.error('이미지 업로드에 실패했습니다.');
     }
   };
 
@@ -87,9 +96,9 @@ export default function MyPage() {
       const res = await userApi.updateMe({ nickname, profileImageUrl });
       setUser(res.data);
       setIsImageChanged(false);
-      alert('프로필이 저장되었습니다.');
+      showToast.success('프로필이 저장되었습니다.');
     } catch (err) {
-      alert(err instanceof Error ? err.message : '저장에 실패했습니다.');
+      showToast.error(err instanceof Error ? err.message : '저장에 실패했습니다.');
     } finally {
       setIsProfileLoading(false);
     }
@@ -121,12 +130,12 @@ export default function MyPage() {
     setIsPasswordLoading(true);
     try {
       await userApi.updatePassword({ password: currentPassword, newPassword });
-      alert('비밀번호가 변경되었습니다.');
+      showToast.success('비밀번호가 변경되었습니다.');
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
     } catch (err) {
-      alert(err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다.');
+      showToast.error(err instanceof Error ? err.message : '비밀번호 변경에 실패했습니다.');
     } finally {
       setIsPasswordLoading(false);
     }
@@ -173,6 +182,18 @@ export default function MyPage() {
                 <span className={styles.avatarPlus}>+</span>
               )}
             </button>
+            {profileImageUrl && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className={styles.avatarDeleteButton}
+                onClick={handleImageDelete}
+                aria-label="프로필 사진 삭제"
+              >
+                <TrashIcon size={20} />
+                삭제
+              </Button>
+            )}
             <input
               ref={fileInputRef}
               type="file"
@@ -183,7 +204,7 @@ export default function MyPage() {
           </div>
 
           <form className={styles.profileForm} onSubmit={handleProfileSave}>
-            <TextInput
+            <Input.Text
               label="이메일"
               id="email"
               type="email"
@@ -191,10 +212,10 @@ export default function MyPage() {
               isDisabled
               readOnly
             />
-            <TextInput
+            <Input.Text
               label="닉네임"
               id="nickname"
-              type="nickname"
+              type="text"
               value={nickname}
               status={nicknameError ? 'error' : 'default'}
               errorMsg={nicknameError}
@@ -205,13 +226,14 @@ export default function MyPage() {
               onBlur={() => validateNickname(nickname)}
               placeholder="닉네임을 입력해 주세요"
             />
-            <button
+            <Button
               type="submit"
               className={styles.submitButton}
               disabled={!isProfileValid || isProfileLoading}
+              useDisabledOpacity={false}
             >
               {isProfileLoading ? '저장 중...' : '저장'}
-            </button>
+            </Button>
           </form>
         </div>
       </section>
@@ -220,7 +242,7 @@ export default function MyPage() {
         <h2 className={styles.sectionTitle}>비밀번호 변경</h2>
 
         <form className={styles.passwordCard} onSubmit={handlePasswordChange}>
-          <TextInput
+          <Input.Text
             label="현재 비밀번호"
             id="currentPassword"
             type={showCurrent ? 'text' : 'password'}
@@ -232,7 +254,7 @@ export default function MyPage() {
             }
             onRightIconClick={() => setShowCurrent((v) => !v)}
           />
-          <TextInput
+          <Input.Text
             label="새 비밀번호"
             id="newPassword"
             type={showNew ? 'text' : 'password'}
@@ -251,7 +273,7 @@ export default function MyPage() {
             rightIcon={showNew ? <VisibilityOnIcon size={20} /> : <VisibilityOffIcon size={20} />}
             onRightIconClick={() => setShowNew((v) => !v)}
           />
-          <TextInput
+          <Input.Text
             label="새 비밀번호 확인"
             id="confirmPassword"
             type={showConfirm ? 'text' : 'password'}
@@ -270,13 +292,14 @@ export default function MyPage() {
             }
             onRightIconClick={() => setShowConfirm((v) => !v)}
           />
-          <button
+          <Button
             type="submit"
             className={styles.submitButton}
             disabled={!isPasswordValid || isPasswordLoading}
+            useDisabledOpacity={false}
           >
             {isPasswordLoading ? '변경 중...' : '변경'}
-          </button>
+          </Button>
         </form>
       </section>
     </div>
