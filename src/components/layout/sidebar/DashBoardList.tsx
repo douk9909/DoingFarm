@@ -21,12 +21,12 @@ export default function DashBoardList() {
   const { pinnedIds, togglePin, isPinned } = usePinnedDashboards();
 
   const { pinnedDashboards, unpinnedDashboards } = useMemo(() => {
-    const pinned = dashboards.filter((d) => pinnedIds.includes(d.id));
+    const pinned = dashboards.filter((d) => isPinned(d.id));
 
     pinned.sort((a, b) => pinnedIds.indexOf(a.id) - pinnedIds.indexOf(b.id));
-    const unpinned = dashboards.filter((d) => !pinnedIds.includes(d.id));
+    const unpinned = dashboards.filter((d) => !isPinned(d.id));
     return { pinnedDashboards: pinned, unpinnedDashboards: unpinned };
-  }, [dashboards, pinnedIds]);
+  }, [dashboards, pinnedIds, isPinned]);
 
   return (
     <div className={styles.sideMenu}>
@@ -67,21 +67,19 @@ export default function DashBoardList() {
           </div>
         )}
 
-        {unpinnedDashboards.map((dashboard, index) => (
-          <div
+        {unpinnedDashboards.map((dashboard) => (
+          <DashBoardItem
             key={dashboard.id}
-            ref={index === unpinnedDashboards.length - 1 ? lastItemRef : null}
-          >
-            <DashBoardItem
-              id={dashboard.id}
-              title={dashboard.title}
-              color={dashboard.color}
-              createdByMe={dashboard.createdByMe}
-              pinned={false}
-              onTogglePin={togglePin}
-            />
-          </div>
+            id={dashboard.id}
+            title={dashboard.title}
+            color={dashboard.color}
+            createdByMe={dashboard.createdByMe}
+            pinned={false}
+            onTogglePin={togglePin}
+          />
         ))}
+
+        <div ref={lastItemRef} />
       </div>
     </div>
   );
