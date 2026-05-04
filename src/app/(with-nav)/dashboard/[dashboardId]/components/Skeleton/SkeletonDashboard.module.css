@@ -11,11 +11,6 @@
   width: 150px;
 }
 
-.addBtn {
-  width: 187px;
-  height: 52px;
-}
-
 /* column */
 .columnContainer {
   display: flex;

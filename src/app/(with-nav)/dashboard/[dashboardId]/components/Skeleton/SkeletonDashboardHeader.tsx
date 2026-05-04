@@ -6,7 +6,6 @@ export default function SkeletonDashboardHeader() {
   return (
     <div className={styles.headerWrapper}>
       <div className={`${skeleton} ${styles.title}`} />
-      <div className={`${skeleton} ${styles.addBtn}`} />
     </div>
   );
 }
