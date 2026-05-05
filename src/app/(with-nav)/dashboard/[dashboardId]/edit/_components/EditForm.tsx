@@ -10,7 +10,7 @@ import { DASHBOARD_COLOR_HEX_MAP, DashboardColor } from '@/lib/constants/color';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
 import ColorPicker from '@/components/common/ColorPicker/ColorPicker';
-import Input from '@/components/common/input';
+import Input from '@/components/common/Input';
 import Button from '@/components/common/Button/Button';
 
 import styles from '../edit.module.css';
