@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -15,6 +15,8 @@ import DeleteDashboardButton from './_components/DeleteDashboardButton';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 
 import styles from './edit.module.css';
+import SkeletonSettingSection from './_components/Skeleton/SkeletonSettingSection';
+import SkeletonListSection from './_components/Skeleton/SkeletonListSection';
 
 interface DashboardEditPageProps {
   params: Promise<{
@@ -38,13 +40,30 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
   const dashboardTitle = updatedDashboardTitle ?? dashboardData?.title ?? '';
   const dashboardColor = updatedDashboardColor ?? dashboardData?.color ?? '';
 
-  // Todo: 로딩 컴포넌트 추가
-  if (isLoading) return <div>로딩 중...</div>;
+  useEffect(() => {
+    if (!isLoading && (error || !dashboardData)) {
+      router.push('/not-found');
+    }
+  }, [isLoading, error, dashboardData, router]);
 
-  if (error || !dashboardData) {
-    router.push('/not-found');
-    return null;
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <Link href={`/dashboard/${dashboardId}`} className={styles.prevButton}>
+          <ArrowLeftIcon size={20} />
+          <span>돌아가기</span>
+        </Link>
+        <div className={styles.contentWrapper}>
+          <SkeletonSettingSection />
+          <SkeletonListSection />
+          <SkeletonListSection />
+          <div className={styles.skeletonDeleteButton} />
+        </div>
+      </div>
+    );
   }
+
+  if (error || !dashboardData) return null;
 
   return (
     <section className={styles.container}>
@@ -52,6 +71,7 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
         <ArrowLeftIcon size={20} />
         <span>돌아가기</span>
       </Link>
+
       <div className={styles.contentWrapper}>
         {dashboardData && (
           <EditForm

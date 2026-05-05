@@ -25,6 +25,7 @@ import type { Comment } from '@/types/comment';
 import type { User } from '@/types/user';
 
 import styles from './TodoView.module.css';
+import SkeletonTodoViewContent from './SkeletonTodoViewContent';
 
 function formatDateTime(date: string | Date) {
   const d = new Date(date);
@@ -327,7 +328,7 @@ export default function TodoViewContent({
   if (cardLoading || !card) {
     return (
       <div className={styles.loadingWrapper}>
-        <span className={styles.loadingText}>불러오는 중...</span>
+        <SkeletonTodoViewContent />
       </div>
     );
   }
