@@ -1,6 +1,7 @@
 'use client';
 
-import { DndContext, type DragEndEvent } from '@dnd-kit/core';
+import { DndContext, DragOverlay, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
+import CardComponent from '@/components/common/card/Card';
 
 import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
@@ -52,6 +53,7 @@ export default function ColumnList({
   const [refreshKeyByColumnId, setRefreshKeyByColumnId] = useState<Record<number, number>>({});
   const [cardTitleCache, setCardTitleCache] = useState<CardTitleCacheItem[]>([]);
   const [isTitleCacheReady, setIsTitleCacheReady] = useState(false);
+  const [activeCard, setActiveCard] = useState<Card | null>(null);
 
   // 대시보드 정보 조회
   const { data: dashboardData } = useFetch(() =>
@@ -260,7 +262,12 @@ export default function ColumnList({
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
 
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveCard(event.active.data.current?.card as Card);
+  };
+
   const handleDragEnd = async (event: DragEndEvent) => {
+    setActiveCard(null);
     const { active, over } = event;
 
     if (!over) return; //드롭 영역 밖에 놓으면 무시
@@ -286,7 +293,7 @@ export default function ColumnList({
 
   return (
     <ColumnRefetchContext.Provider value={refetch}>
-      <DndContext onDragEnd={handleDragEnd}>
+      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className={`${styles.columnList} custom-scrollbar`}>
           {columns.map((column: ColumnType, index) => (
             <Column
@@ -310,6 +317,20 @@ export default function ColumnList({
             />
           )}
         </div>
+        <DragOverlay>
+          {activeCard && (
+            <div style={{ opacity: 0.7 }}>
+              <CardComponent
+                id={activeCard.id}
+                title={activeCard.title}
+                tags={activeCard.tags}
+                dueDate={activeCard.dueDate}
+                assignee={activeCard.assignee}
+                src={activeCard.imageUrl}
+              />
+            </div>
+          )}
+        </DragOverlay>
       </DndContext>
 
       {selectedColumnId ? (
