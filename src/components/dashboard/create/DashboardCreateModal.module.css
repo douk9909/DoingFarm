@@ -1,5 +1,6 @@
 .dashboardCreateContent {
   overflow: visible;
+  max-height: none;
 }
 
 .characterImage {
