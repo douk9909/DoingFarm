@@ -18,9 +18,9 @@ export default function CheckActiveIcon({ size = 24, color, ...props }: CheckAct
       <rect width="20" height="20" fill={color || '#00a200'} rx="10" />
       <path
         stroke="#f8f8fa"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="2"
         d="m5 10 4 4 6-8"
       />
     </svg>
