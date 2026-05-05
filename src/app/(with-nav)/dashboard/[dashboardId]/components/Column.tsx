@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
-import Card from '@/components/common/card/Card';
+import Card from '@/components/common/Card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
