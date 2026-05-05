@@ -3,12 +3,12 @@
 import { useMemo, useState } from 'react';
 import Button from '@/components/common/Button/Button';
 import { Input } from '@/components/common/Input';
-import TodoDateField from '@/components/dashboard/todoForm/TodoDateField';
+import TodoDateField from '@/components/dashboard/TodoForm/TodoDateField';
 import TodoFormDropdown, {
   TodoDropdownAvatar,
-} from '@/components/dashboard/todoForm/TodoFormDropdown';
-import TodoImageField from '@/components/dashboard/todoForm/TodoImageField';
-import TodoTagField from '@/components/dashboard/todoForm/TodoTagField';
+} from '@/components/dashboard/TodoForm/TodoFormDropdown';
+import TodoImageField from '@/components/dashboard/TodoForm/TodoImageField';
+import TodoTagField from '@/components/dashboard/TodoForm/TodoTagField';
 import { useTodoImagePreview } from '@/hooks/ui/useTodoImagePreview';
 import { useTodoTags } from '@/hooks/ui/useTodoTags';
 import { TODO_ASSIGNEE_COLORS, getTodoAssigneeInitial } from '@/lib/constants/todo';
