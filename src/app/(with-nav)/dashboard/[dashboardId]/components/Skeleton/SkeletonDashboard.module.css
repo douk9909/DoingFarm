@@ -24,44 +24,52 @@
 .columnWrapper {
   width: 100%;
   height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   padding: 12px 14px;
   border-radius: 6px;
 }
 
-.columnText {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.lightSkeleton {
+  position: relative;
+  overflow: hidden;
+  /* 배경 일러스트가 비쳐 보이게 투명도 조절 */
+  background-color: rgba(44, 44, 46, 0.5);
+  border-radius: 8px;
+  /* 검정 박스처럼 툭 튀어나와 보이지 않게 투명도 낮게 시작 */
+  opacity: 0.7;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
-.icon {
-  width: 20px;
-  height: 20px;
+.lightSkeleton::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* 광택을 너무 밝지 않게 조절하여 눈의 피로도 감소 */
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+  animation: shimmer 2s infinite linear;
 }
 
-.columnTitle {
-  width: 100px;
-  height: 20px;
-}
-
-.count {
-  width: 16px;
-  height: 16px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.7;
+  }
 }
 
 @media (min-width: 1200px) {
-  .headerWrapper {
-    padding: 16px 50px;
+  .title {
+    height: 44px;
+    width: 150px;
   }
 
   .columnContainer {
     flex-direction: row;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 10px 50px 20px 50px;
   }
 
   .columnWrapper {
