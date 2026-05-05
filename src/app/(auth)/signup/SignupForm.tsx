@@ -5,8 +5,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
-import visibilityOn from '@/assets/icon/visibility_on.svg';
-import visibilityOff from '@/assets/icon/visibility_off.svg';
 import checkEmpty from '@/assets/icon/check_empty.svg';
 import checkActive from '@/assets/icon/check_active.svg';
 import Input from '@/components/common/input';
@@ -14,6 +12,8 @@ import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
 import { showToast } from '@/lib/utils/toast';
+import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
+import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,14 +59,7 @@ export default function SignupForm() {
     confirmPasswordError === '' &&
     agreed;
 
-  const EyeIcon = (
-    <Image
-      src={showPassword ? visibilityOn : visibilityOff}
-      alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-      width={24}
-      height={24}
-    />
-  );
+  const EyeIcon = showPassword ? <VisibilityOnIcon size={24} /> : <VisibilityOffIcon size={24} />;
 
   return (
     <form
