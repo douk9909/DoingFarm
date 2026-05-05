@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import CharacterImage from '@/assets/character/carrot1.svg';
 import styles from './LoadingSpinner.module.css';
+import React from 'react';
 
 export default function LoadingSpinner() {
   return (
@@ -8,14 +9,14 @@ export default function LoadingSpinner() {
       <div className={styles.container}>
         <div className={styles.spinnerWrapper}>
           {[...Array(8)].map((_, i) => (
-            <div key={i} className={styles.dot} style={{ '--i': i } as any} />
+            <div key={i} className={styles.dot} style={{ '--i': i } as React.CSSProperties} />
           ))}
 
           {/* 중앙 캐릭터 */}
           <div className={styles.characterBox}>
             <Image
               src={CharacterImage}
-              alt="래디시"
+              alt="캐릭터"
               width={60}
               height={70}
               className={styles.character}
