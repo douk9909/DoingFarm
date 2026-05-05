@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/TodoCreate/TodoCreate';
 import TodoEdit from '@/components/dashboard/TodoEdit/TodoEdit';
-import TodoView from '@/components/dashboard/todoView/TodoView';
+import TodoView from '@/components/dashboard/TodoView/TodoView';
 import { apiClient } from '@/lib/api/client';
 import { cardApi } from '@/lib/api/card';
 import { dashboardApi } from '@/lib/api/dashboard';
