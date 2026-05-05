@@ -1,22 +1,16 @@
+import styles from './SkeletonFooter.module.css';
 import base from '@/components/common/Skeleton/Skeleton.module.css';
 
 export default function SkeletonFooter() {
   const skeleton = base.skeletonBase;
 
   return (
-    <div
-      style={{
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}
-    >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+    <div className={styles.container}>
+      <div className={styles.userWrapper}>
         <div className={`${skeleton} ${base.avatar}`} />
-        <div className={`${skeleton}`} style={{ width: '60px', height: ' 30px' }} />
+        <div className={`${skeleton} ${styles.userName}`} />
       </div>
-      <div className={`${skeleton}`} style={{ width: '30px', height: '30px' }} />
+      <div className={`${skeleton} ${styles.icon}`} />
     </div>
   );
 }
