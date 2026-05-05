@@ -204,6 +204,13 @@
   opacity: 0.8;
 }
 
+.skeletonDeleteButton {
+  width: 320px;
+  height: 55px;
+  border-radius: var(--radius-sm);
+  background-color: #444444;
+}
+
 @media (min-width: 768px) {
   .container {
     padding: 20px;

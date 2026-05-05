@@ -16,6 +16,7 @@ import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 import UserPlusIcon from '@/assets/icons/UserPlusIcon';
 
 import styles from '../edit.module.css';
+import SkeletonListSection from './Skeleton/SkeletonListSection';
 
 interface InvitationsListProps {
   dashboardId: number;
@@ -77,6 +78,10 @@ export default function InvitationsList({ dashboardId }: InvitationsListProps) {
       window.removeEventListener('invitationUpdated', handler);
     };
   }, []);
+
+  if (isLoading && invitations.length === 0) {
+    return <SkeletonListSection />;
+  }
 
   return (
     <>

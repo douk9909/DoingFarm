@@ -12,9 +12,10 @@ import { PATH } from '@/lib/constants/path';
 import { authApi } from '@/lib/api/auth';
 import { removeToken } from '@/lib/utils/storage';
 import { showToast } from '@/lib/utils/toast';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { userApi } from '@/lib/api/user';
 import type { User } from '@/types/user';
+import SkeletonFooter from './SkeletonFooter';
 
 function isValidImageUrl(url: string | null | undefined): url is string {
   if (!url) return false;
@@ -79,7 +80,7 @@ export default function SidebarFooter() {
   if (isLoading) {
     return (
       <footer className={styles.footer}>
-        <span className={styles.userName}>로딩 중...</span>
+        <SkeletonFooter />
       </footer>
     );
   }

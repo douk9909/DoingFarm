@@ -1,0 +1,63 @@
+.container {
+  width: 100%;
+}
+
+.tableWrapper {
+  background: #1f1f24;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  align-items: center;
+  border-bottom: 1px solid #2a2a32;
+  padding-bottom: 10px;
+}
+
+.headerItem {
+  width: 60px;
+  height: 16px;
+}
+
+.headerItem:nth-child(3) {
+  justify-self: end;
+  margin-right: 86px;
+}
+
+.tableRow {
+  display: grid;
+  grid-template-columns: 3fr 1fr 1fr;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.rowName {
+  width: 100px;
+  height: 18px;
+}
+.rowInviter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.avatar {
+  width: 28px;
+  height: 28px;
+}
+.inviterName {
+  width: 60px;
+  height: 16px;
+}
+
+.rowBtns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn {
+  width: 70px;
+  height: 32px;
+  border-radius: 4px;
+}
