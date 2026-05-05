@@ -15,7 +15,7 @@ export default function CheckEmptyIcon({ size = 24, color, ...props }: CheckEmpt
       fill="none"
       {...props}
     >
-      <rect x="2" y="2" width="20" height="20" fill="#4b4b4b" stroke="#787486" rx="9.5" />
+      <rect x="2" y="2" width="20" height="20" fill="#4b4b4b" stroke="#787486" rx="10" />
     </svg>
   );
 }
