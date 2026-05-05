@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import { Input } from '@/components/common/input';
 import TodoDateField from '@/components/dashboard/todoForm/TodoDateField';
 import TodoFormDropdown, {
@@ -173,9 +173,7 @@ export default function TodoEditContent({
             selectedAssignee ? (
               <>
                 <TodoDropdownAvatar
-                  color={
-                    TODO_ASSIGNEE_COLORS[selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length]
-                  }
+                  color={TODO_ASSIGNEE_COLORS[selectedAssigneeIndex % TODO_ASSIGNEE_COLORS.length]}
                 >
                   {getTodoAssigneeInitial(selectedAssignee.nickname)}
                 </TodoDropdownAvatar>
@@ -196,9 +194,7 @@ export default function TodoEditContent({
           }}
           renderOption={(assignee, index) => (
             <>
-              <TodoDropdownAvatar
-                color={TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length]}
-              >
+              <TodoDropdownAvatar color={TODO_ASSIGNEE_COLORS[index % TODO_ASSIGNEE_COLORS.length]}>
                 {getTodoAssigneeInitial(assignee.nickname)}
               </TodoDropdownAvatar>
               {assignee.nickname}
