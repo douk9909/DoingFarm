@@ -1,7 +1,7 @@
 import styles from './SkeletonSettingSection.module.css';
 import base from '@/components/common/Skeleton/Skeleton.module.css';
 
-export default function EditTitleSkeleton() {
+export default function SkeletonSettingSection() {
   const skeleton = `${base.skeletonBase} ${base.rounded}`;
 
   return (

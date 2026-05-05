@@ -73,24 +73,18 @@ export default function DashboardEditPage({ params }: DashboardEditPageProps) {
       </Link>
 
       <div className={styles.contentWrapper}>
-        <Suspense fallback={<SkeletonSettingSection />}>
-          {dashboardData && (
-            <EditForm
-              dashboardId={id}
-              initialTitle={dashboardTitle}
-              initialColor={dashboardColor}
-              currentDisplayTitle={dashboardTitle}
-              onTitleUpdate={setUpdatedDashboardTitle}
-              onColorUpdate={setUpdatedDashboardColor}
-            />
-          )}
-        </Suspense>
-        <Suspense fallback={<SkeletonListSection />}>
-          <MembersList dashboardId={id} />
-        </Suspense>
-        <Suspense fallback={<SkeletonListSection />}>
-          <InvitationsList dashboardId={id} />
-        </Suspense>
+        {dashboardData && (
+          <EditForm
+            dashboardId={id}
+            initialTitle={dashboardTitle}
+            initialColor={dashboardColor}
+            currentDisplayTitle={dashboardTitle}
+            onTitleUpdate={setUpdatedDashboardTitle}
+            onColorUpdate={setUpdatedDashboardColor}
+          />
+        )}
+        <MembersList dashboardId={id} />
+        <InvitationsList dashboardId={id} />
         <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
