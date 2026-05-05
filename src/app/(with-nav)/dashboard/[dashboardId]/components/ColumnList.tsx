@@ -273,7 +273,7 @@ export default function ColumnList({
     if (!over) return; //드롭 영역 밖에 놓으면 무시
 
     const card = active.data.current?.card as Card;
-    const newColumnId = Number(over.id.toString().replace('column-', ''));
+    const newColumnId = over.data.current?.columnId as number;
 
     if (card.columnId === newColumnId) return; // 같은 컬럼이면 무시
 

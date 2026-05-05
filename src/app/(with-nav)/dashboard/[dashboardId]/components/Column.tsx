@@ -47,6 +47,7 @@ export default function Column({
 
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `column-${id}`,
+    data: { columnId: id },
   });
 
   const fetchCards = useCallback(
