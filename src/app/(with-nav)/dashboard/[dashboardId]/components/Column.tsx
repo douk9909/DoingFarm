@@ -14,6 +14,7 @@ import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
+import SkeletonCard from './Skeleton/SkeletonCard';
 
 export interface ColumnData {
   id: number;
@@ -53,7 +54,7 @@ export default function Column({
     [id],
   );
 
-  const { items, totalCount, error, lastItemRef, scrollContainerRef } =
+  const { items, totalCount, error, isLoading, lastItemRef, scrollContainerRef } =
     useInfiniteScroll<CardType>({
       fetcher: fetchCards,
     });
@@ -86,29 +87,33 @@ export default function Column({
       </button>
 
       <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
-        {items.map((card: CardType, cardIndex) => (
-          // wrapper div로 마지막 카드 감지
-          <div
-            key={card.id}
-            ref={cardIndex === items.length - 1 ? lastItemRef : null}
-            className={styles.cardWrapper}
-          >
-            <button
-              type="button"
-              className={styles.cardButton}
-              onClick={() => onCardClick?.(card.id)}
+        {isLoading && items.length === 0 ? (
+          <SkeletonCard />
+        ) : (
+          items.map((card: CardType, cardIndex) => (
+            // wrapper div로 마지막 카드 감지
+            <div
+              key={card.id}
+              ref={cardIndex === items.length - 1 ? lastItemRef : null}
+              className={styles.cardWrapper}
             >
-              <Card
-                id={card.id}
-                title={card.title}
-                tags={card.tags}
-                dueDate={card.dueDate}
-                assignee={card.assignee}
-                src={card.imageUrl}
-              />
-            </button>
-          </div>
-        ))}
+              <button
+                type="button"
+                className={styles.cardButton}
+                onClick={() => onCardClick?.(card.id)}
+              >
+                <Card
+                  id={card.id}
+                  title={card.title}
+                  tags={card.tags}
+                  dueDate={card.dueDate}
+                  assignee={card.assignee}
+                  src={card.imageUrl}
+                />
+              </button>
+            </div>
+          ))
+        )}
       </div>
 
       {isModalOpen && (

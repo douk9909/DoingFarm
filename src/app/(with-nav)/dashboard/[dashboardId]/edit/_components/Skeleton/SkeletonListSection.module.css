@@ -1,0 +1,61 @@
+.container {
+  width: 100%;
+  padding: 24px;
+  background-color: #1e1e24;
+  border-radius: 16px;
+  border: 1px solid #2a2a32;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.titleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.title {
+  height: 28px;
+  width: 80px;
+}
+.badge {
+  height: 24px;
+  width: 40px;
+}
+.paginationGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pagination {
+  height: 30px;
+  width: 80px;
+}
+
+.subTitle {
+  width: 40px;
+  height: 24px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #2a2a32;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.text {
+  height: 20px;
+  width: 128px;
+}

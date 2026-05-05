@@ -3,6 +3,8 @@
   display: flex;
   flex-direction: column;
   padding: 20px 10px;
+  flex: 1;
+  overflow: hidden;
 }
 
 .add {
@@ -77,6 +79,36 @@
   color: var(--color-gray-600);
   font: var(--text-sm-medium);
   line-height: 1.5;
+}
+
+.menus {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ── 고정 영역 ── */
+.pinnedSection {
+  position: relative;
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+}
+
+.pinnedSection::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 14px;
+  right: 14px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.08) 20%,
+    rgba(255, 255, 255, 0.08) 80%,
+    transparent
+  );
 }
 
 @media (hover: hover) and (pointer: fine) {

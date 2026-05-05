@@ -21,6 +21,7 @@ import AddColumnButton from './AddColumnButton';
 import AddColumnModal from './modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
 import { showToast } from '@/lib/utils/toast';
+import SkeletonColumnList from './Skeleton/SkeletonColumnList';
 
 const MEMBER_PAGE_SIZE = 100;
 const CARD_CACHE_SIZE = 1000;
@@ -80,7 +81,7 @@ export default function ColumnList({
     apiClient.get<User>('/users/me').then((res) => ({ data: res.data })),
   );
 
-  // ❗ columns를 useMemo로 감싸서 불필요한 리렌더 방지
+  // columns를 useMemo로 감싸서 불필요한 리렌더 방지
   const columns = useMemo(() => columnData?.data ?? [], [columnData]);
 
   const todoColumns = useMemo(
@@ -260,7 +261,7 @@ export default function ColumnList({
     },
   });
 
-  if (isColumnLoading || isMemberLoading || isUserLoading) return <div>로딩 중...</div>;
+  if (isColumnLoading || isMemberLoading || isUserLoading) return <SkeletonColumnList />;
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
 

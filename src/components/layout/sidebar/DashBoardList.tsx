@@ -1,4 +1,5 @@
 'use client';
+import { useMemo } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './DashBoardList.module.css';
@@ -9,13 +10,23 @@ import Image from 'next/image';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import { useDashboards } from '@/hooks/queries/useDashboards';
+import { usePinnedDashboards } from '@/hooks/ui/usePinnedDashboards';
 
 export default function DashBoardList() {
   const pathName = usePathname();
   const isHomeActive = pathName === PATH.MY_DASHBOARD;
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
-  // 생성 모달에서 version을 올리면 목록을 다시 불러옴
-  const { dashboards, isLoading, error } = useDashboards(dashboardListVersion);
+  const { dashboards, isLoading, error, lastItemRef, scrollContainerRef } =
+    useDashboards(dashboardListVersion);
+  const { pinnedIds, togglePin, isPinned } = usePinnedDashboards();
+
+  const { pinnedDashboards, unpinnedDashboards } = useMemo(() => {
+    const pinned = dashboards.filter((d) => isPinned(d.id));
+
+    pinned.sort((a, b) => pinnedIds.indexOf(a.id) - pinnedIds.indexOf(b.id));
+    const unpinned = dashboards.filter((d) => !isPinned(d.id));
+    return { pinnedDashboards: pinned, unpinnedDashboards: unpinned };
+  }, [dashboards, pinnedIds, isPinned]);
 
   return (
     <div className={styles.sideMenu}>
@@ -33,22 +44,43 @@ export default function DashBoardList() {
         </Link>
       </section>
 
-      <section className={styles.menus}>
+      <div ref={scrollContainerRef} className={`${styles.menus} custom-scrollbar`}>
         {isLoading ? <p className={styles.statusText}>대시보드를 불러오는 중</p> : null}
         {error ? <p className={styles.statusText}>{error}</p> : null}
         {!isLoading && !error && dashboards.length === 0 ? (
           <p className={styles.statusText}>대시보드가 없습니다</p>
         ) : null}
-        {dashboards.map((dashboard) => (
+
+        {pinnedDashboards.length > 0 && (
+          <div className={styles.pinnedSection}>
+            {pinnedDashboards.map((dashboard) => (
+              <DashBoardItem
+                key={dashboard.id}
+                id={dashboard.id}
+                title={dashboard.title}
+                color={dashboard.color}
+                createdByMe={dashboard.createdByMe}
+                pinned
+                onTogglePin={togglePin}
+              />
+            ))}
+          </div>
+        )}
+
+        {unpinnedDashboards.map((dashboard) => (
           <DashBoardItem
             key={dashboard.id}
             id={dashboard.id}
             title={dashboard.title}
             color={dashboard.color}
             createdByMe={dashboard.createdByMe}
+            pinned={false}
+            onTogglePin={togglePin}
           />
         ))}
-      </section>
+
+        <div ref={lastItemRef} />
+      </div>
     </div>
   );
 }

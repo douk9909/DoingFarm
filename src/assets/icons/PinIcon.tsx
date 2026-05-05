@@ -1,11 +1,12 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface PinIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
+  pinned?: boolean;
 }
 
-export default function PinIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function PinIcon({ size = 24, color, pinned = false, ...props }: PinIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -27,7 +28,22 @@ export default function PinIcon({ size = 24, color, ...props }: CheckActiveIconP
         <path fill="#d9d9d9" d="M0 0h24v24H0z" />
       </mask>
       <g mask="url(#a)">
-        <path fill={color || '#a39fb2'} d="m16 12 2 2v2h-5v6l-1 1-1-1v-6H6v-2l2-2V5H7V3h10v2h-1z" />
+        {pinned ? (
+          /* 고정 상태 */
+          <path
+            fill={color || 'currentColor'}
+            d="m16 12 2 2v2h-5v6l-1 1-1-1v-6H6v-2l2-2V5H7V3h10v2h-1z"
+          />
+        ) : (
+          /* 비고정 상태 */
+          <path
+            stroke={color || 'currentColor'}
+            strokeWidth={1.4}
+            strokeLinejoin="round"
+            fill="none"
+            d="m16 12 2 2v2h-5v6l-1 1-1-1v-6H6v-2l2-2V5H7V3h10v2h-1z"
+          />
+        )}
       </g>
     </svg>
   );
