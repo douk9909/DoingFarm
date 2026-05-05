@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils/cn';
 import { showToast } from '@/lib/utils/toast';
 
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/button/Button';
 
 import styles from './CommentForm.module.css';
