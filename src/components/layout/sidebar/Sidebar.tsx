@@ -39,9 +39,7 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
         <DashBoardList />
       </div>
 
-      <Suspense fallback={<SkeletonFooter />}>
-        <SidebarFooter />
-      </Suspense>
+      <SidebarFooter />
     </aside>
   );
 }
