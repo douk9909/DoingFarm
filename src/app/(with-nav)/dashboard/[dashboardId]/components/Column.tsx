@@ -12,7 +12,7 @@ import PlusIcon from '@/assets/icons/PlusIconCard';
 import SettingIcon from '@/assets/icons/SettingIcon';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
-import EditColumnModal from './modal/EditColumnModal';
+import EditColumnModal from './Modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import SkeletonCard from './Skeleton/SkeletonCard';
 
