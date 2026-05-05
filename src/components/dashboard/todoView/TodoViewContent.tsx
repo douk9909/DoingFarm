@@ -39,6 +39,18 @@ function formatDateTime(date: string | Date) {
   });
 }
 
+function formatDueDateTime(date: string | Date) {
+  const d = new Date(date);
+  return d.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Seoul',
+  });
+}
+
 function TempConfirmModal({
   message,
   onConfirm,
@@ -192,7 +204,7 @@ function SideInfo({
       {card.dueDate && (
         <div className={styles.sideSection}>
           <span className={styles.sideLabel}>마감일</span>
-          <span className={styles.sideValue}>{formatDateTime(card.dueDate)}</span>{' '}
+          <span className={styles.sideValue}>{formatDueDateTime(card.dueDate)}</span>{' '}
         </div>
       )}
     </>
