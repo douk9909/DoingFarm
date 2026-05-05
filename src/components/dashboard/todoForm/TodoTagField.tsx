@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '@/components/common/input';
+import Input from '@/components/common/Input';
 import type { TodoFormCard } from '@/types/todo';
 import styles from './TodoTagField.module.css';
 
@@ -41,9 +41,7 @@ export default function TodoTagField({
 
       {(trimmedValue || tags.length > 0) && (
         <div className={styles.tagPanel}>
-          {trimmedValue && (
-            <span className={styles.tagHint}>옵션 선택 또는 생성</span>
-          )}
+          {trimmedValue && <span className={styles.tagHint}>옵션 선택 또는 생성</span>}
 
           <div className={styles.tagList}>
             {trimmedValue && (

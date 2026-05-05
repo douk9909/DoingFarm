@@ -3,7 +3,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import Image from 'next/image';
 
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';

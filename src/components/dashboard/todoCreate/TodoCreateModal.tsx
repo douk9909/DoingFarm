@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import TodoCreateContent from './TodoCreateContent';
 import type { TodoCreateProps } from './TodoCreate';
 import styles from './TodoCreateModal.module.css';

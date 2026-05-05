@@ -1,4 +1,4 @@
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import Input from '@/components/common/Input';
 import { useState } from 'react';
 import { columnApi } from '@/lib/api/column';
