@@ -2,11 +2,12 @@
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
   width: calc(100% - 24px);
   margin: 0 auto;
   padding: 18px 0 22px;
+  gap: 12px;
 }
 
 .footer::before {
@@ -22,21 +23,23 @@
 .footerLogoLink {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   justify-self: start;
+  min-width: 0;
   text-decoration: none;
 }
 
 .footerBrandCarrot {
   display: block;
-  width: 24px;
+  width: 22px;
   height: auto;
-  transform: translateY(-7px);
+  flex-shrink: 0;
+  transform: translateY(-5px);
 }
 
 .footerLogo {
   display: block;
-  width: 110px;
+  width: 96px;
   height: auto;
 }
 
@@ -45,7 +48,10 @@
   align-items: center;
   justify-content: center;
   justify-self: center;
-  gap: 32px;
+  margin-right: 50px;
+  gap: 20px;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .footerTextLink {
@@ -71,7 +77,8 @@
   display: flex;
   align-items: center;
   justify-self: end;
-  gap: 14px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .socialLink {
@@ -106,15 +113,15 @@
   }
 
   .footerBrandCarrot {
-    width: 28px;
+    width: 24px;
   }
 
   .footerLogo {
-    width: 116px;
+    width: 104px;
   }
 
   .footerLinks {
-    gap: 36px;
+    gap: 24px;
   }
 
   .footerSocials {
@@ -129,7 +136,33 @@
 
 @media (min-width: 1200px) {
   .footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: calc(100% - 160px);
     padding: 24px 0 28px;
+  }
+
+  .footerLogoLink {
+    position: absolute;
+    left: 0;
+  }
+
+  .footerBrandCarrot {
+    width: 24px;
+    transform: translateY(-6px);
+  }
+
+  .footerLogo {
+    width: 104px;
+  }
+
+  .footerLinks {
+    gap: 36px;
+  }
+
+  .footerSocials {
+    position: absolute;
+    right: 0;
   }
 }

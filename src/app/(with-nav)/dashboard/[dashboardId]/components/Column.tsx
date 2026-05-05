@@ -74,6 +74,7 @@ export default function Column({
         </button>
       </div>
 
+      {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
       <button
         type="button"
         aria-label="카드 추가"

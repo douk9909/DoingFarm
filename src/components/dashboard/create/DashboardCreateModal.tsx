@@ -49,7 +49,11 @@ export default function DashboardCreateModal({ onClose, onCreated }: DashboardCr
   };
 
   return (
-    <Modal title="새 대시보드 생성" onClose={onClose}>
+    <Modal
+      title="새 대시보드 생성"
+      onClose={onClose}
+      contentClassName={styles.dashboardCreateContent}
+    >
       <Image
         src={characterImg}
         alt=""
@@ -58,6 +62,7 @@ export default function DashboardCreateModal({ onClose, onCreated }: DashboardCr
         className={styles.characterImage}
         aria-hidden
       />
+
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input.Text
           label="대시보드 이름"
