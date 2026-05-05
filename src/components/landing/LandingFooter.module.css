@@ -34,7 +34,7 @@
   width: 22px;
   height: auto;
   flex-shrink: 0;
-  transform: translateY(-6px);
+  transform: translateY(-5px);
 }
 
 .footerLogo {
@@ -48,6 +48,7 @@
   align-items: center;
   justify-content: center;
   justify-self: center;
+  margin-right: 50px;
   gap: 20px;
   min-width: 0;
   flex-wrap: wrap;
