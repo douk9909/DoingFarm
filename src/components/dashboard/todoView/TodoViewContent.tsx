@@ -7,7 +7,7 @@ import Modal from '@/components/common/modal/Modal';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
-import CommentForm from '@/components/common/commentForm/CommentForm';
+import CommentForm from '@/components/common/CommentForm/CommentForm';
 
 import EditIcon from '@/assets/icons/EditIcon';
 import TrashIcon from '@/assets/icons/TrashIcon';
