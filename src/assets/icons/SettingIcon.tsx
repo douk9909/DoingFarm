@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface SettingIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function SettingIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function SettingIcon({ size = 24, color, ...props }: SettingIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

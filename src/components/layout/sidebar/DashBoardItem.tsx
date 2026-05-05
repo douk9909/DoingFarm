@@ -1,11 +1,10 @@
 import type { MouseEvent } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './DashBoardItem.module.css';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
 import PinIcon from '@/assets/icons/PinIcon';
-import crownIcon from '@/assets/icon/ic_crown.svg';
+import CrownIcon from '@/assets/icons/CrownIcon';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
 interface DashBoardItemProps {
@@ -59,9 +58,7 @@ export default function DashBoardItem({
         </button>
       </div>
 
-      {createdByMe && (
-        <Image className={styles.crown} src={crownIcon} alt="" width={24} height={24} />
-      )}
+      {createdByMe && <CrownIcon size={24} />}
     </Link>
   );
 }

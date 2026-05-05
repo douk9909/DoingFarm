@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface FacebookIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function FacebookIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function FacebookIcon({ size = 24, color, ...props }: FacebookIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
