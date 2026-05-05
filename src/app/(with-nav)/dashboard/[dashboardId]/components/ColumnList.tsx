@@ -277,18 +277,22 @@ export default function ColumnList({
 
     if (card.columnId === newColumnId) return; // 같은 컬럼이면 무시
 
-    await cardApi.update(card.id, {
-      columnId: newColumnId,
-      assigneeUserId: card.assignee.id,
-      title: card.title,
-      description: card.description,
-      dueDate: card.dueDate,
-      tags: card.tags,
-      imageUrl: card.imageUrl ?? undefined,
-    });
+    try {
+      await cardApi.update(card.id, {
+        columnId: newColumnId,
+        assigneeUserId: card.assignee.id,
+        title: card.title,
+        description: card.description,
+        dueDate: card.dueDate,
+        tags: card.tags,
+        imageUrl: card.imageUrl ?? undefined,
+      });
 
-    refreshColumn(card.columnId);
-    refreshColumn(newColumnId);
+      refreshColumn(card.columnId);
+      refreshColumn(newColumnId);
+    } catch (error) {
+      showToast.error('카드 이동에 실패했습니다. 다시 시도해주세요.');
+    }
   };
 
   return (
