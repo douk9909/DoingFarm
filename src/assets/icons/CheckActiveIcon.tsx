@@ -15,13 +15,13 @@ export default function CheckActiveIcon({ size = 24, color, ...props }: CheckAct
       fill="none"
       {...props}
     >
-      <rect width="20" height="20" fill={color || '#00a200'} rx="10" />
+      <rect x="2" y="2" width="20" height="20" fill={color || '#00a200'} rx="10" />
       <path
         stroke="#f8f8fa"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"
-        d="m5 10 4 4 6-8"
+        d="m7 12 3 3 7-7"
       />
     </svg>
   );

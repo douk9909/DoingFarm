@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface CheckEmptyIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function CheckEmptyIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function CheckEmptyIcon({ size = 24, color, ...props }: CheckEmptyIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -15,7 +15,7 @@ export default function CheckEmptyIcon({ size = 24, color, ...props }: CheckActi
       fill="none"
       {...props}
     >
-      <rect width="19" height="19" x=".5" y=".5" fill="#4b4b4b" stroke="#787486" rx="9.5" />
+      <rect x="2" y="2" width="20" height="20" fill="#4b4b4b" stroke="#787486" rx="9.5" />
     </svg>
   );
 }

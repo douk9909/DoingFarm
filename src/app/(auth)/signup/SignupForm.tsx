@@ -143,7 +143,7 @@ export default function SignupForm() {
           onClick={() => setAgreed((prev) => !prev)}
           aria-pressed={agreed}
         >
-          {agreed ? <CheckActiveIcon /> : <CheckEmptyIcon />}
+          {agreed ? <CheckActiveIcon size={24} /> : <CheckEmptyIcon size={24} />}
           이용약관에 동의합니다.
         </button>
       </div>
