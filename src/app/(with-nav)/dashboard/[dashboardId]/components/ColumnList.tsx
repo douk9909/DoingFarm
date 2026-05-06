@@ -268,11 +268,17 @@ export default function ColumnList({
   });
 
   const clickSensor = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
+    useSensor(
+      PointerSensor,
+      useMemo(
+        () => ({
+          activationConstraint: {
+            distance: 8,
+          },
+        }),
+        [],
+      ),
+    ),
   );
 
   if (isColumnLoading || isMemberLoading || isUserLoading) return <SkeletonColumnList />;
