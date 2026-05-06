@@ -9,6 +9,9 @@ import type { Dashboard } from '@/types/dashboard';
 import { dashboardPageContent } from '../_content/dashboardContent';
 import styles from '../page.module.css';
 
+const COMPACT_DASHBOARD_PAGE_SIZE = 1;
+const DESKTOP_DASHBOARD_MEDIA_QUERY = '(min-width: 1200px)';
+
 interface MyDashboardHomeClientProps {
   initialDashboards: Dashboard[];
   dashboardTotalCount: number;
@@ -23,22 +26,43 @@ export default function MyDashboardHomeClient({
   initialError,
 }: MyDashboardHomeClientProps) {
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
-  // 서버에서 먼저 받아온 대시보드를 첫 화면에 바로 보여줌
+  // 서버가 먼저 가져온 값을 클라이언트 상태의 시작값으로 사용합니다.
+  // 발표에서는 이 부분을 "서버가 준비한 화면을 클라이언트가 이어받는다"라고 설명하면 됩니다.
   const [dashboards, setDashboards] = useState(initialDashboards);
   const [totalCount, setTotalCount] = useState(dashboardTotalCount);
   const [page, setPage] = useState(1);
+  const [activeDashboardPageSize, setActiveDashboardPageSize] = useState(dashboardPageSize);
   const [isLoadingDashboards, setIsLoadingDashboards] = useState(true);
   const [dashboardError, setDashboardError] = useState(initialError);
   const dashboardSection = dashboardPageContent.sections[0];
   const invitedSection = dashboardPageContent.sections[1];
 
   const totalPages = useMemo(
-    () => Math.max(1, Math.ceil(totalCount / dashboardPageSize)),
-    [dashboardPageSize, totalCount],
+    () => Math.max(1, Math.ceil(totalCount / activeDashboardPageSize)),
+    [activeDashboardPageSize, totalCount],
   );
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(DESKTOP_DASHBOARD_MEDIA_QUERY);
+
+    const updateDashboardPageSize = () => {
+      // PC는 한 화면에 대시보드 3개, 태블릿/모바일은 1개만 보여서 요청 개수도 화면에 맞춥니다.
+      setActiveDashboardPageSize(
+        mediaQuery.matches ? dashboardPageSize : COMPACT_DASHBOARD_PAGE_SIZE,
+      );
+    };
+
+    updateDashboardPageSize();
+    mediaQuery.addEventListener('change', updateDashboardPageSize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', updateDashboardPageSize);
+    };
+  }, [dashboardPageSize]);
 
   const fetchDashboardPage = useCallback(
     async (nextPage: number) => {
+      // 처음 이후의 페이지 이동은 사용자의 클릭으로 일어나기 때문에 클라이언트에서 다시 요청합니다.
       setIsLoadingDashboards(true);
       setDashboardError(null);
 
@@ -46,7 +70,7 @@ export default function MyDashboardHomeClient({
         const response = await dashboardApi.getList({
           navigationMethod: 'pagination',
           page: nextPage,
-          size: dashboardPageSize,
+          size: activeDashboardPageSize,
         });
 
         setDashboards(response.data.dashboards);
@@ -58,12 +82,12 @@ export default function MyDashboardHomeClient({
         setIsLoadingDashboards(false);
       }
     },
-    [dashboardPageSize],
+    [activeDashboardPageSize],
   );
 
   useEffect(() => {
     const timerId = window.setTimeout(() => {
-      // 새로고침으로 진입했을 때 서버 초기값이 비어 있어도 클라이언트에서 최신 목록을 다시 맞춤
+      // 서버 초기값을 먼저 보여준 뒤, 클라이언트에서 최신 목록을 한 번 더 맞춥니다.
       void fetchDashboardPage(1);
     }, 0);
 
@@ -76,7 +100,7 @@ export default function MyDashboardHomeClient({
     if (dashboardListVersion === 0) return;
 
     const timerId = window.setTimeout(() => {
-      // 생성 모달에서 새 대시보드를 만들면 홈 목록도 첫 페이지부터 다시 맞춤
+      // 새 대시보드를 만들면 목록과 페이지 수가 바뀔 수 있어서 첫 페이지부터 다시 가져옵니다.
       void fetchDashboardPage(1);
     }, 0);
 
