@@ -39,7 +39,8 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && hasNextPage && !isLoadingMore) {
-          // 아래 감지 영역이 보이면 cursor로 다음 초대 목록을 이어서 가져옴
+          // 목록 아래의 보이지 않는 감지 영역이 화면에 들어오면 다음 초대 목록을 가져옵니다.
+          // 사용자는 버튼을 누르지 않아도 아래로 내리기만 하면 다음 목록을 볼 수 있습니다.
           void loadMore();
         }
       },
@@ -54,7 +55,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
   }, [hasNextPage, isLoadingMore, loadMore]);
 
   if (!isLoading && !error && invitations.length === 0 && searchKeyword.trim() === '') {
-    // 초대를 하나도 받지 않은 첫 화면은 기존 빈 상태 패널 그대로 보여줌
+    // 초대를 하나도 받지 않은 첫 화면은 별도 목록 대신 빈 상태 안내를 보여줍니다.
     return <EmptyDashboardPanel section={emptySection} />;
   }
 
@@ -69,7 +70,8 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
             onChange={(event) => setInputKeyword(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
-                // Enter 입력 시 현재 input 값을 검색어로 확정해서 목록을 다시 불러옴
+                // 입력할 때마다 검색하지 않고, Enter를 눌렀을 때만 검색어를 확정합니다.
+                // 불필요한 API 요청을 줄이기 위한 분리입니다.
                 submitSearch();
               }
             }}

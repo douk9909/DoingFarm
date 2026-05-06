@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { DashboardInvitation } from '@/lib/api/dashboard';
 import { invitationApi } from '@/lib/api/invitations';
 import { useDashboards } from './useDashboards';
@@ -19,13 +19,10 @@ export function useReceivedInvitations(searchKeyword = '') {
   const hasNextPage = cursorId !== null;
 
   const { notifyDashboardCreated, dashboardListVersion } = useDashboardCreateModal();
-  const {
-    dashboards,
-    isLoading: isDashboardsLoading,
-    refetchDashboards,
-  } = useDashboards(dashboardListVersion);
+  const { dashboards, isLoading: isDashboardsLoading } = useDashboards(dashboardListVersion);
 
-  // 아직 응답을 하지 않은 초대 또는 이미 구성원이 된 대시보드가 아닌 경우 필터링하는 함수
+  // 이미 내 대시보드 목록에 들어온 초대는 화면에서 다시 보여주지 않도록 걸러냅니다.
+  // 예를 들어 초대를 수락한 직후 같은 항목이 초대 목록에 남아 보이는 상황을 막기 위한 처리입니다.
   const getFilteredInvitations = useCallback(
     (rawList: DashboardInvitation[]) => {
       const myDashboardIds = new Set(dashboards.map((d) => d.id));
@@ -37,6 +34,9 @@ export function useReceivedInvitations(searchKeyword = '') {
 
   const fetchFirstPage = useCallback(
     async (title: string, signal?: AbortSignal) => {
+      await Promise.resolve();
+      if (signal?.aborted) return;
+
       setIsLoading(true);
       setError(null);
 
@@ -68,18 +68,12 @@ export function useReceivedInvitations(searchKeyword = '') {
     [getFilteredInvitations],
   );
 
-  const fetchFirstPageRef = useRef(fetchFirstPage);
-
-  useEffect(() => {
-    fetchFirstPageRef.current = fetchFirstPage;
-  }, [fetchFirstPage]);
-
   useEffect(() => {
     if (isDashboardsLoading) return;
     const controller = new AbortController();
 
-    // 검색어가 확정되면 기존 목록 기준을 버리고 첫 페이지부터 다시 맞춤
-    fetchFirstPage(searchKeyword, controller.signal);
+    // 검색어가 바뀌면 이전 목록을 이어 붙이지 않고 첫 페이지부터 새로 조회합니다.
+    void Promise.resolve().then(() => fetchFirstPage(searchKeyword, controller.signal));
 
     return () => {
       controller.abort();
@@ -99,7 +93,7 @@ export function useReceivedInvitations(searchKeyword = '') {
         title: searchKeyword.trim() || undefined,
       });
 
-      // cursor 기반이라 다음 페이지는 기존 목록 뒤에 자연스럽게 붙임
+      // cursor 기반 목록이라 다음 페이지는 기존 목록 뒤에 이어 붙입니다.
       const filteredNewData = getFilteredInvitations(response.data.invitations);
       setInvitations((prev) => [...prev, ...filteredNewData]);
       setCursorId(response.data.cursorId);
@@ -112,7 +106,7 @@ export function useReceivedInvitations(searchKeyword = '') {
     }
   }, [cursorId, hasNextPage, isLoadingMore, searchKeyword, getFilteredInvitations]);
 
-  // 초대 수락
+  // 초대 수락: API 성공 후 초대 목록에서 제거하고 내 대시보드 목록을 다시 맞춥니다.
   const acceptInvitation = useCallback(
     async (invitationId: number, dashboardId: number) => {
       if (pendingInvitationId) return;
@@ -125,7 +119,7 @@ export function useReceivedInvitations(searchKeyword = '') {
 
         showToast.success('초대를 수락했습니다');
 
-        // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거
+        // 수락이 완료되면 받은 초대 목록에서 해당 항목을 제거합니다.
         setInvitations((prev) => prev.filter((inv) => inv.dashboard.id !== dashboardId));
 
         notifyDashboardCreated();
@@ -138,10 +132,10 @@ export function useReceivedInvitations(searchKeyword = '') {
         setPendingInvitationId(null);
       }
     },
-    [pendingInvitationId, refetchDashboards, notifyDashboardCreated],
+    [pendingInvitationId, notifyDashboardCreated],
   );
 
-  // 초대 거절
+  // 초대 거절: API 성공 후 현재 목록에서만 제거하면 됩니다.
   const rejectInvitation = useCallback(
     async (invitationId: number) => {
       if (pendingInvitationId) return;
@@ -153,7 +147,7 @@ export function useReceivedInvitations(searchKeyword = '') {
         await invitationApi.updateInvitation(invitationId, { inviteAccepted: false });
 
         showToast.success('초대를 거절했습니다');
-        // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거
+        // 거절이 완료되면 받은 초대 목록에서 해당 항목을 제거합니다.
         setInvitations((prev) => prev.filter((inv) => inv.id !== invitationId));
       } catch (rejectError) {
         setError(rejectError instanceof Error ? rejectError.message : '초대를 거절하지 못했어요');

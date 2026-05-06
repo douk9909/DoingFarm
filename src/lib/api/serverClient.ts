@@ -36,7 +36,8 @@ export async function serverApiRequest<T>(
     throw new Error('로그인이 필요합니다.');
   }
 
-  // 서버 컴포넌트에서 먼저 데이터를 가져올 때 쿠키 토큰으로 인증 요청
+  // 서버 컴포넌트는 localStorage를 읽을 수 없어서 cookie에 저장된 토큰으로 인증 요청을 보냅니다.
+  // 클라이언트용 Axios 인스턴스와 서버용 fetch client를 나눈 이유가 이 차이 때문입니다.
   const response = await fetch(getServerApiUrl(path, params), {
     ...init,
     cache: 'no-store',
@@ -50,9 +51,7 @@ export async function serverApiRequest<T>(
   if (!response.ok) {
     const errorData = await response.json().catch(() => null);
     const message =
-      typeof errorData?.message === 'string'
-        ? errorData.message
-        : '데이터를 불러오지 못했습니다.';
+      typeof errorData?.message === 'string' ? errorData.message : '데이터를 불러오지 못했습니다.';
 
     throw new Error(message);
   }

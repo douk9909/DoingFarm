@@ -8,13 +8,15 @@ import styles from './page.module.css';
 
 const DASHBOARD_PAGE_SIZE = 3;
 
+//첫 화면을 미리 준비해주는 역할
 export default async function MyDashboardPage() {
   let initialDashboards: Dashboard[] = [];
   let dashboardTotalCount = 0;
   let initialError: string | null = null;
 
   try {
-    // 서버에서 첫 페이지를 먼저 가져와 클라이언트 초기 화면에 넘겨줌
+    // 첫 화면에 바로 필요한 내 대시보드 목록은 서버에서 먼저 가져옵니다.
+    // 이렇게 하면 사용자가 페이지에 들어왔을 때 빈 화면 대신 준비된 목록을 먼저 볼 수 있습니다.
     const dashboardResponse = await serverDashboardApi.getList({
       navigationMethod: 'pagination',
       page: 1,
@@ -24,8 +26,7 @@ export default async function MyDashboardPage() {
     initialDashboards = dashboardResponse.dashboards;
     dashboardTotalCount = dashboardResponse.totalCount;
   } catch (error) {
-    initialError =
-      error instanceof Error ? error.message : '대시보드를 불러오지 못했어요';
+    initialError = error instanceof Error ? error.message : '대시보드를 불러오지 못했어요';
   }
 
   return (
@@ -48,6 +49,7 @@ export default async function MyDashboardPage() {
             <h1 className={styles.pageTitle}>{dashboardPageContent.pageTitle}</h1>
           </header>
 
+          {/* 서버에서 준비한 초기 데이터를 넘기고, 이후 클릭/검색/스크롤은 클라이언트 컴포넌트가 처리합니다. */}
           <MyDashboardHomeClient
             initialDashboards={initialDashboards}
             dashboardTotalCount={dashboardTotalCount}
