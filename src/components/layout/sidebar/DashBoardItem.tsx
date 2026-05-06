@@ -34,7 +34,7 @@ export default function DashBoardItem({
   onTogglePin,
 }: DashBoardItemProps) {
   const pathName = usePathname();
-  const isActive = pathName === `/dashboard/${id}`;
+  const isActive = pathName === `/dashboard/${id}` || pathName === `/dashboard/${id}/edit`;
   const hashTagColor = LEGACY_COLOR_MAP[color] ?? color;
 
   const handlePinClick = (e: MouseEvent<HTMLButtonElement>) => {
