@@ -1,7 +1,13 @@
+.dashboardCreateContent {
+  overflow: visible;
+  max-height: none;
+}
+
 .characterImage {
   position: absolute;
   top: -68px;
   right: 28px;
+  z-index: 1;
   width: 60px;
   height: 72px;
   object-fit: contain;

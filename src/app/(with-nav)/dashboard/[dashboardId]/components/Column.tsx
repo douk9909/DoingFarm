@@ -16,6 +16,7 @@ import { cardApi } from '@/lib/api/card';
 import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
+import SkeletonCard from './Skeleton/SkeletonCard';
 
 export interface ColumnData {
   id: number;
@@ -60,8 +61,8 @@ export default function Column({
     [id],
   );
 
-  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
-    {
+  const { items, totalCount, error, isLoading, lastItemRef, scrollContainerRef } =
+    useInfiniteScroll<CardType>({
       fetcher: fetchCards,
     },
   );
@@ -100,8 +101,11 @@ export default function Column({
         }}
         style={{ background: isOver ? 'rgba(255,255,255,0.1)' : undefined }}
         className={`${styles.cardList} custom-scrollbar`}
-      >
-        {items.map((card: CardType, cardIndex) => (
+      > 
+        {isLoading && items.length === 0 ? (
+          <SkeletonCard />
+        ) : (
+          items.map((card: CardType, cardIndex) => (
           // wrapper div로 마지막 카드 감지
           <div
             key={card.id}
@@ -110,7 +114,8 @@ export default function Column({
           >
             <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
           </div>
-        ))}
+        ))
+      )}
       </div>
 
       {isModalOpen && (

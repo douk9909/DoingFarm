@@ -6,6 +6,7 @@ import { dashboardApi } from '@/lib/api/dashboard';
 import { useFetch } from '@/hooks/queries/useFetch';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import SkeletonDashboardHeader from './Skeleton/SkeletonDashboardHeader';
 
 interface DashBoardHeaderProps {
   dashboardId: number;
@@ -23,7 +24,7 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
     }
   }, [error, router]);
 
-  if (isLoading) return <div>로딩 중...</div>;
+  if (isLoading) return <SkeletonDashboardHeader />;
 
   return (
     <header className={styles.header}>

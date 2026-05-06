@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface HomeIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function HomeIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function HomeIcon({ size = 24, color, ...props }: HomeIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface CloseIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function CloseIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function CloseIcon({ size = 24, color, ...props }: CloseIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

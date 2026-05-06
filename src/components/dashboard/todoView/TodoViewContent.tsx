@@ -25,6 +25,7 @@ import type { Comment } from '@/types/comment';
 import type { User } from '@/types/user';
 
 import styles from './TodoView.module.css';
+import SkeletonTodoViewContent from './SkeletonTodoViewContent';
 
 function formatDateTime(date: string | Date) {
   const d = new Date(date);
@@ -35,6 +36,18 @@ function formatDateTime(date: string | Date) {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: 'UTC',
+  });
+}
+
+function formatDueDateTime(date: string | Date) {
+  const d = new Date(date);
+  return d.toLocaleString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Seoul',
   });
 }
 
@@ -191,7 +204,7 @@ function SideInfo({
       {card.dueDate && (
         <div className={styles.sideSection}>
           <span className={styles.sideLabel}>마감일</span>
-          <span className={styles.sideValue}>{formatDateTime(card.dueDate)}</span>{' '}
+          <span className={styles.sideValue}>{formatDueDateTime(card.dueDate)}</span>{' '}
         </div>
       )}
     </>
@@ -327,7 +340,7 @@ export default function TodoViewContent({
   if (cardLoading || !card) {
     return (
       <div className={styles.loadingWrapper}>
-        <span className={styles.loadingText}>불러오는 중...</span>
+        <SkeletonTodoViewContent />
       </div>
     );
   }

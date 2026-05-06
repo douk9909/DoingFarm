@@ -1,9 +1,10 @@
+import { forwardRef, type MouseEvent } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './DashBoardItem.module.css';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
-import crownIcon from '@/assets/icon/ic_crown.svg';
+import PinIcon from '@/assets/icons/PinIcon';
+import CrownIcon from '@/assets/icons/CrownIcon';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
 interface DashBoardItemProps {
@@ -11,6 +12,8 @@ interface DashBoardItemProps {
   title: string;
   color: string;
   createdByMe: boolean;
+  pinned?: boolean;
+  onTogglePin?: (id: number) => void;
 }
 
 const LEGACY_COLOR_MAP: Record<string, string> = {
@@ -22,21 +25,42 @@ const LEGACY_COLOR_MAP: Record<string, string> = {
   purple: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-violet)'],
 };
 
-export default function DashBoardItem({ id, title, color, createdByMe }: DashBoardItemProps) {
+const DashBoardItem = forwardRef<HTMLAnchorElement, DashBoardItemProps>(function DashBoardItem(
+  { id, title, color, createdByMe, pinned = false, onTogglePin },
+  ref,
+) {
   const pathName = usePathname();
-  const isActive = pathName === `/dashboard/${id}`;
+  const isActive = pathName === `/dashboard/${id}` || pathName === `/dashboard/${id}/edit`;
   const hashTagColor = LEGACY_COLOR_MAP[color] ?? color;
 
+  const handlePinClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onTogglePin?.(id);
+  };
+
   return (
-    <Link href={`/dashboard/${id}`} className={`${styles.menu} ${isActive ? styles.active : ''}`}>
+    <Link
+      ref={ref}
+      href={`/dashboard/${id}`}
+      className={`${styles.menu} ${isActive ? styles.active : ''}`}
+    >
       <div>
         <HashTagIcon className={styles.hashTag} size={24} color={hashTagColor} aria-hidden />
         <p className={styles.title}>{title}</p>
+        <button
+          type="button"
+          className={`${styles.pinButton} ${pinned ? styles.pinned : ''}`}
+          onClick={handlePinClick}
+          aria-label={pinned ? '고정 해제' : '고정'}
+        >
+          <PinIcon className={styles.pinIcon} size={24} pinned={pinned} />
+        </button>
       </div>
 
-      {createdByMe && (
-        <Image className={styles.crown} src={crownIcon} alt="" width={24} height={24} />
-      )}
+      {createdByMe && <CrownIcon size={24} />}
     </Link>
   );
-}
+});
+
+export default DashBoardItem;
