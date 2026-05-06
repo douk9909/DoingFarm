@@ -55,6 +55,12 @@ export default function DashBoardList() {
             {pinnedDashboards.map((dashboard) => (
               <DashBoardItem
                 key={dashboard.id}
+                ref={
+                  unpinnedDashboards.length === 0 &&
+                  dashboard.id === pinnedDashboards[pinnedDashboards.length - 1]?.id
+                    ? lastItemRef
+                    : undefined
+                }
                 id={dashboard.id}
                 title={dashboard.title}
                 color={dashboard.color}
@@ -66,9 +72,10 @@ export default function DashBoardList() {
           </div>
         )}
 
-        {unpinnedDashboards.map((dashboard) => (
+        {unpinnedDashboards.map((dashboard, index) => (
           <DashBoardItem
             key={dashboard.id}
+            ref={index === unpinnedDashboards.length - 1 ? lastItemRef : undefined}
             id={dashboard.id}
             title={dashboard.title}
             color={dashboard.color}
@@ -77,8 +84,6 @@ export default function DashBoardList() {
             onTogglePin={togglePin}
           />
         ))}
-
-        <div ref={lastItemRef} />
       </div>
     </div>
   );

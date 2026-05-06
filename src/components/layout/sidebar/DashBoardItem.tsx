@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import { forwardRef, type MouseEvent } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './DashBoardItem.module.css';
@@ -25,14 +25,10 @@ const LEGACY_COLOR_MAP: Record<string, string> = {
   purple: DASHBOARD_COLOR_HEX_MAP['var(--color-profile-violet)'],
 };
 
-export default function DashBoardItem({
-  id,
-  title,
-  color,
-  createdByMe,
-  pinned = false,
-  onTogglePin,
-}: DashBoardItemProps) {
+const DashBoardItem = forwardRef<HTMLAnchorElement, DashBoardItemProps>(function DashBoardItem(
+  { id, title, color, createdByMe, pinned = false, onTogglePin },
+  ref,
+) {
   const pathName = usePathname();
   const isActive = pathName === `/dashboard/${id}` || pathName === `/dashboard/${id}/edit`;
   const hashTagColor = LEGACY_COLOR_MAP[color] ?? color;
@@ -44,7 +40,11 @@ export default function DashBoardItem({
   };
 
   return (
-    <Link href={`/dashboard/${id}`} className={`${styles.menu} ${isActive ? styles.active : ''}`}>
+    <Link
+      ref={ref}
+      href={`/dashboard/${id}`}
+      className={`${styles.menu} ${isActive ? styles.active : ''}`}
+    >
       <div>
         <HashTagIcon className={styles.hashTag} size={24} color={hashTagColor} aria-hidden />
         <p className={styles.title}>{title}</p>
@@ -61,4 +61,6 @@ export default function DashBoardItem({
       {createdByMe && <CrownIcon size={24} />}
     </Link>
   );
-}
+});
+
+export default DashBoardItem;
