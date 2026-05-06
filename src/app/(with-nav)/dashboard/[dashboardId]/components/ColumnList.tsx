@@ -96,9 +96,15 @@ export default function ColumnList({
   // columns를 useMemo로 감싸서 불필요한 리렌더 방지
   const columns = useMemo(() => columnData?.data ?? [], [columnData]);
 
-  const todoColumns = useMemo(() => columns.map(({ id, title }) => ({ id, title })), [columns]);
+  const todoColumns = useMemo(
+    () => columns.map(({ id, title }) => ({ id, title })),
+    [columns],
+  );
 
-  const existingColumnTitles = useMemo(() => columns.map((column) => column.title), [columns]);
+  const existingColumnTitles = useMemo(
+    () => columns.map((column) => column.title),
+    [columns],
+  );
 
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
