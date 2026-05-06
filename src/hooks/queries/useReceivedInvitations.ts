@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { DashboardInvitation } from '@/lib/api/dashboard';
 import { invitationApi } from '@/lib/api/invitations';
 import { useDashboards } from './useDashboards';
@@ -34,6 +34,9 @@ export function useReceivedInvitations(searchKeyword = '') {
 
   const fetchFirstPage = useCallback(
     async (title: string, signal?: AbortSignal) => {
+      await Promise.resolve();
+      if (signal?.aborted) return;
+
       setIsLoading(true);
       setError(null);
 
@@ -65,23 +68,14 @@ export function useReceivedInvitations(searchKeyword = '') {
     [getFilteredInvitations],
   );
 
-  const fetchFirstPageRef = useRef(fetchFirstPage);
-
-  useEffect(() => {
-    fetchFirstPageRef.current = fetchFirstPage;
-  }, [fetchFirstPage]);
-
   useEffect(() => {
     if (isDashboardsLoading) return;
     const controller = new AbortController();
 
     // 검색어가 바뀌면 이전 목록을 이어 붙이지 않고 첫 페이지부터 새로 조회합니다.
-    const timerId = window.setTimeout(() => {
-      void fetchFirstPage(searchKeyword, controller.signal);
-    }, 0);
+    void Promise.resolve().then(() => fetchFirstPage(searchKeyword, controller.signal));
 
     return () => {
-      window.clearTimeout(timerId);
       controller.abort();
     };
   }, [searchKeyword, fetchFirstPage, isDashboardsLoading]);

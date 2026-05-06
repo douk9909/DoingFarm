@@ -97,7 +97,7 @@ Do!ngFarm은 할 일을 단순히 나열하는 것을 넘어, 팀 단위의 작�
 
 | 분류               | 기술                                         |
 | ------------------ | -------------------------------------------- |
-| Framework          | Next.js 16 App Router                        |
+| Framework          | Next.js 15 App Router                        |
 | UI                 | React 19, TypeScript                         |
 | Data Fetching      | Axios, Fetch API, Custom Hooks               |
 | Server/Client Data | Next.js Server Components, Client Components |

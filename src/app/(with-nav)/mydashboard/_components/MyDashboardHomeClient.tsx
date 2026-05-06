@@ -27,12 +27,11 @@ export default function MyDashboardHomeClient({
 }: MyDashboardHomeClientProps) {
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
   // 서버가 먼저 가져온 값을 클라이언트 상태의 시작값으로 사용합니다.
-  // 발표에서는 이 부분을 "서버가 준비한 화면을 클라이언트가 이어받는다"라고 설명하면 됩니다.
   const [dashboards, setDashboards] = useState(initialDashboards);
   const [totalCount, setTotalCount] = useState(dashboardTotalCount);
   const [page, setPage] = useState(1);
   const [activeDashboardPageSize, setActiveDashboardPageSize] = useState(dashboardPageSize);
-  const [isLoadingDashboards, setIsLoadingDashboards] = useState(true);
+  const [isLoadingDashboards, setIsLoadingDashboards] = useState(false);
   const [dashboardError, setDashboardError] = useState(initialError);
   const dashboardSection = dashboardPageContent.sections[0];
   const invitedSection = dashboardPageContent.sections[1];
