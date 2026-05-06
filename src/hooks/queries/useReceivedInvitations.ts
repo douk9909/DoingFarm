@@ -19,11 +19,7 @@ export function useReceivedInvitations(searchKeyword = '') {
   const hasNextPage = cursorId !== null;
 
   const { notifyDashboardCreated, dashboardListVersion } = useDashboardCreateModal();
-  const {
-    dashboards,
-    isLoading: isDashboardsLoading,
-    refetchDashboards,
-  } = useDashboards(dashboardListVersion);
+  const { dashboards, isLoading: isDashboardsLoading } = useDashboards(dashboardListVersion);
 
   // 이미 내 대시보드 목록에 들어온 초대는 화면에서 다시 보여주지 않도록 걸러냅니다.
   // 예를 들어 초대를 수락한 직후 같은 항목이 초대 목록에 남아 보이는 상황을 막기 위한 처리입니다.
@@ -80,9 +76,12 @@ export function useReceivedInvitations(searchKeyword = '') {
     const controller = new AbortController();
 
     // 검색어가 바뀌면 이전 목록을 이어 붙이지 않고 첫 페이지부터 새로 조회합니다.
-    fetchFirstPage(searchKeyword, controller.signal);
+    const timerId = window.setTimeout(() => {
+      void fetchFirstPage(searchKeyword, controller.signal);
+    }, 0);
 
     return () => {
+      window.clearTimeout(timerId);
       controller.abort();
     };
   }, [searchKeyword, fetchFirstPage, isDashboardsLoading]);
@@ -139,7 +138,7 @@ export function useReceivedInvitations(searchKeyword = '') {
         setPendingInvitationId(null);
       }
     },
-    [pendingInvitationId, refetchDashboards, notifyDashboardCreated],
+    [pendingInvitationId, notifyDashboardCreated],
   );
 
   // 초대 거절: API 성공 후 현재 목록에서만 제거하면 됩니다.

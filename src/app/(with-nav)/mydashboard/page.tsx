@@ -8,6 +8,7 @@ import styles from './page.module.css';
 
 const DASHBOARD_PAGE_SIZE = 3;
 
+//첫 화면을 미리 준비해주는 역할
 export default async function MyDashboardPage() {
   let initialDashboards: Dashboard[] = [];
   let dashboardTotalCount = 0;
