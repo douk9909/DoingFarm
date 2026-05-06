@@ -97,7 +97,7 @@ export default function MyPage() {
       setUser(res.data);
       setIsImageChanged(false);
       showToast.success('프로필이 저장되었습니다.');
-      window.dispatchEvent(new Event('profile-updated'));
+      window.dispatchEvent(new CustomEvent('profile-updated', { detail: res.data }));
     } catch (err) {
       showToast.error(err instanceof Error ? err.message : '저장에 실패했습니다.');
     } finally {
