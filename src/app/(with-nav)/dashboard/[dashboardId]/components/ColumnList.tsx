@@ -1,6 +1,14 @@
 'use client';
 
-import { DndContext, DragOverlay, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+  type DragStartEvent,
+} from '@dnd-kit/core';
 import CardComponent from '@/components/common/card/Card';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -265,6 +273,20 @@ export default function ColumnList({
     },
   });
 
+  const clickSensor = useSensors(
+    useSensor(
+      PointerSensor,
+      useMemo(
+        () => ({
+          activationConstraint: {
+            distance: 8,
+          },
+        }),
+        [],
+      ),
+    ),
+  );
+
   if (isColumnLoading || isMemberLoading || isUserLoading) return <SkeletonColumnList />;
   if (columnError) return <div>에러: {columnError}</div>;
   if (memberError) return <div>에러: {memberError}</div>;
@@ -304,7 +326,7 @@ export default function ColumnList({
 
   return (
     <ColumnRefetchContext.Provider value={refetch}>
-      <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+      <DndContext sensors={clickSensor} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
         <div className={`${styles.columnList} custom-scrollbar`}>
           {columns.map((column: ColumnType, index) => (
             <Column

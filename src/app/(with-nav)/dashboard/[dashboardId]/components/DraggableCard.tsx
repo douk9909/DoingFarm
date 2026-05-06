@@ -17,19 +17,6 @@ export default function DraggableCard({ card, onClick }: DraggableCardProps) {
     data: { card }, // 드래그할 때 카드 정보를 담아둬요
   });
 
-  const mouseDownTimeRef = useRef(0);
-
-  const handleMouseDown = () => {
-    mouseDownTimeRef.current = Date.now();
-  };
-
-  const handlePointerUp = () => {
-    const elapsed = Date.now() - mouseDownTimeRef.current;
-    if (elapsed < 200) {
-      onClick?.();
-    }
-  };
-
   const style: React.CSSProperties = {
     transform: CSS.Translate.toString(transform),
     opacity: isDragging ? 0 : 1,
@@ -37,14 +24,7 @@ export default function DraggableCard({ card, onClick }: DraggableCardProps) {
   };
 
   return (
-    <div
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      onMouseDown={handleMouseDown}
-      onPointerUp={handlePointerUp}
-      {...listeners}
-    >
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners} onClick={onClick}>
       <Card
         id={card.id}
         title={card.title}
