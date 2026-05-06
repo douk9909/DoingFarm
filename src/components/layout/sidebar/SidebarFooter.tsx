@@ -49,6 +49,20 @@ export default function SidebarFooter() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleProfileUpdate = async () => {
+      try {
+        const res = await userApi.getMe();
+        setUser(res.data);
+      } catch (error) {
+        console.error('프로필 업데이트 반영 실패', error);
+      }
+    };
+
+    window.addEventListener('profile-updated', handleProfileUpdate);
+    return () => window.removeEventListener('profile-updated', handleProfileUpdate);
+  }, []);
+
   const handleLogout = async () => {
     try {
       await authApi.logout();
