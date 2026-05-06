@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Button from '@/components/common/Button/Button';
-import { Input } from '@/components/common/Input';
+import Input from '@/components/common/Input';
 import TodoDateField from '@/components/dashboard/TodoForm/TodoDateField';
 import TodoFormDropdown, {
   TodoDropdownAvatar,

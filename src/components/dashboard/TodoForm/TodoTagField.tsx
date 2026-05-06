@@ -1,6 +1,6 @@
 'use client';
 
-import { Input } from '@/components/common/Input';
+import Input from '@/components/common/Input';
 import type { TodoFormCard } from '@/types/todo';
 import styles from './TodoTagField.module.css';
 

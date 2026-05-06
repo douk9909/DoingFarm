@@ -3,7 +3,7 @@
 import Modal from '@/components/common/Modal/Modal';
 import TodoEditContent from './TodoEditContent';
 import type { TodoEditProps } from './TodoEdit';
-import styles from '@/components/dashboard/todoCreate/TodoCreateModal.module.css';
+import styles from '@/components/dashboard/TodoCreate/TodoCreateModal.module.css';
 
 export default function TodoEditModal(props: TodoEditProps) {
   return (

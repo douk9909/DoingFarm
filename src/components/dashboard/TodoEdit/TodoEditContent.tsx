@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import Button from '@/components/common/Button/Button';
-import { Input } from '@/components/common/Input';
+import Input from '@/components/common/Input';
 import TodoDateField from '@/components/dashboard/TodoForm/TodoDateField';
 import TodoFormDropdown, {
   TodoDropdownAvatar,
@@ -17,7 +17,7 @@ import { getHashColor } from '@/lib/utils/color';
 import type { UpdateCardRequest } from '@/lib/api/card';
 import type { Card } from '@/types/card';
 import type { TodoAssigneeOption, TodoColumnOption } from '@/types/todo';
-import styles from '@/components/dashboard/todoCreate/TodoCreateModal.module.css';
+import styles from '@/components/dashboard/TodoCreate/TodoCreateModal.module.css';
 
 interface TodoEditContentProps {
   card: Card;
