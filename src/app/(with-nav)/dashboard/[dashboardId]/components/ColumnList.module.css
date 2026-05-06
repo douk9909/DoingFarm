@@ -21,6 +21,8 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 10px 0 20px;
+    overflow-y: hidden !important;
+    height: calc(100vh - 156px);
   }
 
   .custom-scrollbar::-webkit-scrollbar {
