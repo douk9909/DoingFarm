@@ -6,14 +6,7 @@ export default function SkeletonColumnList() {
   return (
     <div className={styles.columnContainer}>
       {[...Array(4)].map((_, i) => (
-        <div key={i} className={`${skeleton} ${styles.columnWrapper}`}>
-          <div className={styles.columnText}>
-            <div className={`${skeleton} ${styles.icon}`} />
-            <div className={`${skeleton} ${styles.columnTitle}`} />
-            <div className={`${skeleton} ${styles.count}`} />
-          </div>
-          <div className={`${skeleton} ${styles.icon}`} />
-        </div>
+        <div key={i} className={`${styles.lightSkeleton} ${styles.columnWrapper}`} />
       ))}
     </div>
   );

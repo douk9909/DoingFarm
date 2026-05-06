@@ -1,11 +1,10 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 import type { Dashboard } from '@/types/dashboard';
-import crownIcon from '@/assets/icon/ic_crown.svg';
-import plusIcon from '@/assets/icon/ic_plus3.svg';
+import PlusIcon from '@/assets/icons/PlusIcon';
+import CrownIcon from '@/assets/icons/CrownIcon';
 import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import ArrowRightIcon from '@/assets/icons/ArrowRightIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
@@ -95,8 +94,9 @@ export default function MyDashboardList({
       <div className={styles.dashboardCardGrid}>
         <button type="button" className={styles.createDashboardCard} onClick={onCreateDashboard}>
           새로운 대시보드
-          <Image src={plusIcon} alt="" width={14} height={14} />
+          <PlusIcon size={14} />
         </button>
+
         {isLoading ? (
           <SkeletonMyDashboardList />
         ) : (
@@ -113,15 +113,7 @@ export default function MyDashboardList({
 
               <span className={styles.dashboardTitle}>{dashboard.title}</span>
 
-              {dashboard.createdByMe ? (
-                <Image
-                  src={crownIcon}
-                  alt="내가 만든 대시보드"
-                  width={18}
-                  height={18}
-                  className={styles.dashboardCrown}
-                />
-              ) : null}
+              {dashboard.createdByMe ? <CrownIcon size={18} /> : null}
 
               <ArrowRightIcon width={16} height={16} />
             </Link>

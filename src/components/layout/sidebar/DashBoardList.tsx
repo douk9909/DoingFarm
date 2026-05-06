@@ -4,9 +4,8 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './DashBoardList.module.css';
 import { PATH } from '@/lib/constants/path';
-import plusIcon from '@/assets/icon/ic_plus2.svg';
-import homeIcon from '@/assets/icon/ic_home.svg';
-import Image from 'next/image';
+import PlusIcon from '@/assets/icons/PlusIcon';
+import HomeIcon from '@/assets/icons/HomeIcon';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import { useDashboards } from '@/hooks/queries/useDashboards';
@@ -33,13 +32,13 @@ export default function DashBoardList() {
       <section className={styles.add}>
         <span>대시보드 추가</span>
         <button type="button" onClick={openDashboardCreateModal}>
-          <Image className={styles.plus} src={plusIcon} alt="추가" width={12.5} height={12.5} />
+          <PlusIcon size={12.5} />
         </button>
       </section>
 
       <section className={`${styles.home} ${isHomeActive ? styles.active : ''}`}>
         <Link href={PATH.MY_DASHBOARD}>
-          <Image className={styles.homeImg} src={homeIcon} alt="홈" width={18} height={18} />
+          <HomeIcon size={18} />
           <span>홈</span>
         </Link>
       </section>
@@ -56,6 +55,12 @@ export default function DashBoardList() {
             {pinnedDashboards.map((dashboard) => (
               <DashBoardItem
                 key={dashboard.id}
+                ref={
+                  unpinnedDashboards.length === 0 &&
+                  dashboard.id === pinnedDashboards[pinnedDashboards.length - 1]?.id
+                    ? lastItemRef
+                    : undefined
+                }
                 id={dashboard.id}
                 title={dashboard.title}
                 color={dashboard.color}
@@ -67,9 +72,10 @@ export default function DashBoardList() {
           </div>
         )}
 
-        {unpinnedDashboards.map((dashboard) => (
+        {unpinnedDashboards.map((dashboard, index) => (
           <DashBoardItem
             key={dashboard.id}
+            ref={index === unpinnedDashboards.length - 1 ? lastItemRef : undefined}
             id={dashboard.id}
             title={dashboard.title}
             color={dashboard.color}
@@ -78,8 +84,6 @@ export default function DashBoardList() {
             onTogglePin={togglePin}
           />
         ))}
-
-        <div ref={lastItemRef} />
       </div>
     </div>
   );
