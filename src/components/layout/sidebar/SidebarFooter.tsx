@@ -49,6 +49,17 @@ export default function SidebarFooter() {
     };
   }, []);
 
+  useEffect(() => {
+    const handleProfileUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent<User>;
+      if (customEvent.detail) {
+        setUser(customEvent.detail);
+      }
+    };
+    window.addEventListener('profile-updated', handleProfileUpdate);
+    return () => window.removeEventListener('profile-updated', handleProfileUpdate);
+  }, []);
+
   const handleLogout = async () => {
     try {
       await authApi.logout();
