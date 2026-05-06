@@ -16,6 +16,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { userApi } from '@/lib/api/user';
 import type { User } from '@/types/user';
 import SkeletonFooter from './SkeletonFooter';
+import Avatar from '@/components/common/avatar/Avatar';
 
 function isValidImageUrl(url: string | null | undefined): url is string {
   if (!url) return false;
@@ -96,17 +97,12 @@ export default function SidebarFooter() {
   return (
     <footer className={styles.footer}>
       <Link href={PATH.MY_PAGE} className={styles.nameWrapper}>
-        {isValidImageUrl(user.profileImageUrl) ? (
-          <Image
-            src={user.profileImageUrl}
-            alt={user.nickname}
-            width={30}
-            height={30}
-            className={styles.profileImg}
-          />
-        ) : (
-          <div className={styles.profile}>{user.nickname.slice(0, 2)}</div>
-        )}
+        <Avatar
+          src={user.profileImageUrl}
+          alt={user.nickname}
+          name={user.nickname}
+          className={styles.profileImg}
+        />
         <span className={styles.userName}>{user.nickname}</span>
       </Link>
 
