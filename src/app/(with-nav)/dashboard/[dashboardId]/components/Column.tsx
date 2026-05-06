@@ -16,6 +16,7 @@ import { cardApi } from '@/lib/api/card';
 import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
+import SkeletonCard from './Skeleton/SkeletonCard';
 
 export interface ColumnData {
   id: number;
@@ -47,6 +48,7 @@ export default function Column({
 
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `column-${id}`,
+    data: { columnId: id },
   });
 
   const fetchCards = useCallback(
@@ -59,11 +61,10 @@ export default function Column({
     [id],
   );
 
-  const { items, totalCount, error, lastItemRef, scrollContainerRef } = useInfiniteScroll<CardType>(
-    {
+  const { items, totalCount, error, isLoading, lastItemRef, scrollContainerRef } =
+    useInfiniteScroll<CardType>({
       fetcher: fetchCards,
-    },
-  );
+    });
 
   if (error) return <div>에러: {error}</div>;
 
@@ -100,16 +101,20 @@ export default function Column({
         style={{ background: isOver ? 'rgba(255,255,255,0.1)' : undefined }}
         className={`${styles.cardList} custom-scrollbar`}
       >
-        {items.map((card: CardType, cardIndex) => (
-          // wrapper div로 마지막 카드 감지
-          <div
-            key={card.id}
-            ref={cardIndex === items.length - 1 ? lastItemRef : null}
-            className={styles.cardWrapper}
-          >
-            <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
-          </div>
-        ))}
+        {isLoading && items.length === 0 ? (
+          <SkeletonCard />
+        ) : (
+          items.map((card: CardType, cardIndex) => (
+            // wrapper div로 마지막 카드 감지
+            <div
+              key={card.id}
+              ref={cardIndex === items.length - 1 ? lastItemRef : null}
+              className={styles.cardWrapper}
+            >
+              <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
+            </div>
+          ))
+        )}
       </div>
 
       {isModalOpen && (

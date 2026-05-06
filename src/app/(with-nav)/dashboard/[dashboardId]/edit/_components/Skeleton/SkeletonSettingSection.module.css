@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  padding: 24px;
+  background-color: #1e1e24;
+  border-radius: 16px;
+  border: 1px solid #2a2a32;
+}
+
+.title {
+  height: 28px;
+  width: 112px;
+  margin-bottom: 24px;
+}
+.label {
+  height: 24px;
+  width: 80px;
+  margin-bottom: 12px;
+}
+.input {
+  height: 48px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+.labelSmall {
+  height: 16px;
+  width: 64px;
+  margin-bottom: 16px;
+}
+.colorPicker {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+.colorDot {
+  height: 30px;
+  width: 30px;
+}
+.button {
+  height: 44px;
+  width: 100%;
+}

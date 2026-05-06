@@ -27,7 +27,7 @@ export default function MyDashboardHomeClient({
   const [dashboards, setDashboards] = useState(initialDashboards);
   const [totalCount, setTotalCount] = useState(dashboardTotalCount);
   const [page, setPage] = useState(1);
-  const [isLoadingDashboards, setIsLoadingDashboards] = useState(false);
+  const [isLoadingDashboards, setIsLoadingDashboards] = useState(true);
   const [dashboardError, setDashboardError] = useState(initialError);
   const dashboardSection = dashboardPageContent.sections[0];
   const invitedSection = dashboardPageContent.sections[1];
@@ -53,9 +53,7 @@ export default function MyDashboardHomeClient({
         setTotalCount(response.data.totalCount);
         setPage(nextPage);
       } catch (error) {
-        setDashboardError(
-          error instanceof Error ? error.message : '대시보드를 불러오지 못했어요',
-        );
+        setDashboardError(error instanceof Error ? error.message : '대시보드를 불러오지 못했어요');
       } finally {
         setIsLoadingDashboards(false);
       }

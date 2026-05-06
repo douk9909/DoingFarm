@@ -17,33 +17,42 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
 
   const cursorIdRef = useRef<number | undefined>(undefined);
   const isFetchingRef = useRef(false);
+  const requestSeqRef = useRef(0);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
-  //fetcher를 ref에 저장 — 매 렌더링마다 최신 fetcher로 갱신
   const fetcherRef = useRef(fetcher);
   useEffect(() => {
     fetcherRef.current = fetcher;
   }, [fetcher]);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async ({ replace = false }: { replace?: boolean } = {}) => {
     if (isFetchingRef.current) return;
+
+    const requestSeq = requestSeqRef.current;
     isFetchingRef.current = true;
 
     setIsLoading(true);
     setError(null);
+
     try {
-      //ref를 통해 호출 — 의존성 배열에 fetcher 안 넣어도 항상 최신
       const result = await fetcherRef.current(cursorIdRef.current);
-      setItems((prev) => [...prev, ...result.data]);
+
+      if (requestSeq !== requestSeqRef.current) return;
+
+      setItems((prev) => (replace ? result.data : [...prev, ...result.data]));
       setTotalCount((prev) => result.totalCount ?? prev);
       cursorIdRef.current = result.nextCursorId ?? undefined;
       setHasMore(result.nextCursorId !== null);
     } catch (err) {
+      if (requestSeq !== requestSeqRef.current) return;
+
       setError(err instanceof Error ? err.message : '알 수 없는 에러가 발생했습니다.');
     } finally {
-      setIsLoading(false);
-      isFetchingRef.current = false;
+      if (requestSeq === requestSeqRef.current) {
+        setIsLoading(false);
+        isFetchingRef.current = false;
+      }
     }
   }, []);
 
@@ -51,7 +60,6 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     fetchData();
   }, [fetchData]);
 
-  // 언마운트 시 옵저버 정리
   useEffect(() => {
     return () => {
       if (observerRef.current) {
@@ -61,10 +69,10 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     };
   }, []);
 
-  // 마지막 아이템이 보일 때 fetch (PC/모바일 공통)
   const lastItemRef = useCallback(
-    (node: HTMLDivElement | null) => {
+    (node: HTMLElement | null) => {
       if (observerRef.current) observerRef.current.disconnect();
+      if (!node) return;
 
       observerRef.current = new IntersectionObserver(
         (entries) => {
@@ -75,12 +83,13 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
         { root: scrollContainerRef.current, threshold: 0.5 },
       );
 
-      if (node) observerRef.current.observe(node);
+      observerRef.current.observe(node);
     },
     [hasMore, fetchData],
   );
 
   const reset = useCallback(async () => {
+    requestSeqRef.current += 1;
     setItems([]);
     setHasMore(true);
     setIsLoading(true);
@@ -88,7 +97,7 @@ export function useInfiniteScroll<T>({ fetcher }: UseInfiniteScrollProps<T>) {
     setTotalCount(0);
     cursorIdRef.current = undefined;
     isFetchingRef.current = false;
-    await fetchData();
+    await fetchData({ replace: true });
   }, [fetchData]);
 
   return {

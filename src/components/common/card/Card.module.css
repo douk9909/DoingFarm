@@ -16,14 +16,13 @@
 .cardContainer:hover,
 .cardContainer:focus {
   border-color: #868391;
-  box-shadow: 1px 4px 14px rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
 
 .cardContainer:active {
-  opacity: 0.8;
-  box-shadow: 1px 4px 14px rgba(0, 0, 0, 0.5);
-  transform: translateY(2px);
+  opacity: 0.9;
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }
 
 .imageWrapper {

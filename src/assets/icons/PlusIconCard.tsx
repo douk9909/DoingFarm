@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface PlusIconCardProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function PlusIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function PlusIconCard({ size = 24, color, ...props }: PlusIconCardProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

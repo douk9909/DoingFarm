@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Avatar from '@/components/common/avatar/Avatar';
 import { useInvitationSearch } from '@/hooks/queries/useInvitationSearch';
 import { useReceivedInvitations } from '@/hooks/queries/useReceivedInvitations';
-import searchIcon from '@/assets/icon/ic_search.svg';
+import SearchIcon from '@/assets/icons/SearchIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
 import EmptyDashboardPanel from './EmptyDashboardPanel';
 import styles from './InvitedDashboardList.module.css';
+import SkeletonInvitedDashboardList from './Skeleton/SkeletonInvitedDashboardList';
 
 interface InvitedDashboardListProps {
   emptySection: DashboardEmptySection;
@@ -62,7 +62,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
     <>
       <div className={styles.toolbar}>
         <label className={styles.searchBox}>
-          <Image src={searchIcon} alt="" width={18} height={18} />
+          <SearchIcon size={18} />
           <input
             value={inputKeyword}
             placeholder="검색"
@@ -81,7 +81,7 @@ export default function InvitedDashboardList({ emptySection }: InvitedDashboardL
         {error ? <p className={styles.emptyText}>{error}</p> : null}
 
         {isLoading ? (
-          <p className={styles.emptyText}>초대 목록을 불러오는 중...</p>
+          <SkeletonInvitedDashboardList />
         ) : invitations.length === 0 ? (
           <p className={styles.emptyText}>검색 결과가 없어요</p>
         ) : (
