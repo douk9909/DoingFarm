@@ -1,9 +1,10 @@
 'use client';
 
+import { useDroppable } from '@dnd-kit/core';
+
 import { useCallback, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
-import Card from '@/components/common/card/Card';
 import CarrotDone from '@/assets/character/carrot1.svg';
 import SeedOnProgress from '@/assets/character/seed_onprogress.svg';
 import SeedTodo from '@/assets/character/seed_todo.svg';
@@ -14,6 +15,7 @@ import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
+import DraggableCard from './DraggableCard';
 import SkeletonCard from './Skeleton/SkeletonCard';
 
 export interface ColumnData {
@@ -44,6 +46,11 @@ export default function Column({
 }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { setNodeRef: setDropRef, isOver } = useDroppable({
+    id: `column-${id}`,
+    data: { columnId: id },
+  });
+
   const fetchCards = useCallback(
     (cursorId?: number) =>
       cardApi.getList({ columnId: id, cursorId, size: 5 }).then((res) => ({
@@ -57,7 +64,8 @@ export default function Column({
   const { items, totalCount, error, isLoading, lastItemRef, scrollContainerRef } =
     useInfiniteScroll<CardType>({
       fetcher: fetchCards,
-    });
+    },
+  );
 
   if (error) return <div>에러: {error}</div>;
 
@@ -86,34 +94,28 @@ export default function Column({
         </div>
       </button>
 
-      <div ref={scrollContainerRef} className={`${styles.cardList} custom-scrollbar`}>
+      <div
+        ref={(node) => {
+          setDropRef(node);
+          scrollContainerRef.current = node;
+        }}
+        style={{ background: isOver ? 'rgba(255,255,255,0.1)' : undefined }}
+        className={`${styles.cardList} custom-scrollbar`}
+      > 
         {isLoading && items.length === 0 ? (
           <SkeletonCard />
         ) : (
           items.map((card: CardType, cardIndex) => (
-            // wrapper div로 마지막 카드 감지
-            <div
-              key={card.id}
-              ref={cardIndex === items.length - 1 ? lastItemRef : null}
-              className={styles.cardWrapper}
-            >
-              <button
-                type="button"
-                className={styles.cardButton}
-                onClick={() => onCardClick?.(card.id)}
-              >
-                <Card
-                  id={card.id}
-                  title={card.title}
-                  tags={card.tags}
-                  dueDate={card.dueDate}
-                  assignee={card.assignee}
-                  src={card.imageUrl}
-                />
-              </button>
-            </div>
-          ))
-        )}
+          // wrapper div로 마지막 카드 감지
+          <div
+            key={card.id}
+            ref={cardIndex === items.length - 1 ? lastItemRef : null}
+            className={styles.cardWrapper}
+          >
+            <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
+          </div>
+        ))
+      )}
       </div>
 
       {isModalOpen && (

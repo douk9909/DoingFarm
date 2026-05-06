@@ -5,15 +5,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
-import visibilityOn from '@/assets/icon/visibility_on.svg';
-import visibilityOff from '@/assets/icon/visibility_off.svg';
-import checkEmpty from '@/assets/icon/check_empty.svg';
-import checkActive from '@/assets/icon/check_active.svg';
 import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
 import { showToast } from '@/lib/utils/toast';
+import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
+import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
+import CheckActiveIcon from '@/assets/icons/CheckActiveIcon';
+import CheckEmptyIcon from '@/assets/icons/CheckEmptyIcon';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,14 +59,7 @@ export default function SignupForm() {
     confirmPasswordError === '' &&
     agreed;
 
-  const EyeIcon = (
-    <Image
-      src={showPassword ? visibilityOn : visibilityOff}
-      alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-      width={24}
-      height={24}
-    />
-  );
+  const EyeIcon = showPassword ? <VisibilityOnIcon size={24} /> : <VisibilityOffIcon size={24} />;
 
   return (
     <form
@@ -150,12 +143,7 @@ export default function SignupForm() {
           onClick={() => setAgreed((prev) => !prev)}
           aria-pressed={agreed}
         >
-          <Image
-            src={agreed ? checkActive : checkEmpty}
-            alt={agreed ? '동의함' : '동의 안 함'}
-            width={20}
-            height={20}
-          />
+          {agreed ? <CheckActiveIcon size={24} /> : <CheckEmptyIcon size={24} />}
           이용약관에 동의합니다.
         </button>
       </div>

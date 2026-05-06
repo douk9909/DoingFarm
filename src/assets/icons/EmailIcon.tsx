@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface EmailIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function EmailIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function EmailIcon({ size = 24, color, ...props }: EmailIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

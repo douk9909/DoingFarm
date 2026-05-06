@@ -5,7 +5,7 @@ export default function SkeletonDashboardHeader() {
   const skeleton = base.skeletonBase;
   return (
     <div className={styles.headerWrapper}>
-      <div className={`${skeleton} ${styles.title}`} />
+      <div className={`${styles.lightSkeleton} ${styles.title}`} />
     </div>
   );
 }

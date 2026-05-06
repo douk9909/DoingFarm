@@ -1,11 +1,10 @@
 import { forwardRef, type MouseEvent } from 'react';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 import Link from 'next/link';
 import styles from './DashBoardItem.module.css';
 import HashTagIcon from '@/assets/icons/HashTagIcon';
 import PinIcon from '@/assets/icons/PinIcon';
-import crownIcon from '@/assets/icon/ic_crown.svg';
+import CrownIcon from '@/assets/icons/CrownIcon';
 import { DASHBOARD_COLOR_HEX_MAP } from '@/lib/constants/color';
 
 interface DashBoardItemProps {
@@ -31,7 +30,7 @@ const DashBoardItem = forwardRef<HTMLAnchorElement, DashBoardItemProps>(function
   ref,
 ) {
   const pathName = usePathname();
-  const isActive = pathName === `/dashboard/${id}`;
+  const isActive = pathName === `/dashboard/${id}` || pathName === `/dashboard/${id}/edit`;
   const hashTagColor = LEGACY_COLOR_MAP[color] ?? color;
 
   const handlePinClick = (e: MouseEvent<HTMLButtonElement>) => {
@@ -59,9 +58,7 @@ const DashBoardItem = forwardRef<HTMLAnchorElement, DashBoardItemProps>(function
         </button>
       </div>
 
-      {createdByMe && (
-        <Image className={styles.crown} src={crownIcon} alt="" width={24} height={24} />
-      )}
+      {createdByMe && <CrownIcon size={24} />}
     </Link>
   );
 });

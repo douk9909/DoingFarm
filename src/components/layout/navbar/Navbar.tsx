@@ -106,6 +106,7 @@ export default function Navbar({ isMobileSidebarOpen = false, onOpenMobileSideba
             width={60}
             height={72}
             className={styles.characterImg}
+            priority
           />
           <button
             type="button"

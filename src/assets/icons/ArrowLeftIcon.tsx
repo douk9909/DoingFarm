@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface ArrowLeftIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function ArrowLeftIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function ArrowLeftIcon({ size = 24, color, ...props }: ArrowLeftIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

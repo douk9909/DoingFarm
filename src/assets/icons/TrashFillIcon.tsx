@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface TrashFillIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function TrashFillIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function TrashFillIcon({ size = 24, color, ...props }: TrashFillIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
