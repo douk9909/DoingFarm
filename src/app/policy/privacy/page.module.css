@@ -1,0 +1,96 @@
+.container {
+  width: 100%;
+  /* --header-link-color: #e0e0e0; */
+}
+
+.pageWrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 100px 24px;
+  background-color: var(--color-background);
+  color: #e0e0e0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 60px;
+  margin-bottom: 80px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.headerCopy {
+  flex: 1;
+  max-width: 700px;
+}
+
+.title {
+  font-size: 40px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.description {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  word-break: keep-all;
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.sectionTitle {
+  font: var(--text-xl-bold);
+  margin-bottom: 4px;
+}
+
+.sectionText {
+  font-size: 15px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.subList {
+  border-radius: 20px;
+  padding: 32px 32px 32px 52px;
+  list-style-type: disc;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.subListItem {
+  font-size: 13px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.subListItem::marker {
+  color: #81c784;
+}
+
+@media (min-width: 768px) {
+  .sectionTitle {
+    font: var(--text-2xl-bold);
+    margin-bottom: 4px;
+  }
+
+  .sectionText {
+    font-size: 17px;
+  }
+
+  .subListItem {
+    font-size: 15px;
+    line-height: 1.2;
+  }
+}
