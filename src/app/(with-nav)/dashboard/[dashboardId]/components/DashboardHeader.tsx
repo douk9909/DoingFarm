@@ -7,12 +7,23 @@ import { useFetch } from '@/hooks/queries/useFetch';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import SkeletonDashboardHeader from './Skeleton/SkeletonDashboardHeader';
+import CardFilter, { type FilterState, type AssigneeInfo } from './CardFilter';
 
 interface DashBoardHeaderProps {
   dashboardId: number;
+  allTags?: string[];
+  allAssignees?: AssigneeInfo[];
+  filter?: FilterState;
+  onFilterChange?: (filter: FilterState) => void;
 }
 
-export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
+export default function DashBoardHeader({
+  dashboardId,
+  allTags = [],
+  allAssignees = [],
+  filter,
+  onFilterChange,
+}: DashBoardHeaderProps) {
   const router = useRouter();
   const { data, isLoading, error } = useFetch(() =>
     dashboardApi.getOne(dashboardId).then((res) => ({ data: res.data })),
@@ -27,11 +38,22 @@ export default function DashBoardHeader({ dashboardId }: DashBoardHeaderProps) {
   if (isLoading) return <SkeletonDashboardHeader />;
 
   return (
-    <header className={styles.header}>
-      <div className={styles.titleWrapper}>
-        <HashTagIcon className={styles.hashTag} color={data?.color} />
-        <h1 className={styles.title}>{data?.title}</h1>
-      </div>
-    </header>
+    <div>
+      <header className={styles.header}>
+        <div className={styles.titleWrapper}>
+          <HashTagIcon className={styles.hashTag} color={data?.color} />
+          <h1 className={styles.title}>{data?.title}</h1>
+        </div>
+      </header>
+
+      {filter && onFilterChange && (
+        <CardFilter
+          allTags={allTags}
+          allAssignees={allAssignees}
+          filter={filter}
+          onFilterChange={onFilterChange}
+        />
+      )}
+    </div>
   );
 }
