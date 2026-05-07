@@ -17,7 +17,7 @@ import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
 import SkeletonCard from './Skeleton/SkeletonCard';
-import { type FilterState, isFilterActive } from './CardFilter';
+import { type FilterState, isFilterActive, matchesFilter } from './CardFilter';
 
 export interface ColumnData {
   id: number;
@@ -30,6 +30,7 @@ interface ColumnProps extends ColumnData {
   existingTitles: string[];
   onCardClick?: (cardId: number) => void;
   filter?: FilterState;
+  filteredTotalCount?: number;
 }
 
 const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
@@ -37,23 +38,6 @@ const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
 const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
-
-function matchesFilter(card: CardType, filter: FilterState): boolean {
-  const hasTagFilter = filter.tags.length > 0;
-  const hasAssigneeFilter = filter.assignees.length > 0;
-
-  if (hasTagFilter) {
-    const matchesTag = card.tags.some((tag) => filter.tags.includes(tag));
-    if (!matchesTag) return false;
-  }
-
-  if (hasAssigneeFilter) {
-    const matchesAssignee = filter.assignees.includes(card.assignee.id);
-    if (!matchesAssignee) return false;
-  }
-
-  return true;
-}
 
 export default function Column({
   id,
@@ -63,6 +47,7 @@ export default function Column({
   existingTitles,
   onCardClick,
   filter,
+  filteredTotalCount = 0,
 }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -86,12 +71,14 @@ export default function Column({
       fetcher: fetchCards,
     });
 
-  const filteredItems = useMemo(() => {
-    if (!filter || !isFilterActive(filter)) return items;
-    return items.filter((card) => matchesFilter(card, filter));
-  }, [items, filter]);
+  const filterActive = filter ? isFilterActive(filter) : false;
 
-  const displayCount = filter && isFilterActive(filter) ? filteredItems.length : totalCount;
+  const filteredItems = useMemo(() => {
+    if (!filter || !filterActive) return items;
+    return items.filter((card) => matchesFilter(card, filter));
+  }, [items, filter, filterActive]);
+
+  const displayCount = filterActive ? filteredTotalCount : totalCount;
 
   if (error) return <div>에러: {error}</div>;
 
@@ -108,7 +95,7 @@ export default function Column({
         </button>
       </div>
 
-      {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
+      {/* 카드 추가 버튼 */}
       <button
         type="button"
         aria-label="카드 추가"
@@ -130,20 +117,22 @@ export default function Column({
       >
         {isLoading && items.length === 0 ? (
           <SkeletonCard />
-        ) : filteredItems.length === 0 && isFilterActive(filter ?? { tags: [], assignees: [] }) ? (
-          <div className={styles.emptyFilter}>
-            <span>필터 조건에 맞는 카드가 없습니다</span>
-          </div>
         ) : (
-          filteredItems.map((card: CardType, cardIndex) => (
-            <div
-              key={card.id}
-              ref={cardIndex === items.length - 1 ? lastItemRef : null}
-              className={styles.cardWrapper}
-            >
-              <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
-            </div>
-          ))
+          <>
+            {filteredItems.length === 0 && filterActive && (
+              <div className={styles.emptyFilter}>
+                <span>필터 조건에 맞는 카드가 없습니다</span>
+              </div>
+            )}
+
+            {filteredItems.map((card: CardType) => (
+              <div key={card.id} className={styles.cardWrapper}>
+                <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
+              </div>
+            ))}
+
+            <div ref={lastItemRef} className={styles.sentinel} />
+          </>
         )}
       </div>
 

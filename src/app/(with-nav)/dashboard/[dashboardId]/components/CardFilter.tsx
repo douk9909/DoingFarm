@@ -30,6 +30,26 @@ export function isFilterActive(filter: FilterState): boolean {
   return filter.tags.length > 0 || filter.assignees.length > 0;
 }
 
+export function matchesFilter(
+  card: { tags: string[]; assignee: { id: number } } | { tags: string[]; assigneeId: number },
+  filter: FilterState,
+): boolean {
+  const hasTagFilter = filter.tags.length > 0;
+  const hasAssigneeFilter = filter.assignees.length > 0;
+
+  if (hasTagFilter) {
+    const matchesTag = card.tags.some((tag) => filter.tags.includes(tag));
+    if (!matchesTag) return false;
+  }
+
+  if (hasAssigneeFilter) {
+    const assigneeId = 'assignee' in card ? card.assignee.id : card.assigneeId;
+    if (!filter.assignees.includes(assigneeId)) return false;
+  }
+
+  return true;
+}
+
 export default function CardFilter({
   allTags,
   allAssignees,

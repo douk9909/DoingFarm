@@ -32,7 +32,13 @@ import AddColumnButton from './AddColumnButton';
 import AddColumnModal from './modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
 import DashBoardHeader from './DashboardHeader';
-import { EMPTY_FILTER, type FilterState, type AssigneeInfo } from './CardFilter';
+import {
+  EMPTY_FILTER,
+  type FilterState,
+  type AssigneeInfo,
+  isFilterActive,
+  matchesFilter,
+} from './CardFilter';
 import { showToast } from '@/lib/utils/toast';
 import SkeletonColumnList from './Skeleton/SkeletonColumnList';
 
@@ -50,6 +56,7 @@ interface CardCacheItem {
   title: string;
   tags: string[];
   assigneeId: number;
+  columnId: number;
 }
 
 export default function ColumnList({
@@ -123,6 +130,7 @@ export default function ColumnList({
 
   const allAssignees: AssigneeInfo[] = useMemo(() => {
     if (!memberData?.members) return [];
+
     const assigneeIds = new Set(cardCache.map((card) => card.assigneeId));
     return memberData.members
       .filter((member: Member) => assigneeIds.has(member.userId))
@@ -132,6 +140,18 @@ export default function ColumnList({
         profileImageUrl: member.profileImageUrl ?? null,
       }));
   }, [cardCache, memberData]);
+
+  const filteredCountByColumnId = useMemo(() => {
+    if (!isFilterActive(filter)) return {};
+
+    const countMap: Record<number, number> = {};
+    for (const card of cardCache) {
+      if (matchesFilter(card, filter)) {
+        countMap[card.columnId] = (countMap[card.columnId] ?? 0) + 1;
+      }
+    }
+    return countMap;
+  }, [cardCache, filter]);
 
   const existingCardTitles = useMemo(
     () => cardCache.map(({ id, title }) => ({ id, title })),
@@ -162,12 +182,13 @@ export default function ColumnList({
 
         if (isCancelled) return;
 
-        const nextCache = responses.flatMap((res) =>
+        const nextCache = responses.flatMap((res, resIndex) =>
           res.data.cards.map((card) => ({
             id: card.id,
             title: card.title,
             tags: card.tags,
             assigneeId: card.assignee.id,
+            columnId: todoColumns[resIndex].id,
           })),
         );
 
@@ -255,6 +276,7 @@ export default function ColumnList({
           title: createdCard.title,
           tags: createdCard.tags,
           assigneeId: createdCard.assignee.id,
+          columnId,
         },
       ]);
       refreshColumn(columnId);
@@ -280,6 +302,7 @@ export default function ColumnList({
               title: updatedCard.title,
               tags: updatedCard.tags,
               assigneeId: updatedCard.assignee.id,
+              columnId: nextColumnId,
             },
           ];
         }
@@ -291,6 +314,7 @@ export default function ColumnList({
                 title: updatedCard.title,
                 tags: updatedCard.tags,
                 assigneeId: updatedCard.assignee.id,
+                columnId: nextColumnId,
               }
             : card,
         );
@@ -378,6 +402,7 @@ export default function ColumnList({
                 onAddCard={() => handleOpenTodoCreateModal(column.id)}
                 onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
                 filter={filter}
+                filteredTotalCount={filteredCountByColumnId[column.id] ?? 0}
               />
             ))}
 
