@@ -7,7 +7,8 @@ export function useInvitationSearch() {
   const [searchKeyword, setSearchKeyword] = useState('');
 
   const submitSearch = useCallback(() => {
-    // Enter 입력 시 input에 적힌 값을 실제 검색어로 확정
+    // inputKeyword는 사용자가 입력 중인 값이고, searchKeyword는 실제 API 요청에 쓰는 값입니다.
+    // Enter를 눌렀을 때만 검색어를 확정해서 입력 중 매번 요청이 나가지 않게 합니다.
     setSearchKeyword(inputKeyword);
   }, [inputKeyword]);
 
