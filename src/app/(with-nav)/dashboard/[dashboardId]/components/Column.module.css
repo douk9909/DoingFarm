@@ -127,6 +127,7 @@
     overflow-x: unset;
     overflow-y: auto;
     scroll-snap-type: unset;
+    max-height: none;
     flex: 1;
     min-height: 0;
     align-items: stretch;

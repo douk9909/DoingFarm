@@ -35,7 +35,7 @@ export default function MyDashboardHomeClient({
   const [totalCount, setTotalCount] = useState(dashboardTotalCount);
   const [page, setPage] = useState(1);
   const [activeDashboardPageSize, setActiveDashboardPageSize] = useState(dashboardPageSize);
-  const [isLoadingDashboards, setIsLoadingDashboards] = useState(false);
+  const [isLoadingDashboards, setIsLoadingDashboards] = useState(initialError !== null);
   const [dashboardError, setDashboardError] = useState(initialError);
   const dashboardSection = dashboardPageContent.sections[0];
   const invitedSection = dashboardPageContent.sections[1];
