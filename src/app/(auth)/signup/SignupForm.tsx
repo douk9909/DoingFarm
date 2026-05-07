@@ -5,18 +5,19 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
-import visibilityOn from '@/assets/icon/visibility_on.svg';
-import visibilityOff from '@/assets/icon/visibility_off.svg';
-import checkEmpty from '@/assets/icon/check_empty.svg';
-import checkActive from '@/assets/icon/check_active.svg';
-import toast from 'react-hot-toast';
-import { Input } from '@/components/common/input/Input';
+import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
+import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
+import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
+import CheckActiveIcon from '@/assets/icons/CheckActiveIcon';
+import CheckEmptyIcon from '@/assets/icons/CheckEmptyIcon';
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -58,14 +59,7 @@ export default function SignupForm() {
     confirmPasswordError === '' &&
     agreed;
 
-  const EyeIcon = (
-    <Image
-      src={showPassword ? visibilityOn : visibilityOff}
-      alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-      width={24}
-      height={24}
-    />
-  );
+  const EyeIcon = showPassword ? <VisibilityOnIcon size={24} /> : <VisibilityOffIcon size={24} />;
 
   return (
     <form
@@ -74,7 +68,7 @@ export default function SignupForm() {
         e.preventDefault();
         try {
           await authApi.signup({ email, nickname, password });
-          toast.success('가입이 완료되었습니다.');
+          showToast.success('가입이 완료되었습니다.');
           router.push('/login');
         } catch (error) {
           const message = error instanceof Error ? error.message : '회원가입에 실패했습니다.';
@@ -87,7 +81,7 @@ export default function SignupForm() {
       </Link>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type="email"
           label="이메일"
           placeholder="이메일을 입력해 주세요"
@@ -100,8 +94,8 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
-          type="nickname"
+        <Input.Text
+          type="text"
           label="닉네임"
           placeholder="닉네임을 입력해 주세요"
           status={nicknameError ? 'error' : 'default'}
@@ -113,7 +107,7 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type={showPassword ? 'text' : 'password'}
           label="비밀번호"
           placeholder="8자 이상 입력해 주세요"
@@ -128,8 +122,8 @@ export default function SignupForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
-          type={showPassword ? 'text' : 'password'}
+        <Input.Text
+          type={showConfirmPassword ? 'text' : 'password'}
           label="비밀번호 확인"
           placeholder="비밀번호를 한 번 더 입력해 주세요"
           status={confirmPasswordError ? 'error' : 'default'}
@@ -138,7 +132,7 @@ export default function SignupForm() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           onBlur={() => validateConfirmPassword(confirmPassword)}
           rightIcon={EyeIcon}
-          onRightIconClick={() => setShowPassword((prev) => !prev)}
+          onRightIconClick={() => setShowConfirmPassword((prev) => !prev)}
         />
       </div>
 
@@ -149,12 +143,7 @@ export default function SignupForm() {
           onClick={() => setAgreed((prev) => !prev)}
           aria-pressed={agreed}
         >
-          <Image
-            src={agreed ? checkActive : checkEmpty}
-            alt={agreed ? '동의함' : '동의 안 함'}
-            width={20}
-            height={20}
-          />
+          {agreed ? <CheckActiveIcon size={24} /> : <CheckEmptyIcon size={24} />}
           이용약관에 동의합니다.
         </button>
       </div>

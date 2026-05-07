@@ -2,11 +2,12 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils/cn';
+import { showToast } from '@/lib/utils/toast';
 
 import Avatar from '@/components/common/avatar/Avatar';
 import Button from '@/components/common/button/Button';
 
-import styles from './Comment.module.css';
+import styles from './CommentForm.module.css';
 
 interface CommentFormProps {
   mode?: 'create' | 'edit';
@@ -49,31 +50,29 @@ export default function CommentForm({
     adjustHeight();
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    /* Todo: toast로 안내 */
-    if (content.trim() === '') return alert('댓글 내용을 입력해주세요.');
-
-    /* Todo: 댓글 등록 로직 추가 */
-    onSubmit(content);
-
-    /* Todo: toast로 안내 */
-    alert('댓글이 등록되었습니다.');
-
-    if (mode === 'create') {
-      setContent('');
-      setIsExpanded(false);
+    if (content.trim() === '') {
+      showToast.error('댓글 내용을 입력해주세요.');
+      return;
     }
+
+    try {
+      await onSubmit(content);
+      showToast.success(mode === 'create' ? '댓글이 등록되었습니다.' : '댓글이 수정되었습니다.');
+
+      if (mode === 'create') {
+        setContent('');
+        setIsExpanded(false);
+      }
+    } catch (error) {}
   };
 
   const handleCancel = () => {
     if (content.trim() !== '') {
-      /* Todo: 삭제 모달 띄우기 */
-      alert(
-        mode === 'create'
-          ? '작성 중인 댓글이 있어요. 삭제하시겠습니까?'
-          : '변경 사항을 취소하시겠습니까?',
+      showToast.success(
+        mode === 'create' ? '작성 중인 댓글이 삭제되었습니다.' : '변경 사항이 취소되었습니다.',
       );
     }
 
@@ -90,12 +89,14 @@ export default function CommentForm({
   return (
     <div className={styles.container}>
       {!isExpanded && mode === 'create' ? (
-        <div className={styles.placeholderContainer}>
+        <button
+          type="button"
+          className={styles.placeholderContainer}
+          onClick={() => setIsExpanded(true)}
+        >
           <Avatar src={currentUser.src} alt={currentUser.nickname} name={currentUser.nickname} />
-          <div className={styles.placeholder} onClick={() => setIsExpanded(true)}>
-            댓글을 남겨보세요
-          </div>
-        </div>
+          <div className={styles.placeholder}>댓글을 남겨보세요</div>
+        </button>
       ) : (
         <form className={styles.commentInputContainer} onSubmit={handleSubmit}>
           <textarea
@@ -113,7 +114,6 @@ export default function CommentForm({
             autoFocus
             rows={1}
           />
-          {/* Todo: 버튼 컴포넌트 등록하기 */}
           <div className={styles.buttonWrapper}>
             <Button
               type="button"

@@ -1,0 +1,110 @@
+.todoModal {
+  width: calc(100vw - 24px);
+  max-width: 436px;
+  max-height: calc(100dvh - 24px);
+  min-height: auto;
+  padding: 18px 14px 16px;
+  border-color: var(--color-overlay-stroke);
+  border-radius: var(--radius-xl);
+}
+
+.todoModal h2 {
+  font: var(--text-lg-16-semibold);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.formInput {
+  min-height: 38px;
+  font: var(--text-sm-medium);
+}
+
+.formTextarea {
+  min-height: 88px;
+  padding: 12px 0;
+  font: var(--text-sm-medium);
+}
+
+.requiredMark {
+  color: var(--color-primary-500);
+}
+
+.selectRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.cancelButton {
+  background-color: var(--color-black-500);
+}
+
+.submitButton,
+.cancelButton {
+  min-height: 42px;
+  font: var(--text-sm-semibold);
+}
+
+.pageOverlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  overflow: hidden;
+}
+
+.pageContainer {
+  width: 100%;
+  height: 100%;
+  padding: 24px 20px 32px;
+  background-color: #242429;
+  overflow-y: auto;
+}
+
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.pageHeader h2 {
+  margin: 0;
+  color: var(--color-gray-900);
+  font: var(--text-xl-semibold);
+}
+
+.pageCloseButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: var(--color-gray-700);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pageCloseButton:hover {
+    background-color: var(--color-gray-100);
+    border-radius: 999px;
+  }
+}

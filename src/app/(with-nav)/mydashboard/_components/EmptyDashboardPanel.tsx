@@ -1,14 +1,19 @@
+'use client';
+
 import Image from 'next/image';
 import Button from '@/components/common/button/Button';
-import plusIcon from '@/assets/icon/ic_plus3.svg';
+import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
+import PlusCircleIcon from '@/assets/icons/PlusCircleIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';
-import styles from '../page.module.css';
+import styles from './EmptyDashboardPanel.module.css';
 
 interface EmptyDashboardPanelProps {
   section: DashboardEmptySection;
 }
 
 export default function EmptyDashboardPanel({ section }: EmptyDashboardPanelProps) {
+  const { openDashboardCreateModal } = useDashboardCreateModal();
+
   return (
     <div className={styles.panel}>
       <div className={styles.emptyState}>
@@ -24,15 +29,10 @@ export default function EmptyDashboardPanel({ section }: EmptyDashboardPanelProp
         <p className={styles.message}>{section.message}</p>
 
         {section.actionLabel ? (
-          <Button size="sm" className={styles.createButton}>
+          // 빈 대시보드일 때만 바로 생성 모달을 열 수 있게 보여줌
+          <Button size="sm" className={styles.createButton} onClick={openDashboardCreateModal}>
             {section.actionLabel}
-            <Image
-              src={plusIcon}
-              alt=""
-              width={12}
-              height={12}
-              className={styles.createButtonPlus}
-            />
+            <PlusCircleIcon size={14} />
           </Button>
         ) : null}
       </div>

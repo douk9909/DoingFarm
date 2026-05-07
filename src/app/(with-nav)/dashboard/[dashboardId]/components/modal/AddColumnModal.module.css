@@ -1,0 +1,37 @@
+.addColumnModal {
+  position: relative;
+  overflow: visible;
+}
+
+.characterImage {
+  position: absolute;
+  top: -68px;
+  right: 28px;
+  width: 60px;
+  height: 72px;
+  object-fit: contain;
+  pointer-events: none;
+  transform: scaleX(-1);
+}
+
+.buttonWrapper {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.button {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .buttonWrapper {
+    margin-top: 30px;
+    gap: 20px;
+  }
+
+  .button {
+    font: var(--text-2lg-semibold);
+  }
+}

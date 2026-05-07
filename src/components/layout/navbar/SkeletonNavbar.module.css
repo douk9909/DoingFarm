@@ -1,0 +1,40 @@
+.skeletonItem {
+  display: flex;
+  align-items: center;
+}
+
+.skeletonProfile {
+  width: 24px;
+  height: 24px;
+  margin-left: -13px;
+}
+
+.line {
+  margin: 0 18px;
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+}
+
+.skeletonButtonWrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  width: 32px;
+  height: 32px;
+}
+
+@media (min-width: 768px) {
+  .skeletonProfile {
+    width: 34px;
+    height: 34px;
+  }
+
+  .button {
+    height: 40px;
+    width: 85px;
+    border-radius: 6px;
+  }
+}

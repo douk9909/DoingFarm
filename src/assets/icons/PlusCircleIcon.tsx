@@ -1,11 +1,11 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface PlusCircleIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function PlusCircleIcon({ size = 24, color, ...props }: CheckActiveIconProps) {
+export default function PlusCircleIcon({ size = 24, color, ...props }: PlusCircleIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

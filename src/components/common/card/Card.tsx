@@ -5,19 +5,29 @@ import { getHashColor } from '@/lib/utils/color';
 
 import styles from './Card.module.css';
 
+export interface CardTag {
+  label: string;
+  color: string;
+}
+
 interface CardProps {
   id: number;
   title: string;
-  tags?: string[];
+  tags?: Array<string | CardTag>;
   dueDate: string;
   assignee: {
     nickname: string;
-    profileImage: string | null;
+    profileImageUrl: string | null;
   };
   src?: string | null;
 }
 
 export default function Card({ src, title, tags, dueDate, assignee }: CardProps) {
+  // 생성 모달에서 받은 태그 색상이 있으면 그대로 사용
+  const getTagLabel = (tag: string | CardTag) => (typeof tag === 'string' ? tag : tag.label);
+  const getTagColor = (tag: string | CardTag) =>
+    typeof tag === 'string' ? getHashColor(tag) : tag.color;
+
   return (
     <div className={styles.cardContainer}>
       {src && (
@@ -32,11 +42,11 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
         <div className={styles.cardTags}>
           {tags?.map((tag, index) => (
             <span
-              key={`${tag}-${index}`}
+              key={`${getTagLabel(tag)}-${index}`}
               className={styles.cardTag}
-              style={{ '--bg-color': getHashColor(tag) } as React.CSSProperties}
+              style={{ '--bg-color': getTagColor(tag) } as React.CSSProperties}
             >
-              {tag}
+              {getTagLabel(tag)}
             </span>
           ))}
         </div>
@@ -44,7 +54,7 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
         <p className={styles.cardDate}>{formatDate(dueDate)}</p>
         <div className={styles.cardAuthor}>
           <Avatar
-            src={assignee.profileImage}
+            src={assignee.profileImageUrl}
             alt={assignee.nickname}
             name={assignee.nickname}
             className={styles.cardAuthorAvatar}

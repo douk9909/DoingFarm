@@ -1,12 +1,22 @@
-import EditForm from './components/EditForm';
-import MembersList from './components/MembersList';
-import InvitationsList from './components/InvitationsList';
+'use client';
 
-import { DASHBOARD_COLORS } from '@/lib/constants/color';
+import { use, useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
+import { useFetch } from '@/hooks/queries/useFetch';
+import { Dashboard } from '@/types/dashboard';
+import { dashboardApi } from '@/lib/api/dashboard';
+
+import EditForm from './_components/EditForm';
+import MembersList from './_components/MembersList';
+import InvitationsList from './_components/InvitationsList';
+import DeleteDashboardButton from './_components/DeleteDashboardButton';
+import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 
 import styles from './edit.module.css';
-import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
-import DeleteDashboardButton from './components/DeleteDashboardButton';
+import SkeletonSettingSection from './_components/Skeleton/SkeletonSettingSection';
+import SkeletonListSection from './_components/Skeleton/SkeletonListSection';
 
 interface DashboardEditPageProps {
   params: Promise<{
@@ -14,31 +24,68 @@ interface DashboardEditPageProps {
   }>;
 }
 
-export default async function DashboardEditPage({ params }: DashboardEditPageProps) {
-  const { dashboardId } = await params;
+export default function DashboardEditPage({ params }: DashboardEditPageProps) {
+  const { dashboardId } = use(params);
+  const id = Number(dashboardId);
+  const router = useRouter();
 
-  // Todo: API 연결 후 mock data삭제
-  const initialData = {
-    id: '1',
-    title: '테스트 프로젝트',
-    color: DASHBOARD_COLORS[0], // ColorPicker 팔레트에 있는 값 중 하나
-  };
+  const {
+    data: dashboardData,
+    isLoading,
+    error,
+  } = useFetch<Dashboard>(() => dashboardApi.getOne(id).then((res) => ({ data: res.data })));
+
+  const [updatedDashboardTitle, setUpdatedDashboardTitle] = useState<string | null>(null);
+  const [updatedDashboardColor, setUpdatedDashboardColor] = useState<string | null>(null);
+  const dashboardTitle = updatedDashboardTitle ?? dashboardData?.title ?? '';
+  const dashboardColor = updatedDashboardColor ?? dashboardData?.color ?? '';
+
+  useEffect(() => {
+    if (!isLoading && (error || !dashboardData)) {
+      router.push('/not-found');
+    }
+  }, [isLoading, error, dashboardData, router]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.container}>
+        <Link href={`/dashboard/${dashboardId}`} className={styles.prevButton}>
+          <ArrowLeftIcon size={20} />
+          <span>돌아가기</span>
+        </Link>
+        <div className={styles.contentWrapper}>
+          <SkeletonSettingSection />
+          <SkeletonListSection />
+          <SkeletonListSection />
+          <div className={styles.skeletonDeleteButton} />
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !dashboardData) return null;
 
   return (
     <section className={styles.container}>
-      <button className={styles.prevButton}>
+      <Link href={`/dashboard/${dashboardId}`} className={styles.prevButton}>
         <ArrowLeftIcon size={20} />
         <span>돌아가기</span>
-      </button>
+      </Link>
+
       <div className={styles.contentWrapper}>
-        {/* 대시보드 이름 변경 */}
-        <EditForm initialTitle={initialData.title} initialColor={initialData.color} />
-        {/* 대시보드 구성원 변경 */}
-        <MembersList dashboardId={dashboardId} />
-        {/* 대시보드 초대 내역 */}
-        <InvitationsList dashboardId={dashboardId} />
-        {/* 대시보드 삭제 버튼 */}
-        <DeleteDashboardButton dashboardId={dashboardId} />
+        {dashboardData && (
+          <EditForm
+            dashboardId={id}
+            initialTitle={dashboardTitle}
+            initialColor={dashboardColor}
+            currentDisplayTitle={dashboardTitle}
+            onTitleUpdate={setUpdatedDashboardTitle}
+            onColorUpdate={setUpdatedDashboardColor}
+          />
+        )}
+        <MembersList dashboardId={id} />
+        <InvitationsList dashboardId={id} />
+        <DeleteDashboardButton dashboardId={id} />
       </div>
     </section>
   );

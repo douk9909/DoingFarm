@@ -24,8 +24,7 @@
 
 .title {
   color: var(--color-white);
-  font-size: 24px;
-  font-weight: bold;
+  font: var(--text-2xl-bold);
   margin-bottom: 16px;
 }
 
@@ -48,7 +47,7 @@
   align-items: center;
   justify-content: center;
   height: 46px;
-  padding: 12 24px;
+  padding: 12px 24px;
   border-radius: var(--radius-sm);
   background-color: var(--color-primary-500);
   color: var(--color-white);
@@ -65,7 +64,7 @@
   align-items: center;
   justify-content: center;
   height: 46px;
-  padding: 12 24px;
+  padding: 12px 24px;
   border-radius: var(--radius-sm);
   background-color: var(--color-gray-300);
   color: var(--color-white);

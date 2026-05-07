@@ -1,17 +1,18 @@
 import { SVGProps } from 'react';
 
-interface CheckActiveIconProps extends SVGProps<SVGSVGElement> {
+interface HashTagIconProps extends SVGProps<SVGSVGElement> {
   size?: number;
   color?: string;
 }
 
-export default function HashTagIcon({ size = 16, color, ...props }: CheckActiveIconProps) {
+export default function HashTagIcon({ size = 16, color, className, ...props }: HashTagIconProps) {
   return (
     <svg
+      className={className}
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 24 24"
+      viewBox="0 0 16 16"
       fill="none"
       {...props}
     >

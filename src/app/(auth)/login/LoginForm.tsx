@@ -5,12 +5,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
-import visibilityOn from '@/assets/icon/visibility_on.svg';
-import visibilityOff from '@/assets/icon/visibility_off.svg';
-import { Input } from '@/components/common/input/Input';
+import Input from '@/components/common/input';
 import Button from '@/components/common/button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
+import { showToast } from '@/lib/utils/toast';
+import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
+import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -30,14 +31,7 @@ export default function LoginForm() {
     setPasswordError(value.length >= 8 || value === '' ? '' : '8자 이상 작성해 주세요.');
   };
 
-  const EyeIcon = (
-    <Image
-      src={showPassword ? visibilityOn : visibilityOff}
-      alt={showPassword ? '비밀번호 숨기기' : '비밀번호 보기'}
-      width={24}
-      height={24}
-    />
-  );
+  const EyeIcon = showPassword ? <VisibilityOnIcon size={24} /> : <VisibilityOffIcon size={24} />;
 
   return (
     <form
@@ -47,6 +41,7 @@ export default function LoginForm() {
         try {
           const res = await authApi.login({ email, password });
           setToken(res.data.accessToken);
+          showToast.success('환영합니다! 로그인에 성공했습니다.');
           router.push('/mydashboard');
         } catch (error) {
           const message = error instanceof Error ? error.message : '로그인에 실패했습니다.';
@@ -66,7 +61,7 @@ export default function LoginForm() {
       </Link>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type="email"
           label="이메일"
           placeholder="이메일을 입력해 주세요"
@@ -79,7 +74,7 @@ export default function LoginForm() {
       </div>
 
       <div className={styles.inputGroup}>
-        <Input
+        <Input.Text
           type={showPassword ? 'text' : 'password'}
           label="비밀번호"
           placeholder="8자 이상 입력해 주세요"

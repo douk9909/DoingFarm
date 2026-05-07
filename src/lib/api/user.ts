@@ -16,7 +16,7 @@ export const userApi = {
 
   updateMe: (data: UpdateUserRequest) => apiClient.put<User>('/users/me', data),
 
-  updatePassword: (data: UpdatePasswordRequest) => apiClient.put('/users/me/password', data),
+  updatePassword: (data: UpdatePasswordRequest) => apiClient.put('/auth/password', data),
 
   uploadProfileImage: (file: File) => {
     const formData = new FormData();

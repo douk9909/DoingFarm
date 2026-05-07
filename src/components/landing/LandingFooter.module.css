@@ -6,8 +6,8 @@
   align-items: center;
   width: calc(100% - 24px);
   margin: 0 auto;
-  gap: 8px;
-  padding: 14px 0 22px;
+  padding: 18px 0 22px;
+  gap: 12px;
 }
 
 .footer::before {
@@ -21,119 +21,148 @@
 }
 
 .footerLogoLink {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   justify-self: start;
+  min-width: 0;
   text-decoration: none;
 }
 
-.footerBrandMark {
-  display: inline-flex;
-  align-items: flex-end;
-  justify-content: center;
-  width: 28px;
-  height: 14px;
-}
-
 .footerBrandCarrot {
-  width: 18px;
+  display: block;
+  width: 22px;
   height: auto;
+  flex-shrink: 0;
+  transform: translateY(-5px);
 }
 
 .footerLogo {
-  width: 78px;
+  display: block;
+  width: 96px;
   height: auto;
 }
 
-.footerLinks,
-.footerSocials {
+.footerLinks {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.footerLinks {
+  justify-content: center;
   justify-self: center;
-}
-
-.footerSocials {
-  justify-self: end;
+  margin-right: 50px;
+  gap: 20px;
+  min-width: 0;
+  flex-wrap: wrap;
 }
 
 .footerTextLink {
   display: inline-flex;
   color: var(--landing-text-muted);
-  font: var(--text-xs-medium);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.14);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  opacity: 0.85;
+  text-shadow: none;
+  transition:
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.footerTextLink:hover {
+  color: var(--color-white);
+  opacity: 1;
+}
+
+.footerSocials {
+  display: flex;
+  align-items: center;
+  justify-self: end;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .socialLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: var(--landing-border-soft);
+  width: 18px;
+  height: 18px;
+  color: var(--landing-text-muted);
+  text-decoration: none;
+  background: transparent;
+  border-radius: 0;
   transition:
     transform 0.18s ease,
-    background-color 0.18s ease,
-    box-shadow 0.18s ease;
+    opacity 0.18s ease;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .footerTextLink:hover {
-    color: #ffffff;
-  }
+.socialLink:hover {
+  transform: translateY(-2px);
+  opacity: 1;
+}
 
-  .socialLink:hover {
-    transform: translateY(-2px);
-    background-color: rgba(255, 255, 255, 0.12);
-    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.18);
-  }
+.socialLink svg {
+  width: 18px;
+  height: 18px;
 }
 
 @media (min-width: 768px) {
   .footer {
     width: calc(100% - 48px);
-    gap: 10px;
-    padding-top: 18px;
-    padding-bottom: 22px;
-  }
-
-  .footerBrandMark {
-    width: 44px;
-    height: 22px;
+    padding: 20px 0 24px;
   }
 
   .footerBrandCarrot {
-    width: 31px;
+    width: 24px;
   }
 
   .footerLogo {
-    width: 116px;
+    width: 104px;
   }
 
-  .footerLinks,
+  .footerLinks {
+    gap: 24px;
+  }
+
   .footerSocials {
     gap: 16px;
   }
 
-  .socialLink {
-    width: 24px;
-    height: 24px;
-  }
-
-  .footerLinks {
-    justify-content: center;
+  .socialLink svg {
+    width: 20px;
+    height: 20px;
   }
 }
 
 @media (min-width: 1200px) {
   .footer {
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: calc(100% - 160px);
-    padding-bottom: 32px;
+    padding: 24px 0 28px;
+  }
+
+  .footerLogoLink {
+    position: absolute;
+    left: 0;
+  }
+
+  .footerBrandCarrot {
+    width: 24px;
+    transform: translateY(-6px);
+  }
+
+  .footerLogo {
+    width: 104px;
+  }
+
+  .footerLinks {
+    gap: 36px;
+  }
+
+  .footerSocials {
+    position: absolute;
+    right: 0;
   }
 }

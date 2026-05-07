@@ -1,0 +1,137 @@
+.filterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 8px;
+}
+
+.filterSection {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font: var(--text-md-semibold);
+  color: var(--color-gray-900);
+  flex-shrink: 0;
+  min-width: 40px;
+}
+
+.chipList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--color-gray-200);
+  background: var(--color-black-300);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-400);
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chipActive {
+  background: var(--color-primary-900);
+  border-color: var(--color-primary-600);
+}
+
+.chipActive:hover {
+  background: var(--color-primary-800);
+  border-color: var(--color-primary-500);
+}
+
+.chipDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--chip-color);
+  flex-shrink: 0;
+}
+
+.chipText {
+  font: var(--text-sm-regular);
+  color: var(--color-gray-800);
+  line-height: 1;
+}
+
+.chipActive .chipText {
+  color: var(--color-primary-100);
+}
+
+.assigneeChip {
+  padding-left: 4px;
+}
+
+.chipAvatar {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--color-danger);
+  background: transparent;
+  color: var(--color-danger);
+  font: var(--text-sm-regular);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.clearButton:hover {
+  background: rgba(202, 55, 43, 0.1);
+}
+
+.clearButton:active {
+  transform: scale(0.96);
+}
+
+@media (max-width: 767px) {
+  .filterContainer {
+    padding: 0 16px 6px;
+    gap: 8px;
+  }
+
+  .chipList {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  .chipList::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .filterContainer {
+    padding: 0 0 10px;
+  }
+}

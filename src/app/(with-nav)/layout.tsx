@@ -25,12 +25,10 @@ export default async function WithNavLayout({ children }: WithNavLayoutProps) {
   const initialSidebarWidth =
     savedViewportMode === 'mobile'
       ? null
-      : savedSidebarWidth ?? getDefaultSidebarWidth(savedViewportMode);
+      : (savedSidebarWidth ?? getDefaultSidebarWidth(savedViewportMode));
 
   // 클라이언트 셸 연결
   return (
-    <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>
-      {children}
-    </WithNavLayoutClient>
+    <WithNavLayoutClient initialSidebarWidth={initialSidebarWidth}>{children}</WithNavLayoutClient>
   );
 }
