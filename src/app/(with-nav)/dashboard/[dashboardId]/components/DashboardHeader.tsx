@@ -38,7 +38,7 @@ export default function DashBoardHeader({
   if (isLoading) return <SkeletonDashboardHeader />;
 
   return (
-    <div>
+    <div className={styles.staticHeader}>
       <header className={styles.header}>
         <div className={styles.titleWrapper}>
           <HashTagIcon className={styles.hashTag} color={data?.color} />
