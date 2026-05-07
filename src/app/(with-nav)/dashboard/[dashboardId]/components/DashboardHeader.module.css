@@ -1,3 +1,9 @@
+.staticHeader {
+  position: static;
+  top: 0;
+  z-index: 10;
+}
+
 .header {
   width: 100%;
   padding: 16px 20px;

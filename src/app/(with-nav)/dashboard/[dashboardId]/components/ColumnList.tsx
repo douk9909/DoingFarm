@@ -400,7 +400,7 @@ export default function ColumnList({
                 index={index}
                 existingTitles={existingColumnTitles}
                 onAddCard={() => handleOpenTodoCreateModal(column.id)}
-                onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
+                onCardClick={(cardId: number) => handleCardClick(cardId, column.id, column.title)}
                 filter={filter}
                 filteredTotalCount={filteredCountByColumnId[column.id] ?? 0}
               />
