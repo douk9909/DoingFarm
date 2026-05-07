@@ -45,7 +45,7 @@
 
 .topnavLink {
   position: relative;
-  color: var(--header-link-color, --color-black-100);
+  color: var(--color-black-100);
   font: var(--text-xs-medium);
   text-shadow: 0 1px 8px rgba(255, 255, 255, 0.12);
 }
