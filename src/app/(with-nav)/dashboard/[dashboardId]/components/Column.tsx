@@ -2,7 +2,7 @@
 
 import { useDroppable } from '@dnd-kit/core';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
 import CarrotDone from '@/assets/character/carrot1.svg';
@@ -17,6 +17,7 @@ import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
 import SkeletonCard from './Skeleton/SkeletonCard';
+import { type FilterState, isFilterActive } from './CardFilter';
 
 export interface ColumnData {
   id: number;
@@ -28,6 +29,7 @@ interface ColumnProps extends ColumnData {
   index: number;
   existingTitles: string[];
   onCardClick?: (cardId: number) => void;
+  filter?: FilterState;
 }
 
 const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
@@ -36,6 +38,23 @@ const getColumnIcon = (index: number) => {
   return COLUMN_ICONS[index] ?? PumpkinIcon;
 };
 
+function matchesFilter(card: CardType, filter: FilterState): boolean {
+  const hasTagFilter = filter.tags.length > 0;
+  const hasAssigneeFilter = filter.assignees.length > 0;
+
+  if (hasTagFilter) {
+    const matchesTag = card.tags.some((tag) => filter.tags.includes(tag));
+    if (!matchesTag) return false;
+  }
+
+  if (hasAssigneeFilter) {
+    const matchesAssignee = filter.assignees.includes(card.assignee.id);
+    if (!matchesAssignee) return false;
+  }
+
+  return true;
+}
+
 export default function Column({
   id,
   title,
@@ -43,6 +62,7 @@ export default function Column({
   onAddCard,
   existingTitles,
   onCardClick,
+  filter,
 }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,6 +86,13 @@ export default function Column({
       fetcher: fetchCards,
     });
 
+  const filteredItems = useMemo(() => {
+    if (!filter || !isFilterActive(filter)) return items;
+    return items.filter((card) => matchesFilter(card, filter));
+  }, [items, filter]);
+
+  const displayCount = filter && isFilterActive(filter) ? filteredItems.length : totalCount;
+
   if (error) return <div>에러: {error}</div>;
 
   return (
@@ -74,7 +101,7 @@ export default function Column({
         <div className={styles.titleWrapper}>
           <Image src={getColumnIcon(index)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
-          <span className={styles.count}>{totalCount}</span>
+          <span className={styles.count}>{displayCount}</span>
         </div>
         <button onClick={() => setIsModalOpen(true)} type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
@@ -103,9 +130,12 @@ export default function Column({
       >
         {isLoading && items.length === 0 ? (
           <SkeletonCard />
+        ) : filteredItems.length === 0 && isFilterActive(filter ?? { tags: [], assignees: [] }) ? (
+          <div className={styles.emptyFilter}>
+            <span>필터 조건에 맞는 카드가 없습니다</span>
+          </div>
         ) : (
-          items.map((card: CardType, cardIndex) => (
-            // wrapper div로 마지막 카드 감지
+          filteredItems.map((card: CardType, cardIndex) => (
             <div
               key={card.id}
               ref={cardIndex === items.length - 1 ? lastItemRef : null}

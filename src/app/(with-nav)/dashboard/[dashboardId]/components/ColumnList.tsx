@@ -31,6 +31,8 @@ import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
 import AddColumnModal from './modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
+import DashBoardHeader from './DashboardHeader';
+import { EMPTY_FILTER, type FilterState, type AssigneeInfo } from './CardFilter';
 import { showToast } from '@/lib/utils/toast';
 import SkeletonColumnList from './Skeleton/SkeletonColumnList';
 
@@ -43,9 +45,11 @@ interface SelectedCard {
   columnTitle: string;
 }
 
-interface CardTitleCacheItem {
+interface CardCacheItem {
   id: number;
   title: string;
+  tags: string[];
+  assigneeId: number;
 }
 
 export default function ColumnList({
@@ -60,9 +64,11 @@ export default function ColumnList({
   const [selectedCard, setSelectedCard] = useState<SelectedCard | null>(null);
   const [editingCard, setEditingCard] = useState<Card | null>(null);
   const [refreshKeyByColumnId, setRefreshKeyByColumnId] = useState<Record<number, number>>({});
-  const [cardTitleCache, setCardTitleCache] = useState<CardTitleCacheItem[]>([]);
-  const [isTitleCacheReady, setIsTitleCacheReady] = useState(false);
+  const [cardCache, setCardCache] = useState<CardCacheItem[]>([]);
+  const [isCacheReady, setIsCacheReady] = useState(false);
   const [activeCard, setActiveCard] = useState<Card | null>(null);
+
+  const [filter, setFilter] = useState<FilterState>(EMPTY_FILTER);
 
   // 대시보드 정보 조회
   const { data: dashboardData } = useFetch(() =>
@@ -96,15 +102,9 @@ export default function ColumnList({
   // columns를 useMemo로 감싸서 불필요한 리렌더 방지
   const columns = useMemo(() => columnData?.data ?? [], [columnData]);
 
-  const todoColumns = useMemo(
-    () => columns.map(({ id, title }) => ({ id, title })),
-    [columns],
-  );
+  const todoColumns = useMemo(() => columns.map(({ id, title }) => ({ id, title })), [columns]);
 
-  const existingColumnTitles = useMemo(
-    () => columns.map((column) => column.title),
-    [columns],
-  );
+  const existingColumnTitles = useMemo(() => columns.map((column) => column.title), [columns]);
 
   const resolvedDashboardTitle = dashboardTitle ?? dashboardData?.title ?? '';
 
@@ -115,17 +115,40 @@ export default function ColumnList({
       nickname: member.nickname,
     })) ?? [];
 
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    cardCache.forEach((card) => card.tags.forEach((tag) => tagSet.add(tag)));
+    return Array.from(tagSet);
+  }, [cardCache]);
+
+  const allAssignees: AssigneeInfo[] = useMemo(() => {
+    if (!memberData?.members) return [];
+    const assigneeIds = new Set(cardCache.map((card) => card.assigneeId));
+    return memberData.members
+      .filter((member: Member) => assigneeIds.has(member.userId))
+      .map((member: Member) => ({
+        id: member.userId,
+        nickname: member.nickname,
+        profileImageUrl: member.profileImageUrl ?? null,
+      }));
+  }, [cardCache, memberData]);
+
+  const existingCardTitles = useMemo(
+    () => cardCache.map(({ id, title }) => ({ id, title })),
+    [cardCache],
+  );
+
   useEffect(() => {
     let isCancelled = false;
 
-    const fetchCardTitleCache = async () => {
+    const fetchCardCache = async () => {
       if (todoColumns.length === 0) {
-        setCardTitleCache([]);
-        setIsTitleCacheReady(true);
+        setCardCache([]);
+        setIsCacheReady(true);
         return;
       }
 
-      setIsTitleCacheReady(false);
+      setIsCacheReady(false);
 
       try {
         const responses = await Promise.all(
@@ -139,26 +162,28 @@ export default function ColumnList({
 
         if (isCancelled) return;
 
-        const nextCardTitleCache = responses.flatMap((res) =>
+        const nextCache = responses.flatMap((res) =>
           res.data.cards.map((card) => ({
             id: card.id,
             title: card.title,
+            tags: card.tags,
+            assigneeId: card.assignee.id,
           })),
         );
 
-        setCardTitleCache(nextCardTitleCache);
-        setIsTitleCacheReady(true);
+        setCardCache(nextCache);
+        setIsCacheReady(true);
       } catch (error) {
-        console.error('카드 제목 캐시 조회 실패:', error);
+        console.error('카드 캐시 조회 실패:', error);
 
         if (isCancelled) return;
 
-        setCardTitleCache([]);
-        setIsTitleCacheReady(true);
+        setCardCache([]);
+        setIsCacheReady(true);
       }
     };
 
-    void fetchCardTitleCache();
+    void fetchCardCache();
 
     return () => {
       isCancelled = true;
@@ -212,22 +237,24 @@ export default function ColumnList({
       refreshColumn(selectedCard.columnId);
     }
 
-    setCardTitleCache((prev) => prev.filter((card) => card.id !== cardId));
+    setCardCache((prev) => prev.filter((card) => card.id !== cardId));
     setSelectedCard(null);
   };
 
   const { isCreating, createCard } = useCreateCardWithImage({
     dashboardId,
     assignees,
-    existingCardTitles: cardTitleCache,
-    isTitleCacheReady,
+    existingCardTitles,
+    isTitleCacheReady: isCacheReady,
     onSuccess: (columnId, createdCard) => {
       setSelectedColumnId(null);
-      setCardTitleCache((prev) => [
+      setCardCache((prev) => [
         ...prev,
         {
           id: createdCard.id,
           title: createdCard.title,
+          tags: createdCard.tags,
+          assigneeId: createdCard.assignee.id,
         },
       ]);
       refreshColumn(columnId);
@@ -235,14 +262,14 @@ export default function ColumnList({
   });
 
   const { isEditing, updateCard } = useUpdateCardWithImage({
-    existingCardTitles: cardTitleCache,
-    isTitleCacheReady,
+    existingCardTitles,
+    isTitleCacheReady: isCacheReady,
     onSuccess: (nextColumnId, updatedCard) => {
       const previousColumnId = editingCard?.columnId;
 
       setEditingCard(null);
 
-      setCardTitleCache((prev) => {
+      setCardCache((prev) => {
         const hasCachedCard = prev.some((card) => card.id === updatedCard.id);
 
         if (!hasCachedCard) {
@@ -251,6 +278,8 @@ export default function ColumnList({
             {
               id: updatedCard.id,
               title: updatedCard.title,
+              tags: updatedCard.tags,
+              assigneeId: updatedCard.assignee.id,
             },
           ];
         }
@@ -260,6 +289,8 @@ export default function ColumnList({
             ? {
                 id: updatedCard.id,
                 title: updatedCard.title,
+                tags: updatedCard.tags,
+                assigneeId: updatedCard.assignee.id,
               }
             : card,
         );
@@ -326,45 +357,56 @@ export default function ColumnList({
 
   return (
     <ColumnRefetchContext.Provider value={refetch}>
-      <DndContext sensors={clickSensor} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-        <div className={`${styles.columnList} custom-scrollbar`}>
-          {columns.map((column: ColumnType, index) => (
-            <Column
-              key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
-              id={column.id}
-              title={column.title}
-              index={index}
-              existingTitles={existingColumnTitles}
-              onAddCard={() => handleOpenTodoCreateModal(column.id)}
-              onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
-            />
-          ))}
+      <div className={styles.wrapper}>
+        <DashBoardHeader
+          dashboardId={dashboardId}
+          allTags={allTags}
+          allAssignees={allAssignees}
+          filter={filter}
+          onFilterChange={setFilter}
+        />
 
-          <AddColumnButton onClick={handleAddButton} />
-
-          {isModalOpen && (
-            <AddColumnModal
-              dashboardId={dashboardId}
-              onClose={() => setIsModalOpen(false)}
-              existingTitles={existingColumnTitles}
-            />
-          )}
-        </div>
-        <DragOverlay>
-          {activeCard && (
-            <div style={{ opacity: 0.7 }}>
-              <CardComponent
-                id={activeCard.id}
-                title={activeCard.title}
-                tags={activeCard.tags}
-                dueDate={activeCard.dueDate}
-                assignee={activeCard.assignee}
-                src={activeCard.imageUrl}
+        <DndContext sensors={clickSensor} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+          <div className={`${styles.columnList} custom-scrollbar`}>
+            {columns.map((column: ColumnType, index) => (
+              <Column
+                key={`${column.id}-${refreshKeyByColumnId[column.id] ?? 0}`}
+                id={column.id}
+                title={column.title}
+                index={index}
+                existingTitles={existingColumnTitles}
+                onAddCard={() => handleOpenTodoCreateModal(column.id)}
+                onCardClick={(cardId) => handleCardClick(cardId, column.id, column.title)}
+                filter={filter}
               />
-            </div>
-          )}
-        </DragOverlay>
-      </DndContext>
+            ))}
+
+            <AddColumnButton onClick={handleAddButton} />
+
+            {isModalOpen && (
+              <AddColumnModal
+                dashboardId={dashboardId}
+                onClose={() => setIsModalOpen(false)}
+                existingTitles={existingColumnTitles}
+              />
+            )}
+          </div>
+          <DragOverlay>
+            {activeCard && (
+              <div style={{ opacity: 0.7 }}>
+                <CardComponent
+                  id={activeCard.id}
+                  title={activeCard.title}
+                  tags={activeCard.tags}
+                  dueDate={activeCard.dueDate}
+                  assignee={activeCard.assignee}
+                  src={activeCard.imageUrl}
+                />
+              </div>
+            )}
+          </DragOverlay>
+        </DndContext>
+      </div>
 
       {selectedColumnId ? (
         <TodoCreate
