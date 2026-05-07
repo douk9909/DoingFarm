@@ -51,7 +51,6 @@ export default function Column({
   filteredTotalCount = 0,
 }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { setNodeRef: setDropRef, isOver } = useDroppable({
     id: `column-${id}`,
@@ -68,6 +67,7 @@ export default function Column({
     [id],
   );
 
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const { items, totalCount, error, isLoading, hasNextPage, fetchNext } =
     usePaginatedFetch<CardType>({
       fetcher: fetchCards,

@@ -11,10 +11,6 @@ interface UsePaginatedFetchProps<T> {
 /**
  * cursor 기반 페이지네이션 데이터 페칭 상태를 관리하는 훅입니다.
  * 무한 스크롤 트리거 로직과 무관하게, 데이터 로딩/리셋/에러 처리만 담당합니다.
- *
- * @example
- * const { items, isLoading, hasNextPage, fetchNext, reset } = usePaginatedFetch({ fetcher: fetchProducts });
- * const lastItemRef = useInfiniteScroll({ onLoadMore: fetchNext, hasNextPage, isLoading });
  */
 export function usePaginatedFetch<T>({ fetcher }: UsePaginatedFetchProps<T>) {
   const [items, setItems] = useState<T[]>([]);
