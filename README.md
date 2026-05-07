@@ -43,8 +43,8 @@ Do!ngFarm은 대시보드별로 구성원을 초대하고, 컬럼과 할 일 카
 </p>
 
 <p align="center">
-  <img src="./src/assets/character/standing_carrot.svg" width="120" alt="standing carrot character" />
   <img src="./src/assets/character/seed_todo.svg" width="120" alt="todo seed character" />
+  <img src="./src/assets/character/standing_carrot.svg" width="250" alt="standing carrot character" />
   <img src="./src/assets/character/seed_onprogress.svg" width="120" alt="on progress seed character" />
   <img src="./src/assets/character/pumkin.svg" width="120" alt="pumpkin character" />
 </p>

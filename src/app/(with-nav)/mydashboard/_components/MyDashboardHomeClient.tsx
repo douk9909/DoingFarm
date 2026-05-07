@@ -12,6 +12,10 @@ import styles from '../page.module.css';
 const COMPACT_DASHBOARD_PAGE_SIZE = 1;
 const DESKTOP_DASHBOARD_MEDIA_QUERY = '(min-width: 1200px)';
 
+interface FetchDashboardPageOptions {
+  showSkeleton?: boolean;
+}
+
 interface MyDashboardHomeClientProps {
   initialDashboards: Dashboard[];
   dashboardTotalCount: number;
@@ -60,9 +64,11 @@ export default function MyDashboardHomeClient({
   }, [dashboardPageSize]);
 
   const fetchDashboardPage = useCallback(
-    async (nextPage: number) => {
+    async (nextPage: number, { showSkeleton = true }: FetchDashboardPageOptions = {}) => {
       // 처음 이후의 페이지 이동은 사용자의 클릭으로 일어나기 때문에 클라이언트에서 다시 요청합니다.
-      setIsLoadingDashboards(true);
+      if (showSkeleton) {
+        setIsLoadingDashboards(true);
+      }
       setDashboardError(null);
 
       try {
@@ -85,22 +91,27 @@ export default function MyDashboardHomeClient({
   );
 
   useEffect(() => {
+    const shouldSyncInitialDashboardPage =
+      initialError !== null || activeDashboardPageSize !== dashboardPageSize;
+
+    if (!shouldSyncInitialDashboardPage) return;
+
     const timerId = window.setTimeout(() => {
       // 서버 초기값을 먼저 보여준 뒤, 클라이언트에서 최신 목록을 한 번 더 맞춥니다.
-      void fetchDashboardPage(1);
+      void fetchDashboardPage(1, { showSkeleton: initialError !== null });
     }, 0);
 
     return () => {
       window.clearTimeout(timerId);
     };
-  }, [fetchDashboardPage]);
+  }, [activeDashboardPageSize, dashboardPageSize, fetchDashboardPage, initialError]);
 
   useEffect(() => {
     if (dashboardListVersion === 0) return;
 
     const timerId = window.setTimeout(() => {
       // 새 대시보드를 만들면 목록과 페이지 수가 바뀔 수 있어서 첫 페이지부터 다시 가져옵니다.
-      void fetchDashboardPage(1);
+      void fetchDashboardPage(1, { showSkeleton: false });
     }, 0);
 
     return () => {
