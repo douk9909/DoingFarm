@@ -44,7 +44,7 @@
 }
 
 .description {
-  font-size: 15px;
+  font-size: 14px;
   color: #9e9e9e;
   line-height: 1.5;
 }
@@ -84,7 +84,7 @@
 }
 
 .questionText {
-  font-size: 16px;
+  font: var(--text-lg-16-semibold);
   font-weight: 600;
   color: var(--color-gray-800);
   line-height: 1.4;
@@ -143,7 +143,7 @@
 }
 
 .answerText {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.7;
   color: #9e9e9e;
   white-space: pre-wrap;
@@ -172,7 +172,7 @@
   }
 
   .questionText {
-    font-size: 20px;
+    font: var(--text-xl-semibold);
   }
 
   .answerWrapper {
@@ -180,7 +180,7 @@
   }
 
   .answerText {
-    font-size: 17px;
+    font-size: 16px;
   }
 }
 
