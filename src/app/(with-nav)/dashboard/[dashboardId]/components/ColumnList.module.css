@@ -1,3 +1,10 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
 .columnList {
   display: flex;
   flex-direction: column;
@@ -15,6 +22,8 @@
 
 @media (min-width: 1200px) {
   .columnList {
+    flex: 1;
+    min-height: 0;
     flex-direction: row;
     gap: 20px;
     overflow-x: auto;
@@ -22,7 +31,6 @@
     align-items: flex-start;
     padding: 10px 0 20px;
     overflow-y: hidden !important;
-    height: calc(100vh - 156px);
   }
 
   .custom-scrollbar::-webkit-scrollbar {

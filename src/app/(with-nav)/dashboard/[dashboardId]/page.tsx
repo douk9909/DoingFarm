@@ -2,7 +2,6 @@ import Image from 'next/image';
 import myboardBg from '@/assets/backgroundImg/myboard_bg.svg';
 import myboard from '@/assets/backgroundImg/myboard.svg';
 import styles from './page.module.css';
-import DashBoardHeader from './components/DashboardHeader';
 import ColumnList from './components/ColumnList';
 
 interface DashboardDetailPageProps {
@@ -24,7 +23,6 @@ export default async function DashboardDetailPage({ params }: DashboardDetailPag
       </div>
 
       <div className={styles.content}>
-        <DashBoardHeader dashboardId={id} />
         <ColumnList dashboardId={id} />
       </div>
     </section>

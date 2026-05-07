@@ -2,7 +2,7 @@
 
 import { useDroppable } from '@dnd-kit/core';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
 import CarrotDone from '@/assets/character/carrot1.svg';
@@ -17,6 +17,7 @@ import EditColumnModal from './modal/EditColumnModal';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
 import SkeletonCard from './Skeleton/SkeletonCard';
+import { type FilterState, isFilterActive, matchesFilter } from './CardFilter';
 
 export interface ColumnData {
   id: number;
@@ -28,6 +29,8 @@ interface ColumnProps extends ColumnData {
   index: number;
   existingTitles: string[];
   onCardClick?: (cardId: number) => void;
+  filter?: FilterState;
+  filteredTotalCount?: number;
 }
 
 const COLUMN_ICONS = [SeedTodo, SeedOnProgress, CarrotDone];
@@ -43,6 +46,8 @@ export default function Column({
   onAddCard,
   existingTitles,
   onCardClick,
+  filter,
+  filteredTotalCount = 0,
 }: ColumnProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -66,6 +71,15 @@ export default function Column({
       fetcher: fetchCards,
     });
 
+  const filterActive = filter ? isFilterActive(filter) : false;
+
+  const filteredItems = useMemo(() => {
+    if (!filter || !filterActive) return items;
+    return items.filter((card) => matchesFilter(card, filter));
+  }, [items, filter, filterActive]);
+
+  const displayCount = filterActive ? filteredTotalCount : totalCount;
+
   if (error) return <div>에러: {error}</div>;
 
   return (
@@ -74,14 +88,14 @@ export default function Column({
         <div className={styles.titleWrapper}>
           <Image src={getColumnIcon(index)} alt="" width={17} height={24} aria-hidden />
           <h2 className={styles.title}>{title}</h2>
-          <span className={styles.count}>{totalCount}</span>
+          <span className={styles.count}>{displayCount}</span>
         </div>
         <button onClick={() => setIsModalOpen(true)} type="button" aria-label="컬럼 설정">
           <SettingIcon size={20} />
         </button>
       </div>
 
-      {/* 카드 추가 버튼 카드 리스트 위로 이동 */}
+      {/* 카드 추가 버튼 */}
       <button
         type="button"
         aria-label="카드 추가"
@@ -104,16 +118,21 @@ export default function Column({
         {isLoading && items.length === 0 ? (
           <SkeletonCard />
         ) : (
-          items.map((card: CardType, cardIndex) => (
-            // wrapper div로 마지막 카드 감지
-            <div
-              key={card.id}
-              ref={cardIndex === items.length - 1 ? lastItemRef : null}
-              className={styles.cardWrapper}
-            >
-              <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
-            </div>
-          ))
+          <>
+            {filteredItems.length === 0 && filterActive && (
+              <div className={styles.emptyFilter}>
+                <span>필터 조건에 맞는 카드가 없습니다</span>
+              </div>
+            )}
+
+            {filteredItems.map((card: CardType) => (
+              <div key={card.id} className={styles.cardWrapper}>
+                <DraggableCard card={card} onClick={() => onCardClick?.(card.id)} />
+              </div>
+            ))}
+
+            <div ref={lastItemRef} className={styles.sentinel} />
+          </>
         )}
       </div>
 
