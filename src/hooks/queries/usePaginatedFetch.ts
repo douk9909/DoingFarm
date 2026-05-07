@@ -46,7 +46,7 @@ export function usePaginatedFetch<T>({ fetcher }: UsePaginatedFetchProps<T>) {
       setItems((prev) => (replace ? result.data : [...prev, ...result.data]));
       setTotalCount((prev) => result.totalCount ?? prev);
       cursorIdRef.current = result.nextCursorId ?? undefined;
-      setHasNextPage(result.nextCursorId !== null);
+      setHasNextPage(result.nextCursorId != null);
     } catch (err) {
       if (requestSeq !== requestSeqRef.current) return;
       setError(err instanceof Error ? err.message : '알 수 없는 에러가 발생했습니다.');
