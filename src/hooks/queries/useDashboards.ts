@@ -3,17 +3,17 @@
 import { useEffect } from 'react';
 import { dashboardApi } from '@/lib/api/dashboard';
 import type { Dashboard } from '@/types/dashboard';
-import { useInfiniteScroll } from './useInfiniteScroll';
+import { usePaginatedFetch } from './usePaginatedFetch';
 
 export const useDashboards = (refreshKey = 0) => {
   const {
     items: dashboards,
     isLoading,
     error,
-    lastItemRef,
-    scrollContainerRef,
+    hasNextPage,
+    fetchNext,
     reset,
-  } = useInfiniteScroll<Dashboard>({
+  } = usePaginatedFetch<Dashboard>({
     fetcher: (cursorId) =>
       dashboardApi
         .getList({ navigationMethod: 'infiniteScroll', cursorId, size: 10 })
@@ -34,8 +34,8 @@ export const useDashboards = (refreshKey = 0) => {
     dashboards,
     isLoading,
     error,
-    lastItemRef,
-    scrollContainerRef,
+    hasNextPage,
+    fetchNext,
     refetchDashboards: reset,
   };
 };
