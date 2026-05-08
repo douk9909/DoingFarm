@@ -80,8 +80,8 @@ export const landingFeatureContents = [
 ] as const satisfies readonly [FeatureContent, FeatureContent, FeatureContent, FeatureContent];
 
 export const landingFooterLinks = [
-  { label: 'Privacy Policy', href: '/policy/privacy' },
-  { label: 'FAQ', href: '/policy/faq' },
+  { label: 'Privacy Policy', href: PATH.PRIVACY },
+  { label: 'FAQ', href: PATH.FAQ },
 ] as const;
 
 export const privacyPolicy = {
