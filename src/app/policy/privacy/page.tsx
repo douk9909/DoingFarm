@@ -33,8 +33,8 @@ export default function PrivacyPage() {
                 <p className={styles.sectionText}>{section.content}</p>
                 {section.subList && (
                   <ul className={styles.subList}>
-                    {section.subList.map((item, idx) => (
-                      <li key={idx} className={styles.subListItem}>
+                    {section.subList.map((item) => (
+                      <li key={item} className={styles.subListItem}>
                         {item}
                       </li>
                     ))}
