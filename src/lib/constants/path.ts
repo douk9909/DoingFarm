@@ -4,4 +4,6 @@ export const PATH = {
   SIGNUP: '/signup',
   MY_DASHBOARD: '/mydashboard',
   MY_PAGE: '/mypage',
+  PRIVACY: '/policy/privacy',
+  FAQ: '/policy/faq',
 } as const;

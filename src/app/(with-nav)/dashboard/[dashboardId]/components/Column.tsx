@@ -2,7 +2,7 @@
 
 import { useDroppable } from '@dnd-kit/core';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import styles from './Column.module.css';
 import CarrotDone from '@/assets/character/carrot1.svg';
@@ -14,6 +14,7 @@ import SettingIcon from '@/assets/icons/SettingIcon';
 import type { Card as CardType } from '@/types/card';
 import { cardApi } from '@/lib/api/card';
 import EditColumnModal from './modal/EditColumnModal';
+import { usePaginatedFetch } from '@/hooks/queries/usePaginatedFetch';
 import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import DraggableCard from './DraggableCard';
 import SkeletonCard from './Skeleton/SkeletonCard';
@@ -66,10 +67,18 @@ export default function Column({
     [id],
   );
 
-  const { items, totalCount, error, isLoading, lastItemRef, scrollContainerRef } =
-    useInfiniteScroll<CardType>({
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const { items, totalCount, error, isLoading, hasNextPage, fetchNext } =
+    usePaginatedFetch<CardType>({
       fetcher: fetchCards,
     });
+
+  const lastItemRef = useInfiniteScroll({
+    onLoadMore: fetchNext,
+    hasNextPage,
+    isLoading,
+    root: scrollContainerRef,
+  });
 
   const filterActive = filter ? isFilterActive(filter) : false;
 

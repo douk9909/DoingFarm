@@ -1,0 +1,113 @@
+.container {
+  width: 100%;
+}
+
+.container header {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 100%;
+  z-index: 1000;
+  background-color: var(--color-background);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  padding-bottom: 20px;
+}
+
+.pageWrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 120px 24px;
+  background-color: var(--color-background);
+  color: var(--color-gray-800);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 60px;
+  margin-bottom: 80px;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.headerCopy {
+  flex: 1;
+  max-width: 700px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+
+.description {
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  word-break: keep-all;
+}
+
+.meta {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--color-gray-500);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.sectionTitle {
+  font: var(--text-2lg-bold);
+  margin-bottom: 4px;
+}
+
+.sectionText {
+  font-size: 14px;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.subList {
+  border-radius: 16px;
+  padding: 32px 32px 32px 52px;
+  list-style-type: disc;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.subListItem {
+  font-size: 12px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.subListItem::marker {
+  color: var(--color-primary-970);
+}
+
+@media (min-width: 768px) {
+  .description {
+    font-size: 16px;
+  }
+
+  .sectionTitle {
+    font: var(--text-xl-bold);
+    margin-bottom: 4px;
+  }
+
+  .sectionText {
+    font-size: 16px;
+  }
+
+  .subListItem {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+}
