@@ -1,5 +1,5 @@
 'use client';
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './DashBoardList.module.css';
@@ -9,14 +9,24 @@ import HomeIcon from '@/assets/icons/HomeIcon';
 import DashBoardItem from './DashBoardItem';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import { useDashboards } from '@/hooks/queries/useDashboards';
+import { useInfiniteScroll } from '@/hooks/queries/useInfiniteScroll';
 import { usePinnedDashboards } from '@/hooks/ui/usePinnedDashboards';
 
 export default function DashBoardList() {
   const pathName = usePathname();
   const isHomeActive = pathName === PATH.MY_DASHBOARD;
   const { openDashboardCreateModal, dashboardListVersion } = useDashboardCreateModal();
-  const { dashboards, isLoading, error, lastItemRef, scrollContainerRef } =
+
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const { dashboards, isLoading, error, hasNextPage, fetchNext } =
     useDashboards(dashboardListVersion);
+  const lastItemRef = useInfiniteScroll({
+    onLoadMore: fetchNext,
+    hasNextPage,
+    isLoading,
+    root: scrollContainerRef,
+  });
+
   const { pinnedIds, togglePin, isPinned } = usePinnedDashboards();
 
   const { pinnedDashboards, unpinnedDashboards } = useMemo(() => {

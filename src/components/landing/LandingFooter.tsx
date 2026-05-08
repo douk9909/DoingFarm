@@ -7,8 +7,13 @@ import logoImage from '@/assets/logo/Do!ngFarm.svg';
 import { PATH } from '@/lib/constants/path';
 import styles from './LandingFooter.module.css';
 
+interface FooterLink {
+  readonly label: string;
+  readonly href: string;
+}
+
 interface LandingFooterProps {
-  footerLinks: readonly string[];
+  footerLinks: readonly FooterLink[];
 }
 
 export function LandingFooter({ footerLinks }: LandingFooterProps) {
@@ -32,10 +37,10 @@ export function LandingFooter({ footerLinks }: LandingFooterProps) {
       </Link>
 
       <div className={styles.footerLinks}>
-        {footerLinks.map((label) => (
-          <span key={label} className={styles.footerTextLink}>
-            {label}
-          </span>
+        {footerLinks.map((link) => (
+          <Link key={link.label} href={link.href} className={styles.footerTextLink}>
+            {link.label}
+          </Link>
         ))}
       </div>
 

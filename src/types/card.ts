@@ -9,7 +9,7 @@ export interface Card {
   title: string;
   description: string;
   tags: string[];
-  dueDate: string;
+  dueDate?: string;
   assignee: CardAssignee;
   imageUrl: string | null;
   teamId: string;
