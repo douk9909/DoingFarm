@@ -14,7 +14,7 @@ interface CardProps {
   id: number;
   title: string;
   tags?: Array<string | CardTag>;
-  dueDate: string;
+  dueDate?: string;
   assignee: {
     nickname: string;
     profileImageUrl: string | null;
@@ -51,7 +51,7 @@ export default function Card({ src, title, tags, dueDate, assignee }: CardProps)
           ))}
         </div>
 
-        <p className={styles.cardDate}>{formatDate(dueDate)}</p>
+        <p className={styles.cardDate}>{dueDate ? formatDate(dueDate) : '지정된 마감일 없음'}</p>
         <div className={styles.cardAuthor}>
           <Avatar
             src={assignee.profileImageUrl}
