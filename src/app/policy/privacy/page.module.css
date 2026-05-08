@@ -20,7 +20,7 @@
   margin: 0 auto;
   padding: 120px 24px;
   background-color: var(--color-background);
-  color: #e0e0e0;
+  color: var(--color-gray-800);
 }
 
 .header {
@@ -89,7 +89,7 @@
 }
 
 .subListItem::marker {
-  color: #81c784;
+  color: var(--color-primary-970);
 }
 
 @media (min-width: 768px) {
