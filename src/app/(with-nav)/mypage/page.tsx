@@ -7,7 +7,7 @@ import ArrowLeftIcon from '@/assets/icons/ArrowLeftIcon';
 import TrashIcon from '@/assets/icons/TrashIcon';
 import VisibilityOnIcon from '@/assets/icons/VisibilityOnIcon';
 import VisibilityOffIcon from '@/assets/icons/VisibilityOffIcon';
-import Input from '@/components/common/input';
+import Input from '@/components/common/Input';
 import Button from '@/components/common/Button/Button';
 import { userApi } from '@/lib/api/user';
 import { showToast } from '@/lib/utils/toast';
