@@ -7,7 +7,7 @@ import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';
 import Button from '@/components/common/Button/Button';
 import Input from '@/components/common/Input';
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 
 import styles from './InvitationModal.module.css';
 import { showToast } from '@/lib/utils/toast';

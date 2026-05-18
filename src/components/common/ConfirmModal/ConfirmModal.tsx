@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import Button from '@/components/common/Button/Button';
 import styles from './ConfirmModal.module.css';
 import { cn } from '@/lib/utils/cn';

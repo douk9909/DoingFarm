@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import Button from '@/components/common/Button/Button';
 import ColorPicker from '@/components/common/ColorPicker/ColorPicker';
 import { Input } from '@/components/common/Input';
