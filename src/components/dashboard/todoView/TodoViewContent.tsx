@@ -4,7 +4,7 @@ import { useEffect, useReducer, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import Modal from '@/components/common/modal/Modal';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/button/Button';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
 import CommentForm from '@/components/common/commentForm/CommentForm';

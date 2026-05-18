@@ -16,7 +16,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { userApi } from '@/lib/api/user';
 import type { User } from '@/types/user';
 import SkeletonFooter from './SkeletonFooter';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 
 function isValidImageUrl(url: string | null | undefined): url is string {
   if (!url) return false;
