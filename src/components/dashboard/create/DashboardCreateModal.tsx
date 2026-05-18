@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/common/modal/Modal';
 import Button from '@/components/common/Button/Button';
-import ColorPicker from '@/components/common/colorPicker/colorPicker';
+import ColorPicker from '@/components/common/ColorPicker/ColorPicker';
 import { Input } from '@/components/common/input';
 import { useCreateDashboard } from '@/hooks/mutations/useCreateDashboard';
 import { DASHBOARD_COLORS, type DashboardColor } from '@/lib/constants/color';
