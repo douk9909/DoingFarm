@@ -9,7 +9,7 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from '@dnd-kit/core';
-import CardComponent from '@/components/common/card/Card';
+import CardComponent from '@/components/common/Card/Card';
 
 import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
