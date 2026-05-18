@@ -29,7 +29,7 @@ import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
-import AddColumnModal from './modal/AddColumnModal';
+import AddColumnModal from './Modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
 import DashBoardHeader from './DashboardHeader';
 import {
