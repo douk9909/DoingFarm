@@ -2,7 +2,7 @@ import Modal from '@/components/common/modal/Modal';
 import Input from '@/components/common/input';
 import { useState } from 'react';
 import { columnApi } from '@/lib/api/column';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import styles from './AddColumnModal.module.css';
 import Image from 'next/image';
 import characterImg from '@/assets/character/carrot1.svg';

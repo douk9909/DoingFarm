@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import logo from '@/assets/logo/login_logo.svg';
 import Input from '@/components/common/input';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import { authApi } from '@/lib/api/auth';
 import { setToken } from '@/lib/utils/storage';
 import { showToast } from '@/lib/utils/toast';

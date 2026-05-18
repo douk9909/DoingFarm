@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Modal from '@/components/common/modal/Modal';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
 import { Input } from '@/components/common/input';
 import { useCreateDashboard } from '@/hooks/mutations/useCreateDashboard';

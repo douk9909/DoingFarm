@@ -11,7 +11,7 @@ import { useDashboardCreateModal } from '@/components/dashboard/create/Dashboard
 
 import ColorPicker from '@/components/common/colorPicker/colorPicker';
 import Input from '@/components/common/input';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 
 import styles from '../edit.module.css';
 import BaseSectionLayout from './BaseSectionLayout';

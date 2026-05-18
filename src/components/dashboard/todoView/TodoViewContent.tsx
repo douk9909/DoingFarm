@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import Modal from '@/components/common/modal/Modal';
 import Avatar from '@/components/common/Avatar/Avatar';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
 import CommentForm from '@/components/common/commentForm/CommentForm';
 

@@ -10,7 +10,7 @@ import { useDashboardCreateModal } from '@/components/dashboard/create/Dashboard
 import BaseSectionLayout from './BaseSectionLayout';
 import PaginationControl from './PaginationControl';
 import Avatar from '@/components/common/Avatar/Avatar';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import ConfirmModal from '@/components/common/ConfirmModal/ConfirmModal';
 
 import CrownIcon from '@/assets/icons/CrownIcon';
