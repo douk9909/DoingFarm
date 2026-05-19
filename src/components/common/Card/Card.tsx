@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import { formatDate } from '@/lib/utils/formatDate';
 import { getHashColor } from '@/lib/utils/color';
 

@@ -2,7 +2,7 @@ import { DASHBOARD_COLORS } from '@/lib/constants/color';
 
 import { cn } from '@/lib/utils/cn';
 import CheckIcon from '@/assets/icons/CheckIcon';
-import styles from './colorPicker.module.css';
+import styles from './ColorPicker.module.css';
 
 interface ColorPickerProps {
   selectedColor: string;
