@@ -6,8 +6,8 @@ import { useMemberList } from '@/hooks/queries/useMemberList';
 import { useGenericDelete } from '@/hooks/mutations/useGenericDelete';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 
-import Button from '@/components/common/button/Button';
-import Avatar from '@/components/common/avatar/Avatar';
+import Button from '@/components/common/Button/Button';
+import Avatar from '@/components/common/Avatar/Avatar';
 
 import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 import BaseSectionLayout from './BaseSectionLayout';

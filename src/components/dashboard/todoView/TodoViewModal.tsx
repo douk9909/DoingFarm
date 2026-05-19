@@ -1,6 +1,6 @@
 'use client';
 
-import Modal from '@/components/common/modal/Modal';
+import Modal from '@/components/common/Modal/Modal';
 import TodoViewContent from './TodoViewContent';
 import type { TodoViewContentProps } from './TodoViewContent';
 import styles from './TodoView.module.css';

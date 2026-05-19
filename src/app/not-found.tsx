@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import styles from './not-found.module.css';
 import Image from 'next/image';
 import notFoundCarrot from '@/assets/character/404carrot.svg';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import { getToken } from '@/lib/utils/storage';
 
 export default function NotFound() {

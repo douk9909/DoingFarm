@@ -6,7 +6,6 @@ import { PATH } from '@/lib/constants/path';
 import logo from '@/assets/logo/Do!ngFarm.svg';
 import DashBoardList from './DashBoardList';
 import SidebarFooter from './SidebarFooter';
-import SkeletonFooter from './SkeletonFooter';
 
 interface SidebarProps {
   isMobileOpen?: boolean;

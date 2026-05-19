@@ -2,7 +2,7 @@
 
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import Card from '@/components/common/card/Card';
+import Card from '@/components/common/Card/Card';
 import type { Card as CardType } from '@/types/card';
 import { useRef } from 'react';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import { useInvitationSearch } from '@/hooks/queries/useInvitationSearch';
 import { useReceivedInvitations } from '@/hooks/queries/useReceivedInvitations';
 import SearchIcon from '@/assets/icons/SearchIcon';

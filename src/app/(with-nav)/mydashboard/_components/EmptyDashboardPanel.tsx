@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import Button from '@/components/common/button/Button';
+import Button from '@/components/common/Button/Button';
 import { useDashboardCreateModal } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import PlusCircleIcon from '@/assets/icons/PlusCircleIcon';
 import type { DashboardEmptySection } from '../_content/dashboardContent';

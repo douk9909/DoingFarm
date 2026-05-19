@@ -1,4 +1,4 @@
-import type { CardTag } from '@/components/common/card/Card';
+import type { CardTag } from '@/components/common/Card/Card';
 
 export interface TodoColumnOption {
   id: number;

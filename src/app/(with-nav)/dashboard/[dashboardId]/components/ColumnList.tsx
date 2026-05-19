@@ -9,7 +9,7 @@ import {
   type DragEndEvent,
   type DragStartEvent,
 } from '@dnd-kit/core';
-import CardComponent from '@/components/common/card/Card';
+import CardComponent from '@/components/common/Card/Card';
 
 import { useEffect, useMemo, useState } from 'react';
 import TodoCreate from '@/components/dashboard/todoCreate/TodoCreate';
@@ -29,7 +29,7 @@ import type { User } from '@/types/user';
 import Column from './Column';
 import styles from './ColumnList.module.css';
 import AddColumnButton from './AddColumnButton';
-import AddColumnModal from './modal/AddColumnModal';
+import AddColumnModal from './Modal/AddColumnModal';
 import ColumnRefetchContext from './ColumnRefetchContext';
 import DashBoardHeader from './DashboardHeader';
 import {

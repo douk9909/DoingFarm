@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Navbar from '@/components/layout/navbar/Navbar';
-import Sidebar from '@/components/layout/sidebar/Sidebar';
+import Navbar from '@/components/layout/Navbar/Navbar';
+import Sidebar from '@/components/layout/Sidebar/Sidebar';
 import { DashboardCreateModalProvider } from '@/components/dashboard/create/DashboardCreateModalProvider';
 import styles from '../layout.module.css';
 import {

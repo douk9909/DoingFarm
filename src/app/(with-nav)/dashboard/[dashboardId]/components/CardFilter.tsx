@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import CloseIcon from '@/assets/icons/CloseIcon';
 import { getHashColor } from '@/lib/utils/color';
 import styles from './CardFilter.module.css';
