@@ -3,11 +3,11 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
 import Image from 'next/image';
 
-import Modal from '@/components/common/modal/Modal';
-import Avatar from '@/components/common/avatar/Avatar';
-import Button from '@/components/common/button/Button';
+import Modal from '@/components/common/Modal/Modal';
+import Avatar from '@/components/common/Avatar/Avatar';
+import Button from '@/components/common/Button/Button';
 import DropdownMenu from '@/components/common/DropDownMenu/DropDownMenu';
-import CommentForm from '@/components/common/commentForm/CommentForm';
+import CommentForm from '@/components/common/CommentForm/CommentForm';
 
 import EditIcon from '@/assets/icons/EditIcon';
 import TrashIcon from '@/assets/icons/TrashIcon';

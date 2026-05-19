@@ -11,7 +11,7 @@ import { useFetch } from '@/hooks/queries/useFetch';
 
 import { cn } from '@/lib/utils/cn';
 import { PATH } from '@/lib/constants/path';
-import Avatar from '@/components/common/avatar/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import InvitationModal from '@/components/dashboard/invite/InvitationModal';
 
 import characterImg from '@/assets/character/carrot1.svg';
